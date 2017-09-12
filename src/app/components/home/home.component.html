@@ -1,0 +1,48 @@
+<!-- BEGIN CONTAINER -->
+<div class="page-container">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-2">
+                <div class="col-md-12">
+                    <ul class="nav nav-pills nav-stacked">
+                        <li class="dropdown">
+                            <a class="active dropdown-toggle" data-toggle="dropdown">
+                                <span>Welcome! {{loggedInUserData.full_name}}</span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a href="javascript:void(0);" (click)="logout()">Logout</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                    
+                    <a routerLink="/editor" routerLinkActive="active" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">Create a design</a>
+                    
+                    <ul class="nav nav-pills nav-stacked">
+                        <li><a routerLink="/home" routerLinkActive="active">All your designs</a></li>
+                    </ul>
+                </div>
+                            </div>
+            <div class="col-md-10">
+                <div class="col-md-12">
+                    <div class="col-md-12">
+                        <h3>Create a design</h3>
+                    </div>
+                    <div class="col-md-12">
+                        <div *ngFor="let template of templates" (click)="loadTemplate(template)" class="col-md-2 text-center margin" style="margin:5px; border:1px grey dashed;">
+                            <div class="col-md-12">
+                                <img src="{{template.url}}" />
+                            </div>
+                            <div class="col-md-12">
+                                {{template.title}}
+                            </div>
+                            <div class="col-md-12">
+                                {{template.size}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- END CONTAINER -->

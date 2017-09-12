@@ -1,0 +1,52 @@
+<div *ngIf="!isLoggedIn">
+    <!-- BEGIN HEADER -->
+    <canvas-shared-header-guest></canvas-shared-header-guest>
+    <!-- END HEADER -->
+
+    <!-- BEGIN HEADER & CONTENT DIVIDER -->
+    <div class="clearfix"> </div>
+    <toaster-container></toaster-container>
+    <!-- END HEADER & CONTENT DIVIDER -->
+
+    <!-- BEGIN CONTAINER -->
+    <div class="page-container">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-2" >
+                    <!-- BEGIN TOP NAVIGATION BAR -->
+                    <canvas-shared-navigation-top-guest></canvas-shared-navigation-top-guest>
+                    <!-- END TOP NAVIGATION BAR -->
+                </div>
+                <div class="col-md-10">
+                    <!-- BEGIN CONTENT -->
+                        <router-outlet></router-outlet>
+                    <!-- END CONTENT -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- END CONTAINER -->
+    
+    <!-- BEGIN FOOTER -->
+    <canvas-shared-footer-guest></canvas-shared-footer-guest>
+    <!-- END FOOTER -->
+</div>
+
+<div *ngIf="isLoggedIn">
+    <!-- BEGIN HEADER & CONTENT DIVIDER -->
+    <div class="clearfix"> </div>
+    <toaster-container></toaster-container>
+    <!-- END HEADER & CONTENT DIVIDER -->
+
+    <!-- BEGIN CONTAINER -->
+    <div class="page-container">
+        <div class="container-fluid">
+            <div class="row">
+                <!-- BEGIN CONTENT -->
+                    <router-outlet></router-outlet>
+                <!-- END CONTENT -->
+            </div>
+        </div>
+    </div>
+    <!-- END CONTAINER -->
+</div>
