@@ -52,6 +52,24 @@ export class HomeComponent implements OnInit {
                 img: '',
                 title: 'Desktop Wallpaper',
                 size: '1024 x 768 px'
+            },
+            {
+                uuid: '3',
+                img: '',
+                title: 'Social Media',
+                size: '1024 x 768 px'
+            },
+            {
+                uuid: '4',
+                img: '',
+                title: 'Poster',
+                size: '1024 x 768 px'
+            },
+            {
+                uuid: '5',
+                img: '',
+                title: 'Graphic Blog',
+                size: '1024 x 768 px'
             }
         ];
     }
