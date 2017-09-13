@@ -1,9 +1,9 @@
-import {NgModule} from '@angular/core';
-import {Routes, RouterModule} from '@angular/router';
+import { NgModule } from '@angular/core';
+import { Routes, RouterModule } from '@angular/router';
 
-import {EditorComponent} from './editor.component';
+import { EditorComponent } from './editor.component';
 
-import {SharedCanActivateAuthService} from './../shared/service/shared-can-activate-auth.service';
+import { SharedCanActivateAuthService } from './../shared/service/shared-can-activate-auth.service';
 
 const routes: Routes = [
     {
@@ -17,7 +17,7 @@ const routes: Routes = [
         RouterModule.forRoot(routes)
     ],
     exports: [
-        RouterModule
-    ]
+        RouterModule,
+    ],
 })
-export class HomeRoutes {}
+export class EditorRoutes {}
