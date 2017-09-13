@@ -37,7 +37,17 @@
                 </div>
                 <div class="col-md-9 max_height">
                     <div class="col-md-12">
-                        Options Menu
+                        Options Menu - 
+                        <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">Color Picker</button>
+                        <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">Filter</button>
+                        <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">Crop</button>
+                        <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">Flip</button>
+                        <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">Spacing</button>
+                        <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">Copy</button>
+                        <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">Arrange</button>
+                        <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">Transparency</button>
+                        <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">Link</button>
+                        <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">Delete</button>
                     </div>
                     
                     <div class="col-md-12 max_height">
@@ -48,7 +58,16 @@
                             <div class="col-md-12 max_height">
                                 <div class="col-md-11 full_height">
                                     <div class="single_page" data-page_no="1">
-                                        First Page
+                                        First Page -
+                                        <div class="file-upload">
+                                            <span class="text">upload</span>
+                                            <input id="custom-input" type="file" (change)="fileChangeListener($event)">
+                                        </div>
+                                        <img-cropper #cropper [image]="data" [settings]="cropperSettings"></img-cropper>
+                                        <br>
+                                        <span class="result rounded" *ngIf="data.image" >
+                                            <img [src]="data.image" [width]="cropperSettings.croppedWidth" [height]="cropperSettings.croppedHeight">
+                                        </span>
                                     </div>
                                 </div>
                                 <div class="col-md-1 full_height text-center">

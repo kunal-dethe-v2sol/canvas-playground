@@ -24,6 +24,7 @@
     "angular2-jwt": "^0.2.3",
     "angular2-toaster": "^4.0.1",
     "core-js": "^2.4.1",
+    "ng2-img-cropper": "^0.9.0",
     "ng2-webstorage": "^1.8.0",
     "rxjs": "^5.4.1",
     "zone.js": "^0.8.14"

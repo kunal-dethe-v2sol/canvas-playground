@@ -1,7 +1,8 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {Router, ActivatedRoute} from '@angular/router';
 
 import {SharedService} from './../shared/service/shared.service';
+import {ImageCropperComponent, CropperSettings} from 'ng2-img-cropper';
 
 @Component({
     selector: 'canvas-design',
@@ -13,6 +14,12 @@ export class DesignComponent implements OnInit {
     private _action;
     private _type;
     public design_id;
+
+    data:any;
+
+    @ViewChild('cropper', undefined)
+    cropper:ImageCropperComponent;
+    cropperSettings: CropperSettings;
 
     //Constructor parameters
     static get parameters() {
@@ -29,8 +36,9 @@ export class DesignComponent implements OnInit {
         private _router,
         private _activatedRoute,
         private _sharedService) {
-
-
+            this.cropperSettings = new CropperSettings();
+            this.cropperSettings.noFileInput = true;
+            this.data = {};
     }
 
     //Angular Hooks
@@ -64,4 +72,22 @@ export class DesignComponent implements OnInit {
 
         this._router.navigate(['/design', this.design_id, 'edit']);
     }
+
+    fileChangeListener($event) {
+    var image:any = new Image();
+    var file:File = $event.target.files[0];
+    var myReader:FileReader = new FileReader();
+    var that = this;
+    myReader.onloadend = function (loadEvent:any) {
+        image.src = loadEvent.target.result;
+        that.cropper.setImage(image);
+    };
+    myReader.readAsDataURL(file);
 }
+
+}
+
+
+
+
+
