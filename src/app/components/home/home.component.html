@@ -14,30 +14,40 @@
                             </ul>
                         </li>
                     </ul>
-                    
-                    <a routerLink="/editor" routerLinkActive="active" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">Create a design</a>
-                    
+
+                    <a routerLink="/create-a-design" routerLinkActive="active" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">Create a design</a>
+
                     <ul class="nav nav-pills nav-stacked">
                         <li><a routerLink="/home" routerLinkActive="active">All your designs</a></li>
                     </ul>
                 </div>
-                            </div>
+            </div>
             <div class="col-md-10">
                 <div class="col-md-12">
                     <div class="col-md-12">
                         <h3>Create a design</h3>
                     </div>
                     <div class="col-md-12">
-                        <div *ngFor="let template of templates" (click)="loadTemplate(template)" class="col-md-2 text-center margin" style="margin:5px; border:1px grey dashed;">
+                        <div *ngFor="let template of templates" (click)="loadTemplate(template)" class="col-md-2 text-center margin" style="margin:5px; border:1px grey dashed; cursor:pointer;">
                             <div class="col-md-12">
                                 <img src="{{template.url}}" />
                             </div>
                             <div class="col-md-12">
-                                 <a [routerLink]="['/editor']">{{template.title}}</a>
+                                {{template.title}}
                             </div>
                             <div class="col-md-12">
                                 {{template.size}}
                             </div>
+                        </div>
+                    </div>
+                </div>
+                <div *ngIf="show_my_designs" class="col-md-12">
+                    <div class="col-md-12">
+                        <div class="col-md-12">
+                            <h3>My Designs</h3>
+                        </div>
+                        <div class="col-md-12">
+                            List of my designs
                         </div>
                     </div>
                 </div>

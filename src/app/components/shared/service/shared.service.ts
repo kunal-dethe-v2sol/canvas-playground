@@ -69,4 +69,11 @@ export class SharedService {
     getCustomValidationService() {
         return this._customValidationService;
     }
+    
+    /**
+     * Returns the loggedInUserUserData
+     */
+    getLoggedInUserData() {
+        return this.getAuthService().getLoggedInUserData();
+    }
 }

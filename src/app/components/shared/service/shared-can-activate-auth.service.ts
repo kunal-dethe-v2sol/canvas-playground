@@ -48,6 +48,8 @@ export class SharedCanActivateAuthService implements CanActivate {
                 break;
                 
             case 'home':
+            case 'create-a-design':
+            case 'design':
                 if(isLoggedIn) {
                     allow = true;
                 } else {

@@ -10,6 +10,11 @@ const routes: Routes = [
         path: 'home',
         component: HomeComponent,
         canActivate: [SharedCanActivateAuthService]
+    },
+    {
+        path: 'create-a-design',
+        component: HomeComponent,
+        canActivate: [SharedCanActivateAuthService]
     }
 ];
 @NgModule({
