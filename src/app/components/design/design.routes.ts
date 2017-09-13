@@ -9,6 +9,16 @@ const routes: Routes = [
         path: 'design',
         component: DesignComponent,
         canActivate: [SharedCanActivateAuthService]
+    },
+    {
+        path: 'design/:design_id',
+        pathMatch: 'full',
+        redirectTo: 'design/:design_id/edit'
+    },
+    {
+        path: 'design/:design_id/edit',
+        component: DesignComponent,
+        canActivate: [SharedCanActivateAuthService]
     }
 ];
 @NgModule({

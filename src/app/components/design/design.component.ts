@@ -10,7 +10,10 @@ import {SharedService} from './../shared/service/shared.service';
 export class DesignComponent implements OnInit {
 
     //Variables
-    
+    private _action;
+    private _type;
+    public design_id;
+
     //Constructor parameters
     static get parameters() {
         return [
@@ -19,7 +22,7 @@ export class DesignComponent implements OnInit {
             SharedService
         ];
     }
-    
+
 
     //Constructor
     constructor(
@@ -27,16 +30,38 @@ export class DesignComponent implements OnInit {
         private _activatedRoute,
         private _sharedService) {
 
-        if(this._activatedRoute.snapshot.url[0].path == 'create-a-design') {
-            
-        }
+
     }
 
     //Angular Hooks
     ngOnInit() {
-        
+        this._activatedRoute
+            .queryParams
+            .subscribe(params => {
+                this._action = params['action'];
+                this._type = params['type'];
+
+                if (this._action == 'create' && this._type) {
+                    this.createDesign();
+                }
+            });
     }
 
     //Custom Methods
-    
+    generateId() {
+        var text = "";
+        var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+        for (var i = 0; i < 30; i++)
+            text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+        return text;
+    }
+
+    createDesign() {
+        this.design_id = this.generateId();
+        this._sharedService.getStorageService().getLocal().store('activeDesignId', this.design_id);
+
+        this._router.navigate(['/design', this.design_id, 'edit']);
+    }
 }
