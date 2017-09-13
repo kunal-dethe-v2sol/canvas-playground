@@ -22,7 +22,6 @@ import {HomeModule} from './components/home/home.module';
 import {LoginModule} from './components/login/login.module';
 
 import {SharedCanActivateAuthService} from './components/shared/service/shared-can-activate-auth.service';
-import { EditorComponent } from './components/editor/editor.component';
 
 @NgModule({
     declarations: [
@@ -32,8 +31,7 @@ import { EditorComponent } from './components/editor/editor.component';
         SharedFooterGuestComponent,
         SharedHeaderUserComponent,
         SharedNavigationTopUserComponent,
-        SharedFooterUserComponent,
-        EditorComponent
+        SharedFooterUserComponent
     ],
     imports: [
         BrowserModule,
