@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit, ViewChild, animate, transition, trigger, state, style} from '@angular/core';
 import {Router, ActivatedRoute} from '@angular/router';
 
 import {SharedService} from './../shared/service/shared.service';
@@ -6,7 +6,16 @@ import {ImageCropperComponent, CropperSettings} from 'ng2-img-cropper';
 
 @Component({
     selector: 'canvas-design',
-    templateUrl: './design.component.html'
+    templateUrl: './design.component.html',
+    animations: [
+          // Each unique animation requires its own trigger. The first argument of the trigger function is the name
+          trigger('rotatedState', [
+                                state('default', style({ transform: 'rotate(0)' })),
+                                state('rotated', style({ transform: 'rotate(-180deg)' })),
+                                transition('rotated => default', animate('400ms ease-out')),
+                                transition('default => rotated', animate('400ms ease-in'))
+        ])
+    ]
 })
 export class DesignComponent implements OnInit {
 
@@ -84,6 +93,13 @@ export class DesignComponent implements OnInit {
     };
     myReader.readAsDataURL(file);
 }
+
+
+state: string = 'default';
+
+    rotate() {
+        this.state = (this.state === 'default' ? 'rotated' : 'default');
+    }
 
 }
 
