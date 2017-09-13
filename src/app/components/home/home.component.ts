@@ -22,7 +22,7 @@ export class HomeComponent implements OnInit {
             SharedService
         ];
     }
-    
+
 
     //Constructor
     constructor(
@@ -30,12 +30,12 @@ export class HomeComponent implements OnInit {
         private _activatedRoute,
         private _sharedService) {
 
-        if(this._activatedRoute.snapshot.url[0].path == 'create-a-design') {
+        if (this._activatedRoute.snapshot.url[0].path == 'create-a-design') {
             //Hide the "My Designs" section and load all the designs.
             this.show_my_designs = false;
         }
 
-        this.loggedInUserData = this._sharedService.getAuthService().getLoggedInUserData();
+        this.loggedInUserData = this._sharedService.getLoggedInUserData();
     }
 
     //Angular Hooks
@@ -58,9 +58,9 @@ export class HomeComponent implements OnInit {
 
     //Custom Methods
     loadTemplate(template) {
-        
+        this._router.navigate(['/design'], {queryParams: {action: 'create', type: template.uuid}});
     }
-    
+
     logout() {
         this._sharedService.getAuthService().logout();
         this._sharedService.loginEventEmitter.emit(false);

@@ -20,6 +20,7 @@ import {AppRoutes} from './app.routes';
 import {SharedModule} from './components/shared/shared.module';
 import {HomeModule} from './components/home/home.module';
 import {LoginModule} from './components/login/login.module';
+import {DesignModule} from './components/design/design.module';
 
 import {SharedCanActivateAuthService} from './components/shared/service/shared-can-activate-auth.service';
 
@@ -46,6 +47,7 @@ import {SharedCanActivateAuthService} from './components/shared/service/shared-c
         SharedModule,
         HomeModule,
         LoginModule,
+        DesignModule,
         AppRoutes,
     ],
     providers: [
