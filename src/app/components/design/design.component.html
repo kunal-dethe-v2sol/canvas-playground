@@ -4,7 +4,7 @@
     }
     .single_page {
         background-color: azure;
-        height: 100%;
+        margin-bottom: 10px;
     }
 </style>
     
@@ -59,17 +59,16 @@
                         </div>
                         <div class="col-md-10 full_height">
                             <div class="col-md-12 max_height">
-                                <div class="col-md-11 full_height" #design_wrapper>
-                                    <div class="single_page" data-page_no="1" (click)="elementFocused($event)">
-                                        
+                                <div class="col-md-12 full_height" id="design_wrapper" #design_wrapper>
+                                    <div class="single_page_wrapper full_height" data-page_no="1">
+                                        <div class="col-md-11 max_height single_page"></div>
+                                        <div class="col-md-1 max_height single_page_options text-center">
+                                            <p class="page_no">1</p>
+                                            <br />
+                                            <br />
+                                            <a class="mdl-button mdl-js-button mdl-button--raised copy_btn" data-page_no="1">Copy</a>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="col-md-1 full_height text-center">
-                                    1
-
-                                    <br />
-                                    <br />
-                                    <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">Copy</button>
                                 </div>
                             </div>
                             <div class="col-md-12 text-center">
