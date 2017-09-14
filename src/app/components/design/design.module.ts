@@ -1,9 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { DesignRoutes } from './design.routes';
 import { DesignComponent } from './design.component';
-import {ImageCropperComponent} from 'ng2-img-cropper';
+import { ImageCropperComponent } from 'ng2-img-cropper';
 
 @NgModule({
     declarations: [
@@ -12,7 +14,6 @@ import {ImageCropperComponent} from 'ng2-img-cropper';
     ],
     imports: [
         CommonModule,
-        //BrowserModule,
         DesignRoutes
     ],
     schemas: [

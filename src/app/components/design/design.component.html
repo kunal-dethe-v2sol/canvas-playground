@@ -33,14 +33,19 @@
                 <div class="col-md-2 max_height">
                     <div class="col-md-12">
                         Sub Modules
+                        <div class="file-upload">
+                            <span class="text">upload</span>
+                            <input id="custom-input" type="file" (change)="fileChangeListener($event)" (click)="showdiv()">
+                            <img [src]="data.image">
+                        </div>
                     </div>
                 </div>
                 <div class="col-md-9 max_height">
-                    <div class="col-md-12">
+                    <div *ngIf="show==false" class="col-md-12">
                         Options Menu - 
                         <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">Color Picker</button>
                         <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">Filter</button>
-                        <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">Crop</button>
+                        <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" (click)="showdiv1()">Crop</button>
                         <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">Flip</button>
                         <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">Spacing</button>
                         <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">Copy</button>
@@ -48,7 +53,12 @@
                         <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">Transparency</button>
                         <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">Link</button>
                         <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">Delete</button>
-                        <button (click)="rotate()">Press me to rotate</button>
+                        <button (click)="rotate()" >Press me to rotate</button>
+                    </div>
+                    <div *ngIf="show==true" class="col-md-12">
+                        Options Menu - 
+                        <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" (click)="showdiv1()">Ok</button>
+                        <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" (click)="showdiv()">Cancel</button>
                     </div>
                     
                     <div class="col-md-12 max_height">
@@ -59,15 +69,12 @@
                             <div class="col-md-12 max_height">
                                 <div class="col-md-11 full_height">
                                     <div class="single_page" data-page_no="1">
-                                        First Page -
-                                        <div class="file-upload">
-                                            <span class="text">upload</span>
-                                            <input id="custom-input" type="file" (change)="fileChangeListener($event)">
-                                        </div>
-                                        <img-cropper #cropper [image]="data" [settings]="cropperSettings"></img-cropper>
+                                        First Page -<br/>
+                                        <span *ngIf="show1==false"><img-cropper #cropper [image]="data" [settings]="cropperSettings"></img-cropper></span>
                                         <br>
-                                        <span class="result rounded" *ngIf="data.image" >
-                                            <img [src]="data.image" [width]="cropperSettings.croppedWidth" [height]="cropperSettings.croppedHeight">
+                                        <span *ngIf="show1==true" class="result rounded"  >
+                                            <!--*ngIf="data.image"-->
+                                            <img [src]="data.image" [width]="cropperSettings.croppedWidth" [height]="cropperSettings.croppedHeight" [@rotatedState]='state'>
                                         </span>
                                     </div>
                                 </div>
