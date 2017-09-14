@@ -46,14 +46,14 @@
                         <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">Color Picker</button>
                         <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">Filter</button>
                         <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" (click)="showdiv1()">Crop</button>
-                        <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">Flip</button>
+                        <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" (click)="rotate()">Rotate</button>
+                        <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" (click)="rotate()">Flip</button>
                         <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">Spacing</button>
                         <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">Copy</button>
                         <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">Arrange</button>
                         <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">Transparency</button>
                         <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">Link</button>
                         <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">Delete</button>
-                        <button (click)="rotate()" >Press me to rotate</button>
                     </div>
                     <div *ngIf="show==true" class="col-md-12">
                         Options Menu - 
