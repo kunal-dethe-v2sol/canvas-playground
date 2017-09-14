@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {Router, ActivatedRoute} from '@angular/router';
 
 import {SharedService} from './../shared/service/shared.service';
+import {templateList} from './../shared/data/templates';
 
 @Component({
     selector: 'canvas-home',
@@ -40,25 +41,12 @@ export class HomeComponent implements OnInit {
 
     //Angular Hooks
     ngOnInit() {
-        this.templates = [
-            {
-                uuid: '1',
-                img: '',
-                title: 'Presentation',
-                size: '1024 x 768 px'
-            },
-            {
-                uuid: '2',
-                img: '',
-                title: 'Desktop Wallpaper',
-                size: '1024 x 768 px'
-            }
-        ];
+        this.templates = templateList;
     }
 
     //Custom Methods
     loadTemplate(template) {
-        this._router.navigate(['/design'], {queryParams: {action: 'create', type: template.uuid}});
+        this._router.navigate(['/design'], {queryParams: {action: 'create', template: template.uuid}});
     }
 
     logout() {

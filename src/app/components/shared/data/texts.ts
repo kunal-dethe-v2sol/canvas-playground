@@ -2,6 +2,8 @@ export let textList = [
     {
         uuid: 1,
         text: 'Header 1',
+        type: 'header',
+        element: 'h1',
         style: {
             display: 'block',
             fontsize: '2em',
@@ -15,6 +17,8 @@ export let textList = [
     {
         uuid: 2,
         text: 'Header 2',
+        type: 'header',
+        element: 'h2',
         style: {
             display: 'block',
             fontsize: '1.5em',
@@ -28,6 +32,8 @@ export let textList = [
     {
         uuid: 3,
         text: 'Header 3',
+        type: 'header',
+        element: 'h3',
         style: {
             display: 'block',
             fontsize: '1.17em',
@@ -41,6 +47,8 @@ export let textList = [
     {
         uuid: 4,
         text: 'Header 4',
+        type: 'header',
+        element: 'h4',
         style: {
             display: 'block',
             fontsize: '1em',
@@ -54,6 +62,8 @@ export let textList = [
     {
         uuid: 5,
         text: 'Header 5',
+        type: 'header',
+        element: 'h5',
         style: {
             display: 'block',
             fontsize: '.83em',
@@ -67,6 +77,8 @@ export let textList = [
     {
         uuid: 6,
         text: 'Header 6',
+        type: 'header',
+        element: 'h6',
         style: {
             display: 'block',
             fontsize: '.67em',

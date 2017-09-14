@@ -2,13 +2,6 @@
     div {
         border: 1px dotted black;
     }
-    .full_height {
-        height: 100%;
-    }
-    .max_height {
-        margin-top: 20px;
-        height: 90%;
-    }
     .single_page {
         background-color: azure;
         height: 100%;
@@ -26,12 +19,12 @@
             <div class="col-md-12 full_height">
                 <div class="col-md-1 max_height">
                     <ul class="nav nav-pills nav-stacked">
-                        <li><a (click)="loadList('search')">Search</a></li>
-                        <li><a (click)="loadList('layouts')">Layouts</a></li>
-                        <li><a (click)="loadList('elements')">Elements</a></li>
-                        <li><a (click)="loadList('text')">Text</a></li>
-                        <li><a (click)="loadList('background')">Background</a></li>
-                        <li><a (click)="loadList('uploads')">Uploads</a></li>
+                        <li><a class="pointer" (click)="loadList('search')">Search</a></li>
+                        <li><a class="pointer" (click)="loadList('layouts')">Layouts</a></li>
+                        <li><a class="pointer" (click)="loadList('elements')">Elements</a></li>
+                        <li><a class="pointer" (click)="loadList('text')">Text</a></li>
+                        <li><a class="pointer" (click)="loadList('background')">Background</a></li>
+                        <li><a class="pointer" (click)="loadList('uploads')">Uploads</a></li>
                     </ul>
                 </div>
                 <div class="col-md-2 max_height">
@@ -40,17 +33,8 @@
                             Layout List
                         </div>
                         <div *ngIf="showTextList" class="">
-                            Text List
-                            <div *ngFor="let text of textList">
-                                <!--<span [ngStyle]="{'font-size': text.style.fontsize}">{{text.text}}</span>-->
+                            <div *ngFor="let text of textList" class="text-center pointer" (click)="insertText(text)">
                                 <span [ngStyle]="formatTextStyle(text)">{{text.text}}</span>
-<!--                                display: 'block',
-            fontsize: '2em',
-            margintop: '0.67em',
-            marginbottom: '0.67em',
-            marginleft: '0',
-            marginright: '0',
-            fontweight: 'bold',-->
                             </div>
                         </div>
                         <div *ngIf="showElementList" class="">
@@ -75,8 +59,8 @@
                         </div>
                         <div class="col-md-10 full_height">
                             <div class="col-md-12 max_height">
-                                <div class="col-md-11 full_height">
-                                    <div class="single_page" data-page_no="1">
+                                <div class="col-md-11 full_height" #design_wrapper>
+                                    <div class="single_page" data-page_no="1" (click)="elementFocused($event)">
                                         
                                     </div>
                                 </div>
