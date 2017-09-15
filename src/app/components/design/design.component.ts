@@ -4,11 +4,12 @@ import {Router, ActivatedRoute} from '@angular/router';
 import {DesignEditComponent} from './edit/design-edit.component';
 
 import {SharedService} from './../shared/service/shared.service';
-import {textList, formatTextStyle} from './../shared/data/texts';
+import {textList, displayText} from './../shared/data/texts';
 
 @Component({
     selector: 'canvas-design',
-    templateUrl: './design.component.html'
+    templateUrl: './design.component.html',
+    styleUrls: ['./design.component.css']
 })
 export class DesignComponent implements OnInit {
 
@@ -86,6 +87,7 @@ export class DesignComponent implements OnInit {
         this.design_id = this.generateId();
         this._sharedService.getStorageService().getLocal().store('activeDesignId', this.design_id);
         this._sharedService.getStorageService().getLocal().store('activeTemplateId', this._template_id);
+        this._sharedService.getStorageService().getLocal().clear('activeDesign');
 
         this._router.navigate(['/design', this.design_id, 'edit']);
     }
@@ -113,12 +115,8 @@ export class DesignComponent implements OnInit {
         }
     }
 
-    formatTextStyle(text) {
-        return formatTextStyle(text);
-    }
-    
     displayText(text) {
-        return text.element;
+        return displayText(text);
     }
 
     insertText(text) {

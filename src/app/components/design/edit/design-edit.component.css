@@ -1,0 +1,9 @@
+.page_no,
+.clone_page_btn {
+    color: #000000 !important;
+}
+.single_page {
+    background-color: #ffffff;
+    color: #000000 !important;
+    margin-bottom: 10px;
+}

@@ -1,17 +1,3 @@
-<style>
-/*    div {
-        border: 1px dotted black;
-    }*/
-    * {
-        color: #ffffff;
-    }
-    .nav li a:hover,
-    .focused {
-        background: #ffffff;
-        color: #000000 !important;
-    }
-</style>
-    
 <!-- BEGIN CONTAINER -->
 <div class="page-container">
     <div class="container-fluid">
@@ -26,8 +12,8 @@
                     <ul class="nav nav-pills nav-stacked" style="margin-top:15px;">
                         <li><a class="pointer" [ngClass]="showSearchBar ? 'focused' : ''" (click)="loadList('search')">Search</a></li>
                         <li><a class="pointer" [ngClass]="showLayoutList ? 'focused' : ''" (click)="loadList('layouts')">Layouts</a></li>
-                        <li><a class="pointer" [ngClass]="showTextList ? 'focused' : ''" (click)="loadList('elements')">Elements</a></li>
-                        <li><a class="pointer" [ngClass]="showElementList ? 'focused' : ''" (click)="loadList('text')">Text</a></li>
+                        <li><a class="pointer" [ngClass]="showElementList ? 'focused' : ''" (click)="loadList('elements')">Elements</a></li>
+                        <li><a class="pointer" [ngClass]="showTextList ? 'focused' : ''" (click)="loadList('text')">Text</a></li>
                         <li><a class="pointer" [ngClass]="showBackgroundList ? 'focused' : ''" (click)="loadList('background')">Background</a></li>
                         <li><a class="pointer" [ngClass]="showUploadList ? 'focused' : ''" (click)="loadList('uploads')">Uploads</a></li>
                     </ul>
@@ -42,9 +28,7 @@
                         </div>
                         <div *ngIf="showTextList" class="text-center" style="margin-top:15px; margin-bottom:15px; border:0;">
                             <div *ngFor="let text of textList" class="text-center pointer" (click)="insertText(text)" style="border:0;">
-                                <!--<span [ngStyle]="formatTextStyle(text)">{{text.text}}</span>-->
-                                
-                                {{displayText(text)}}
+                                <div class="checkFocus" [p3x-compile]="displayText(text)" [p3x-compile-ctx]="this"></div>
                             </div>
                         </div>
                         <div *ngIf="showElementList" class="text-center">

@@ -42,6 +42,10 @@ export class HomeComponent implements OnInit {
     //Angular Hooks
     ngOnInit() {
         this.templates = templateList;
+        
+        this._sharedService.getStorageService().getLocal().clear('activeDesignId');
+        this._sharedService.getStorageService().getLocal().clear('activeTemplateId');
+        this._sharedService.getStorageService().getLocal().clear('activeDesign');
     }
 
     //Custom Methods

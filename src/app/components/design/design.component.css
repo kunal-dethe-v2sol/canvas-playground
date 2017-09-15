@@ -1,0 +1,11 @@
+/*    div {
+        border: 1px dotted black;
+    }*/
+* {
+    color: #ffffff;
+}
+.nav li a:hover,
+.focused {
+    background: #ffffff;
+    color: #000000 !important;
+}

@@ -2,13 +2,14 @@ import {Component, OnInit, EventEmitter} from '@angular/core';
 import {Router, ActivatedRoute} from '@angular/router';
 
 import {SharedService} from './../../shared/service/shared.service';
-import {textList, formatTextStyle} from './../../shared/data/texts';
+import {textList, displayText} from './../../shared/data/texts';
 
 declare var $: any;
 
 @Component({
     selector: 'canvas-design-edit',
-    templateUrl: './design-edit.component.html'
+    templateUrl: './design-edit.component.html',
+    styleUrls: ['./design-edit.component.css']
 })
 export class DesignEditComponent implements OnInit {
 
@@ -38,15 +39,32 @@ export class DesignEditComponent implements OnInit {
 
     //Angular Hooks
     ngOnInit() {
-        this.design['pages'] = [
-            {
-                page_no: 1,
-                elements: []
-            }
-        ];
+        //Check if some design is already saved in the local storage
+        var savedDesign = this._sharedService.getStorageService().getLocal().retrieve('activeDesign');
+        if(savedDesign) {
+            this.design.last_page_no = savedDesign.last_page_no;
+            this.design.pages = savedDesign.pages;
+        } else {
+            this.design.last_page_no = 1;
+            this.design.pages = [
+                {
+                    page_no: 1,
+                    elements: []
+                }
+            ];
+            this.saveDesign();
+        }
     }
 
     //Custom Methods
+    saveDesign() {
+        var storageData = {
+            last_page_no: this.design.last_page_no,
+            pages: this.design.pages
+        };
+        this._sharedService.getStorageService().getLocal().store('activeDesign', storageData);
+    }
+    
     elementFocused($event) {
         var page_no = 
         page_no = $($event.target).attr('data-page_no');
@@ -69,97 +87,74 @@ export class DesignEditComponent implements OnInit {
         console.log('page_no', page_no);
         console.log('this._current_page_no', this._current_page_no);
     }
+
+    displayElement(element) {
+        var html = '';
+        
+        switch(element.type) {
+            case 'text':
+                html = displayText(element);
+                break;
+                
+            default:
+        }
+        
+        this.saveDesign();
+        return html;
+    }
     
-    clonePage0(page_no, empty = true) {
-        var current_page_element = $('.single_page_wrapper[data-page_no="' + page_no + '"]');
-
-        //Copy elements from cloned element to the this.design array
-        console.log("this.design['pages'][page_no]", this.design['pages'][page_no]);
-
-        page_no++
-        this.design['pages'][page_no -1] = [];
+    createEmptyPage() {
+        //console.log('this.design.last_page_no', this.design.last_page_no);
+        var max_page_no = this.design.last_page_no;
+        max_page_no++;
+        this.design['pages'][max_page_no - 1] = Object.assign({}, this.design['pages'][max_page_no - 1]);
+        this.design['pages'][max_page_no - 1].page_no = max_page_no;
+        this.design['pages'][max_page_no - 1].elements = [];
         
-        //Clone current page
-        var current_page_clone_element = $(current_page_element).clone();
-        
-        //Add attributes
-        $(current_page_clone_element).attr('data-page_no', page_no);
-        $(current_page_clone_element).find('.page_no').text(page_no);
-        $(current_page_clone_element).find('.copy_btn').attr('data-page_no', page_no);
-
-        //Event Listener
-        var that = this;
-        $(current_page_clone_element).on('click', function($event) {
-            that.elementFocused($event);
-        });
-        $(current_page_clone_element).find('.copy_btn').on('click', function() {
-            that.clonePage($(this).attr('data-page_no'));
-        });
-
-        //Append to the wrapper
-        $(current_page_clone_element).appendTo('#design_wrapper');
+        this.design.last_page_no++;
+        //console.log('this.design.last_page_no', this.design.last_page_no);
     }
     
     clonePage(page, empty = true) {
-        var page_no = page.page_no;
-        page_no++;
+        var clone_page_no = page.page_no;
+        var new_page_no = 0;
         
-        this.design['pages'][page_no - 1] = {
-            page_no: page_no,
-            elements: []
+        if(this.design.last_page_no == 1) {
+            //there is only one page in the design
+            //console.log('only one page');
+        } else if(clone_page_no != this.design.last_page_no) {
+            //if cloning page is not the last page, so inserting in-between the pages
+            //increment page_no by 1 for all further pages
+            //console.log('in-between pages');
+            for(var i = this.design.last_page_no; i > clone_page_no; i--) {
+                this.design['pages'][i] = this.design['pages'][i - 1];
+                this.design['pages'][i].page_no++;
+            }
+        } else {
+            //there are multiple pages and cloning the last page
+            //console.log('multiple pages');
         }
-        console.log('this.design', this.design);
-    }
-
-    formatTextStyle(text) {
-        return formatTextStyle(text);
+        
+        new_page_no = clone_page_no + 1;
+        this.design.last_page_no++;
+        
+        this.design['pages'][new_page_no - 1] = $.extend(true, {}, this.design['pages'][clone_page_no - 1]);
+        this.design['pages'][new_page_no - 1].page_no = new_page_no;
+        if(empty) {
+            this.design['pages'][new_page_no - 1].elements = [];
+        }
+        
+        console.log("this.design", this.design);
     }
 
     insertText(text) {
         //load a element in the current page.
-        console.log('this.design', this.design);
         console.log('this._current_page_no', this._current_page_no);
         
-        var current_page_element = $('.single_page_wrapper[data-page_no="' + this._current_page_no + '"] > .single_page');
         var current_page_no = this._current_page_no - 1;
-
-        var element = document.createElement('span');
-
-        var styles = {};
-        if (text.type == 'header') {
-            element.innerHTML = text.text;
-            styles = this.formatTextStyle(text);
-        }
-
-//        var attribute = document.createAttribute("(click)");       // Create a "class" at        tribute
-//        attribute.value = "elementFocused($event)";                           // Set the value of the class at        tribute
-//        element.setAttributeNode(attribut        e);   
-
-//        element.setAttribute("(click)", "elementFocused($event)");
-
-        var max_z_index = this.design['pages'][current_page_no].length;
-        styles['z-index'] = max_z_index++;
-
-        var styleString = JSON.stringify(styles, null, '\t')
-            .replace(/"/g, '')
-            .replace(/,\n/g, ';')
-            .replace(/\{/g, '')
-            .replace(/\}/g, ';')
-            .replace(/\s/g, '');
-        element.setAttribute('style', styleString);
-
-        $(element).addClass('checkFocus');
-
-        this.design['pages'][current_page_no].push(element);
-        current_page_element.append(element);
-        this.setElementLocation(element);
-
-        console.log('max_z_index', max_z_index);
-        console.log('styles', styles);
-        console.log('styleString', styleString);
-        console.log('element', element);
+        this.design['pages'][current_page_no].elements.push(text);
+        
         console.log('this.design', this.design);
-        //console.log(current_page_element);
     }
 
     setElementLocation(element) {
