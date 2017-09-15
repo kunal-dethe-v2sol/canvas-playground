@@ -1,85 +1,64 @@
 <style>
-    div {
+/*    div {
         border: 1px dotted black;
+    }*/
+    * {
+        color: #ffffff;
     }
-    .single_page {
-        background-color: azure;
-        margin-bottom: 10px;
+    .nav li a:hover,
+    .focused {
+        background: #ffffff;
+        color: #000000 !important;
     }
 </style>
     
 <!-- BEGIN CONTAINER -->
 <div class="page-container">
     <div class="container-fluid">
-        <div class="row" style="height:900px;">
-            <div class="col-md-12" style="height:50px;">
-                Long Horizontal Header
+        <div class="row" style="height:950px;">
+            <div class="col-md-12" style="height:60px; background-color: #00c4cc;">
+                <div class="row col-md-3" style="font-size:30px; font-weight:bold; line-height:60px;">Canvas Playground</div>
+                <div class="row col-md-9"></div>
             </div>
             
-            <div class="col-md-12 full_height">
-                <div class="col-md-1 max_height">
-                    <ul class="nav nav-pills nav-stacked">
-                        <li><a class="pointer" (click)="loadList('search')">Search</a></li>
-                        <li><a class="pointer" (click)="loadList('layouts')">Layouts</a></li>
-                        <li><a class="pointer" (click)="loadList('elements')">Elements</a></li>
-                        <li><a class="pointer" (click)="loadList('text')">Text</a></li>
-                        <li><a class="pointer" (click)="loadList('background')">Background</a></li>
-                        <li><a class="pointer" (click)="loadList('uploads')">Uploads</a></li>
+            <div class="row col-md-12 full_height">
+                <div class="col-md-1 max_height" style="background-color: #000000; margin-top:0px;">
+                    <ul class="nav nav-pills nav-stacked" style="margin-top:15px;">
+                        <li><a class="pointer" [ngClass]="showSearchBar ? 'focused' : ''" (click)="loadList('search')">Search</a></li>
+                        <li><a class="pointer" [ngClass]="showLayoutList ? 'focused' : ''" (click)="loadList('layouts')">Layouts</a></li>
+                        <li><a class="pointer" [ngClass]="showTextList ? 'focused' : ''" (click)="loadList('elements')">Elements</a></li>
+                        <li><a class="pointer" [ngClass]="showElementList ? 'focused' : ''" (click)="loadList('text')">Text</a></li>
+                        <li><a class="pointer" [ngClass]="showBackgroundList ? 'focused' : ''" (click)="loadList('background')">Background</a></li>
+                        <li><a class="pointer" [ngClass]="showUploadList ? 'focused' : ''" (click)="loadList('uploads')">Uploads</a></li>
                     </ul>
                 </div>
-                <div class="col-md-2 max_height">
-                    <div class="col-md-12">
-                        <div *ngIf="showLayoutList" class="">
+                <div class="col-md-2 max_height" style="background-color: #3f4652; margin-top:0px;">
+                    <div class="col-md-12" style="border:0; margin-top:15px;">
+                        <div *ngIf="showSearchBar" class="text-center">
+                            Search Bar
+                        </div>
+                        <div *ngIf="showLayoutList" class="text-center">
                             Layout List
                         </div>
-                        <div *ngIf="showTextList" class="">
-                            <div *ngFor="let text of textList" class="text-center pointer" (click)="insertText(text)">
-                                <span [ngStyle]="formatTextStyle(text)">{{text.text}}</span>
+                        <div *ngIf="showTextList" class="text-center" style="margin-top:15px; margin-bottom:15px; border:0;">
+                            <div *ngFor="let text of textList" class="text-center pointer" (click)="insertText(text)" style="border:0;">
+                                <!--<span [ngStyle]="formatTextStyle(text)">{{text.text}}</span>-->
+                                
+                                {{displayText(text)}}
                             </div>
                         </div>
-                        <div *ngIf="showElementList" class="">
+                        <div *ngIf="showElementList" class="text-center">
                             Element List
                         </div>
-                        <div *ngIf="showBackgroundList" class="">
+                        <div *ngIf="showBackgroundList" class="text-center">
                             Background List
                         </div>
-                        <div *ngIf="showUploadList" class="">
+                        <div *ngIf="showUploadList" class="text-center">
                             Upload your own image
                         </div>
                     </div>
                 </div>
-                <div class="col-md-9 max_height">
-                    <div class="col-md-12">
-                        Options Menu
-                    </div>
-                    
-                    <div class="col-md-12 max_height">
-                        <div class="col-md-1">
-                            Empty space
-                        </div>
-                        <div class="col-md-10 full_height">
-                            <div class="col-md-12 max_height">
-                                <div class="col-md-12 full_height" id="design_wrapper" #design_wrapper>
-                                    <div class="single_page_wrapper full_height" data-page_no="1">
-                                        <div class="col-md-11 max_height single_page"></div>
-                                        <div class="col-md-1 max_height single_page_options text-center">
-                                            <p class="page_no">1</p>
-                                            <br />
-                                            <br />
-                                            <a class="mdl-button mdl-js-button mdl-button--raised copy_btn" data-page_no="1">Copy</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-12 text-center">
-                                <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">+ Add a new page</button>
-                            </div>
-                        </div>
-                        <div class="col-md-1 full_height">
-                            Empty space
-                        </div>
-                    </div>
-                </div>
+                <canvas-design-edit></canvas-design-edit>
             </div>
         </div>
     </div>

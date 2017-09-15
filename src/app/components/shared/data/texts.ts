@@ -1,5 +1,20 @@
 export let textList = [
     {
+        uuid: 100,
+        element: '<h1>Header 1</h1>',
+        text: 'Header 1',
+        type: 'header',
+        style: {
+            display: 'block',
+            fontsize: '2em',
+            margintop: '0.67em',
+            marginbottom: '0.67em',
+            marginleft: '0',
+            marginright: '0',
+            fontweight: 'bold',
+        }
+    },
+    {
         uuid: 1,
         text: 'Header 1',
         type: 'header',
@@ -90,3 +105,15 @@ export let textList = [
         }
     }
 ];
+
+export let formatTextStyle = function (text) {
+    return {
+        'display': text.style.display,
+        'font-size': text.style.fontsize,
+        'margin-top': text.style.margintop,
+        'margin-bottom': text.style.marginbottom,
+        'margin-left': text.style.marginleft,
+        'margin-right': text.style.marginright,
+        'font-weight': text.style.fontweight
+    }
+}
