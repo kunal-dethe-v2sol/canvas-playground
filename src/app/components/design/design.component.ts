@@ -19,9 +19,26 @@ import { trigger, state, style, animate, transition } from '@angular/animations'
         ]),
         trigger('transparentState', [
                                 state('default', style({ opacity: 1 })),
-                                state('transparent', style({  opacity: 0.4 })),
-                                transition('rotated => default', animate('400ms ease-out')),
-                                transition('default => rotated', animate('400ms ease-in'))
+                                state('transparent', style({  opacity: 0.9 })),
+                                state('transparent1', style({  opacity: 0.8 })),
+                                state('transparent2', style({  opacity: 0.7 })),
+                                state('transparent3', style({  opacity: 0.6 })),
+                                state('transparent4', style({  opacity: 0.5 })),
+                                state('transparent5', style({  opacity: 0.4 })),
+                                state('transparent6', style({  opacity: 0.3 })),
+                                state('transparent7', style({  opacity: 0.2 })),
+                                state('transparent8', style({  opacity: 0.1 })),
+                                transition('default => transparent', animate('400ms ease-in')),
+                                transition('transparent => transparent1', animate('400ms ease-in')),
+                                transition('transparent1 => transparent2', animate('400ms ease-in')),
+                                transition('transparent2 => transparent3', animate('400ms ease-in')),
+                                transition('transparent3 => transparent4', animate('400ms ease-in')),
+                                transition('transparent4 => transparent5', animate('400ms ease-in')),
+                                transition('transparent5 => transparent6', animate('400ms ease-in')),
+                                transition('transparent6 => transparent7', animate('400ms ease-in')),
+                                transition('transparent7 => transparent8', animate('400ms ease-in')),
+                                transition('transparent8 => default', animate('400ms ease-out')),
+                                
         ])
     ]
 })
@@ -123,11 +140,58 @@ export class DesignComponent implements OnInit {
 
     state: string = 'default';
     transparent() {
-        this.state = (this.state === 'default' ? 'transparent' : 'default');
+        this.state = (this.toggleStates());
     }
 
     rotate() {
         this.state = (this.state === 'default' ? 'rotated' : 'default');
+    }
+
+    toggleStates() {
+        switch(this.state) {
+            case 'default':
+                this.state = 'transparent';
+                break;
+
+            case 'transparent':
+                this.state = 'transparent1';
+                break;
+
+            case 'transparent1':
+                this.state = 'transparent2';
+                break;
+
+            case 'transparent2':
+                this.state = 'transparent3';
+                break;
+
+            case 'transparent3':
+                this.state = 'transparent4';
+                break;
+            
+            case 'transparent4':
+                this.state = 'transparent5';
+                break;
+            
+            case 'transparent5':
+                this.state = 'transparent6';
+                break;
+            
+            case 'transparent6':
+                this.state = 'transparent7';
+                break;
+            
+            case 'transparent7':
+                this.state = 'transparent8';
+                break;
+
+            case 'transparent8':
+                this.state = 'default';
+                break;
+
+            default:
+        }
+        return this.state;
     }
 
 }
