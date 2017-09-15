@@ -16,6 +16,12 @@ import { trigger, state, style, animate, transition } from '@angular/animations'
                                 state('rotated', style({ transform: 'rotate(-180deg)' })),
                                 transition('rotated => default', animate('400ms ease-out')),
                                 transition('default => rotated', animate('400ms ease-in'))
+        ]),
+        trigger('transparentState', [
+                                state('default', style({ opacity: 1 })),
+                                state('transparent', style({  opacity: 0.4 })),
+                                transition('rotated => default', animate('400ms ease-out')),
+                                transition('default => rotated', animate('400ms ease-in'))
         ])
     ]
 })
@@ -116,6 +122,9 @@ export class DesignComponent implements OnInit {
     }
 
     state: string = 'default';
+    transparent() {
+        this.state = (this.state === 'default' ? 'transparent' : 'default');
+    }
 
     rotate() {
         this.state = (this.state === 'default' ? 'rotated' : 'default');

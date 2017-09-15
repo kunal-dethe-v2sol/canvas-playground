@@ -51,7 +51,7 @@
                         <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">Spacing</button>
                         <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">Copy</button>
                         <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">Arrange</button>
-                        <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">Transparency</button>
+                        <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" (click)="transparent()">Transparency</button>
                         <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">Link</button>
                         <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">Delete</button>
                     </div>
@@ -74,7 +74,7 @@
                                         <br>
                                         <span *ngIf="show1==true" class="result rounded"  >
                                             <!--*ngIf="data.image"-->
-                                            <img [src]="data.image" [width]="cropperSettings.croppedWidth" [height]="cropperSettings.croppedHeight" [@rotatedState]='state'>
+                                            <img [src]="data.image" [width]="cropperSettings.croppedWidth" [height]="cropperSettings.croppedHeight" [@rotatedState]='state' [@transparentState]='state'>
                                         </span>
                                     </div>
                                 </div>
