@@ -1,4 +1,4 @@
-import {Component, OnInit, EventEmitter} from '@angular/core';
+import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {Router, ActivatedRoute} from '@angular/router';
 
 import {SharedService} from './../../shared/service/shared.service';
@@ -9,7 +9,8 @@ declare var $: any;
 @Component({
     selector: 'canvas-design-edit',
     templateUrl: './design-edit.component.html',
-    styleUrls: ['./design-edit.component.css']
+    styleUrls: ['./design-edit.component.css'],
+    encapsulation: ViewEncapsulation.None,
 })
 export class DesignEditComponent implements OnInit {
 
@@ -65,27 +66,13 @@ export class DesignEditComponent implements OnInit {
         this._sharedService.getStorageService().getLocal().store('activeDesign', storageData);
     }
     
-    elementFocused($event) {
-        var page_no = 
-        page_no = $($event.target).attr('data-page_no');
-        if(page_no) {
-            page_no = $($event.target).parent().attr('data-page_no');
-        }
-        
-        this.selected_element = $event.target;
-        if ($(this.selected_element).hasClass('single_page_wrapper')) {
-            console.log('wrapper');
-            page_no = $(this.selected_element).attr('data-page_no');
-        } else if ($(this.selected_element).hasClass('single_page') || $(this.selected_element).hasClass('single_page_options')) {
-            console.log('page');
-            page_no = $(this.selected_element).parent().attr('data-page_no');
-        }
-
-        if(page_no) {
-            this._current_page_no = page_no;
-        }
-        console.log('page_no', page_no);
-        console.log('this._current_page_no', this._current_page_no);
+    elementFocused(page_no) {
+        this._current_page_no = page_no;
+        //console.log('scrolled to page_no', this._current_page_no);
+    }
+    
+    getCurrentPage() {
+        return this._current_page_no;
     }
 
     displayElement(element) {

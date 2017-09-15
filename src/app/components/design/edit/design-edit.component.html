@@ -7,13 +7,14 @@
         <div class="col-md-1 text-center full_height">
             <!--Empty space-->
             <div class="text-center black">Total Pages: {{design.last_page_no}}</div>
+            <div class="text-center black">Current Page: {{getCurrentPage()}}</div>
         </div>
         <div class="col-md-10 full_height">
             <div class="col-md-12 max_height">
-                <div class="col-md-12 full_height">
-                    <div *ngFor="let page of design.pages" class="single_page_wrapper full_height">
+                <div class="col-md-12 full_height" #single_page_wrapper>
+                    <div *ngFor="let page of design.pages" class="single_page_wrapper full_height" in-viewport [inViewportOptions]="{rootElement:single_page_wrapper, partial:false}" (inViewportAction)="elementFocused(page.page_no)">
                         <div class="col-md-11 max_height single_page">
-                            <div *ngFor="let element of page.elements" class="">
+                            <div *ngFor="let element of page.elements">
                                 <div class="checkFocus" [p3x-compile]="displayElement(element)" [p3x-compile-ctx]="this"></div>
                             </div>
                         </div>
