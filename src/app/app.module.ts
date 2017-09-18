@@ -37,7 +37,7 @@ import {SharedCanActivateAuthService} from './components/shared/service/shared-c
     imports: [
         BrowserModule,
         Ng2Webstorage,
-        Ng2Webstorage.forRoot({prefix: 'linkcxo', separator: '.', caseSensitive: true}),
+        Ng2Webstorage.forRoot({prefix: 'canvas', separator: '.', caseSensitive: true}),
         BrowserAnimationsModule,
         ToasterModule,
         FormsModule,

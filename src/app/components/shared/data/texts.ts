@@ -2,57 +2,123 @@ export let textList = [
     {
         uuid: 1,
         type: 'text',
-        html: '<h1>Header 1</h1>'
+        text: 'Header 1',
+        style: {
+            'display': 'block',
+            'font-size': '2em',
+            'margin-top': '0.67em',
+            'margin-bottom': '0.67em',
+            'margin-left': '0',
+            'margin-right': '0',
+            'font-weight': 'bold',
+        }
     },
     {
         uuid: 2,
         type: 'text',
-        html: '<h2>Header 2</h2>'
+        text: 'Header 2',
+        style: {
+            'display': 'block',
+            'font-size': '1.5em',
+            'margin-top': '0.83em',
+            'margin-bottom': '0.83em',
+            'margin-left': '0',
+            'margin-right': '0',
+            'font-weight': 'bold',
+        }
     },
     {
         uuid: 3,
         type: 'text',
-        html: '<h3>Header 3</h3>'
+        text: 'Header 3',
+        style: {
+            'display': 'block',
+            'font-size': '1.17em',
+            'margin-top': '1em',
+            'margin-bottom': '1em',
+            'margin-left': '0',
+            'margin-right': '0',
+            'font-weight': 'bold',
+        }
     },
     {
         uuid: 4,
         type: 'text',
-        html: '<h4>Header 4</h4>'
+        text: 'Header 4',
+        style: {
+            'display': 'block',
+            'font-size': '1em',
+            'margin-top': '1.33em',
+            'margin-bottom': '1.33em',
+            'margin-left': '0',
+            'margin-right': '0',
+            'font-weight': 'bold',
+        }
     },
     {
         uuid: 5,
         type: 'text',
-        html: '<h5>Header 5</h5>'
+        text: 'Header 5',
+        style: {
+            'display': 'block',
+            'font-size': '.83em',
+            'margin-top': '1.67em',
+            'margin-bottom': '1.67em',
+            'margin-left': '0',
+            'margin-right': '0',
+            'font-weight': 'bold',
+        }
     },
     {
         uuid: 6,
         type: 'text',
-        html: '<h6>Header 6</h6>'
-    },
-    {
-        uuid: 100,
-        type: 'text',
-        html: '<h1>Header 1</h1><h2>and 2 together</h2>'
-    },
-    {
-        uuid: 101,
-        type: 'text',
-        html: '<div>Some text in a div</div>'
+        text: 'Header 6',
+        style: {
+            'display': 'block',
+            'font-size': '.67em',
+            'margin-top': '2.33em',
+            'margin-bottom': '2.33em',
+            'margin-left': '0',
+            'margin-right': '0',
+            'font-weight': 'bold',
+        }
     }
 ];
 
+console.log('textList', textList);
+
 export let formatTextStyle = function (text) {
-    return {
-        'display': text.style.display,
-        'font-size': text.style.fontsize,
-        'margin-top': text.style.margintop,
-        'margin-bottom': text.style.marginbottom,
-        'margin-left': text.style.marginleft,
-        'margin-right': text.style.marginright,
-        'font-weight': text.style.fontweight
-    }
+    console.log('in formatTextStyle');
+    console.log('text', text);
+    console.log('text.style', text.style);
+    console.log('Object.keys(text.style)', Object.keys(text.style));
+    var style = Object.keys(text.style).map(key => text.style[key]);
+   
+    for(var i in text.style) {
+         console.log(i + "=" + text.style[i]);
+    } 
+   
+    console.log('style 0', style);
+//    console.log('JSON.stringify(text.style)', JSON.stringify(text.style));
+//    console.log('typeof JSON.stringify(text.style)', typeof JSON.stringify(text.style));
+//    console.log('JSON.stringify(text.style)', JSON.stringify(text.style).replace(/-/g, '-').replace(/,/g, ';'));
+    var styleString = JSON.stringify(text.style, null)
+            .replace(/"/g, '')
+            .replace(/,/g, ';')
+            .replace(/\{/g, '')
+            .replace(/\}/g, ';')
+            .replace(/\s/g, '');
+            
+    var styleString = JSON.stringify(text.style,function(key, value){
+            return (typeof value === 'function' ) ? value.toString() : value;
+        }); 
+//    console.log('styleString', styleString);
+    return styleString;
 }
 
 export let displayText = function (text) {
-    return text.html;
+    console.log('in displayText');
+    var style = formatTextStyle(text);
+    //console.log('style', style);
+    return '<div style="'+style+'">'+text.text+'</div>';
 }

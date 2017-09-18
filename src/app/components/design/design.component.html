@@ -3,8 +3,19 @@
     <div class="container-fluid">
         <div class="row" style="height:950px;">
             <div class="col-md-12" style="height:60px; background-color: #00c4cc;">
-                <div class="row col-md-3" style="font-size:30px; font-weight:bold; line-height:60px;">Canvas Playground</div>
-                <div class="row col-md-9"></div>
+                <div class="row col-md-3" style="font-size:30px; font-weight:bold; line-height:60px;">
+                    <a routerLink="/home">Canvas Playground</a>
+                </div>
+                <div class="row col-md-9" style="margin-top: 10px;">
+                    <div class="form-group">
+                        <div class="col-md-1 text-right" style="margin-top: 10px;">
+                            <label class="">Header:</label>
+                        </div>
+                        <div class="col-md-6">
+                            <input class="form-control black" type="text" maxlength="100" [(ngModel)]="design_header_text" (keyup)="updateDesignHeader($event)" placeholder="Enter the design header here" />
+                        </div>
+                    </div>
+                </div>
             </div>
             
             <div class="row col-md-12 full_height">

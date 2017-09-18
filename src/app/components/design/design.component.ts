@@ -15,10 +15,13 @@ export class DesignComponent implements OnInit {
 
     //Variables
     @ViewChild(DesignEditComponent)
-    private childComponent: DesignEditComponent;
+    private designEditComponent: DesignEditComponent;
     
     private _action: any = '';
     private _template_id: any = '';
+    private _design_id: any = '';
+
+    public loggedInUserData;
 
     public textList = textList;
     public showSearchBar = false;
@@ -30,6 +33,7 @@ export class DesignComponent implements OnInit {
 
     public design_id: any = '';
     public design: any = [];
+    public design_header_text = '';
     public selected_element: any;
 
     //Constructor parameters
@@ -46,6 +50,8 @@ export class DesignComponent implements OnInit {
         private _router,
         private _activatedRoute,
         private _sharedService) {
+
+        this.loggedInUserData = this._sharedService.getLoggedInUserData();
 
         if (this._activatedRoute.snapshot.url[0].path == 'design') {
             //on load of the design edit route.
@@ -68,8 +74,24 @@ export class DesignComponent implements OnInit {
                 }
             });
 
-        if (!this._template_id) {
-            this._template_id = this._sharedService.getStorageService().getLocal().retrieve('activeTemplateId');
+        //When existing deisgn is loaded.
+        this._activatedRoute.params.subscribe(
+            params => {
+                this._design_id = params['design_id'];
+            }
+        );    
+
+        if (this._design_id) {
+            var designExists = this._sharedService.getStorageService().getLocal().retrieve('design.' + this.loggedInUserData.uuid + '.' + this._design_id);
+            if(designExists) {
+                console.log('from storage', designExists);
+                console.log('header from storage', designExists.header_text);
+                this.design_header_text = designExists.header_text;
+                this._sharedService.getStorageService().getLocal().store('activeDesignId', this._design_id);
+            } else {
+                this._sharedService.getStorageService().getLocal().store('activeDesignId', this._design_id);
+                this._sharedService.getStorageService().getLocal().store('design.' + this.loggedInUserData.uuid + '.' + this._design_id, []);
+            }
         }
     }
 
@@ -86,7 +108,6 @@ export class DesignComponent implements OnInit {
     createDesign() {
         this.design_id = this.generateId();
         this._sharedService.getStorageService().getLocal().store('activeDesignId', this.design_id);
-        this._sharedService.getStorageService().getLocal().store('activeTemplateId', this._template_id);
         this._sharedService.getStorageService().getLocal().clear('activeDesign');
 
         this._router.navigate(['/design', this.design_id, 'edit']);
@@ -115,11 +136,25 @@ export class DesignComponent implements OnInit {
         }
     }
 
+    updateDesignHeader($event) {
+        var savedDesign = this._sharedService.getStorageService().getLocal().retrieve('design.' + this.loggedInUserData.uuid + '.' + this._design_id);
+        if(savedDesign) {
+            savedDesign.header_text = $event.target.value;
+            var storageData = {
+                header_text: savedDesign.header_text,
+                last_page_no: savedDesign.last_page_no,
+                pages: savedDesign.pages
+            };
+            this._sharedService.getStorageService().getLocal().store('design.' + this.loggedInUserData.uuid + '.' + this._design_id, storageData);
+        }
+    }
+
     displayText(text) {
+        console.log('displayText text', text);
         return displayText(text);
     }
 
     insertText(text) {
-        this.childComponent.insertText(text);
+        this.designEditComponent.insertText(text);
     }
 }

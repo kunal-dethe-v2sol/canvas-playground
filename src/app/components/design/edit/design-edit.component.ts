@@ -15,11 +15,14 @@ declare var $: any;
 export class DesignEditComponent implements OnInit {
 
     //Variables
+    private _design_id: any = '';
+    
+    public loggedInUserData;
     public _current_page_no = 1;
 
     public design: any = [];
     public selected_element: any;
-
+    
     //Constructor parameters
     static get parameters() {
         return [
@@ -35,17 +38,19 @@ export class DesignEditComponent implements OnInit {
         private _activatedRoute,
         private _sharedService) {
 
-        
+        this.loggedInUserData = this._sharedService.getLoggedInUserData();
     }
 
     //Angular Hooks
     ngOnInit() {
+        this._design_id = this._sharedService.getStorageService().getLocal().retrieve('activeDesignId');
+        
         //Check if some design is already saved in the local storage
-        var savedDesign = this._sharedService.getStorageService().getLocal().retrieve('activeDesign');
+        var savedDesign = this._sharedService.getStorageService().getLocal().retrieve('design.' + this.loggedInUserData.uuid + '.' + this._design_id);
         if(savedDesign) {
-            this.design.last_page_no = savedDesign.last_page_no;
-            this.design.pages = savedDesign.pages;
+            this.design = savedDesign;
         } else {
+            this.design.header_text = '';
             this.design.last_page_no = 1;
             this.design.pages = [
                 {
@@ -60,10 +65,11 @@ export class DesignEditComponent implements OnInit {
     //Custom Methods
     saveDesign() {
         var storageData = {
+            header_text: this.design.header_text,
             last_page_no: this.design.last_page_no,
             pages: this.design.pages
         };
-        this._sharedService.getStorageService().getLocal().store('activeDesign', storageData);
+        this._sharedService.getStorageService().getLocal().store('design.' + this.loggedInUserData.uuid + '.' + this._design_id, storageData);
     }
     
     elementFocused(page_no) {
@@ -80,6 +86,7 @@ export class DesignEditComponent implements OnInit {
         
         switch(element.type) {
             case 'text':
+                console.log('element.type', element.type);
                 html = displayText(element);
                 break;
                 
@@ -100,6 +107,8 @@ export class DesignEditComponent implements OnInit {
         
         this.design.last_page_no++;
         //console.log('this.design.last_page_no', this.design.last_page_no);
+        
+        this.saveDesign();
     }
     
     clonePage(page, empty = true) {
@@ -132,6 +141,8 @@ export class DesignEditComponent implements OnInit {
         }
         
         console.log("this.design", this.design);
+        
+        this.saveDesign();
     }
 
     insertText(text) {

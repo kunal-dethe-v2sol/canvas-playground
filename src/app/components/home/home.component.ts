@@ -13,6 +13,7 @@ export class HomeComponent implements OnInit {
     //Variables
     public loggedInUserData;
     public templates;
+    public designs;
     public show_my_designs = true;
 
     //Constructor parameters
@@ -44,13 +45,35 @@ export class HomeComponent implements OnInit {
         this.templates = templateList;
         
         this._sharedService.getStorageService().getLocal().clear('activeDesignId');
-        this._sharedService.getStorageService().getLocal().clear('activeTemplateId');
-        this._sharedService.getStorageService().getLocal().clear('activeDesign');
+        
+        this.loadMyDesigns();
     }
 
     //Custom Methods
-    loadTemplate(template) {
+    editTemplate(template) {
         this._router.navigate(['/design'], {queryParams: {action: 'create', template: template.uuid}});
+    }
+    
+    loadMyDesigns() {
+        this.designs = [];
+        var localStorage = window.localStorage;
+        for (var i = 0; i < localStorage.length; i++){
+            if (localStorage.key(i).substring(0, 50) == 'canvas.design.' + this.loggedInUserData.uuid) {
+                var design = localStorage.key(i).split('.');
+                //console.log('design', design);
+                var value = JSON.parse(localStorage.getItem(localStorage.key(i)));
+                var designData = {
+                    id: design[3],
+                    header_text: value.header_text
+                };
+                this.designs.push(designData);
+            }
+        }
+        //console.log('this.designs', this.designs);
+    }
+    
+    editMyDesign(design) {
+        this._router.navigate(['/design', design.id, 'edit']);
     }
 
     logout() {
