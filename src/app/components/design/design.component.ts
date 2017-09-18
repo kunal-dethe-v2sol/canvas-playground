@@ -51,6 +51,7 @@ export class DesignComponent implements OnInit {
     public show = false;
     public show1 = false;
     public show2 = false;
+    public imageStyle;
 
     data: any;
 
@@ -145,6 +146,14 @@ export class DesignComponent implements OnInit {
 
     rotate() {
         this.state = (this.state === 'default' ? 'rotated' : 'default');
+    }
+
+    filter() {
+        var grayscale = {
+             "-webkit-filter": "grayscale(100%)",
+             "filter": "grayscale(100%)",
+        }
+        this.imageStyle = grayscale;
     }
 
     toggleStates() {
