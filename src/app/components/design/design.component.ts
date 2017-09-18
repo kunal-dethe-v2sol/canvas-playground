@@ -51,6 +51,11 @@ export class DesignComponent implements OnInit {
     public show = false;
     public show1 = false;
     public show2 = false;
+    public show3 = false;
+    public show4 = false;
+    public show5 = false;
+    public show6 = false;
+    public show7 = false;
     public imageStyle;
     public state: string = 'default';
     public data: any;
@@ -107,6 +112,24 @@ export class DesignComponent implements OnInit {
     }
     showdiv2(): void {
         this.show2 = !this.show2;
+    }
+    showfilterdiv(value): void {
+        //this.show3 = !this.show3;
+        if(value == this.brightness){
+            this.show3 = !this.show3;
+        }
+        else if(value == this.contrast){
+            this.show4 = !this.show4;
+        }
+        else if(value == this.saturate){
+            this.show5 = !this.show5;
+        }
+        else if(value == this.grayscale){
+            this.show6 = !this.show6;
+        }
+        else if(value == this.blur){
+            this.show7 = !this.show7;
+        }
     }
 
     //Custom Methods
