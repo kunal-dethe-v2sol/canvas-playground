@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule }   from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { DesignRoutes } from './design.routes';
@@ -14,6 +15,7 @@ import { ImageCropperComponent } from 'ng2-img-cropper';
     ],
     imports: [
         CommonModule,
+        FormsModule,
         DesignRoutes
     ],
     schemas: [

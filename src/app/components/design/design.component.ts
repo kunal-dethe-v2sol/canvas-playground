@@ -52,8 +52,8 @@ export class DesignComponent implements OnInit {
     public show1 = false;
     public show2 = false;
     public imageStyle;
-
-    data: any;
+    public state: string = 'default';
+    public data: any;
 
     @ViewChild('cropper', undefined)
     cropper: ImageCropperComponent;
@@ -138,22 +138,13 @@ export class DesignComponent implements OnInit {
         };
         myReader.readAsDataURL(file);
     }
-
-    state: string = 'default';
-    transparent() {
-        this.state = (this.toggleStates());
-    }
-
+    
     rotate() {
         this.state = (this.state === 'default' ? 'rotated' : 'default');
     }
 
-    filter() {
-        var grayscale = {
-             "-webkit-filter": "grayscale(100%)",
-             "filter": "grayscale(100%)",
-        }
-        this.imageStyle = grayscale;
+    transparent() {
+        this.state = (this.toggleStates());
     }
 
     toggleStates() {
@@ -201,6 +192,47 @@ export class DesignComponent implements OnInit {
             default:
         }
         return this.state;
+    }
+
+    brightness(value) {
+        var brightness = {
+            "-webkit-filter": "brightness(" + value + "%)",
+            "filter": "brightness(" + value + "%)",
+        }
+        this.imageStyle = brightness;
+    }
+
+    contrast(value) {
+        var contrast = {
+            "-webkit-filter": "contrast(" + value + "%)",
+            "filter": "contrast(" + value + "%)",
+        }
+        this.imageStyle = contrast;
+    }
+
+    saturate(value) {
+        var saturate = {
+            "-webkit-filter": "saturate(" + value + "%)",
+            "filter": "saturate(" + value + "%)",
+        }
+        this.imageStyle = saturate;
+    }
+
+    grayscale(value) {
+        //console.log('value', value);
+        var grayscale = {
+            "-webkit-filter": "grayscale(" + value + "%)",
+            "filter": "grayscale(" + value + "%)",
+        }
+        this.imageStyle = grayscale;
+    }
+
+    blur(value) {
+        var blur = {
+             "-webkit-filter":  "blur(" + value + "px)",
+             "filter": "blur(" + value + "px)",
+        }
+        this.imageStyle = blur;
     }
 
 }
