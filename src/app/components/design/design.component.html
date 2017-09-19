@@ -1,0 +1,73 @@
+<div class="page-container">
+    <div class="container-fluid">
+        <div class="row" style="height:950px;">
+            <div class="col-md-12" style="height:60px; background-color: #00c4cc;">
+                <div class="row col-md-3" style="font-size:30px; font-weight:bold; line-height:60px;">
+                    <a routerLink="/home">Canvas Playground</a>
+                </div>
+                <div class="row col-md-9" style="margin-top: 10px;">
+                    <div class="form-group">
+                        <div class="col-md-1 text-right" style="margin-top: 10px;">
+                            <label class="">Header:</label>
+                        </div>
+                        <div class="col-md-6">
+                            <input class="form-control black" type="text" maxlength="100" [(ngModel)]="design_header_text" (keyup)="updateDesignHeader($event)" placeholder="Enter the design header here" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row col-md-12 full_height">
+                <div class="col-md-1 max_height" style="background-color: #000000; margin-top:0px;">
+                    <ul class="nav nav-pills nav-stacked" style="margin-top:15px;">
+                        <li><a class="pointer" [ngClass]="showSearchBar ? 'focused' : ''" (click)="loadList('search')">Search</a></li>
+                        <li><a class="pointer" [ngClass]="showLayoutList ? 'focused' : ''" (click)="loadList('layouts')">Layouts</a></li>
+                        <li><a class="pointer" [ngClass]="showElementList ? 'focused' : ''" (click)="loadList('elements')">Elements</a></li>
+                        <li><a class="pointer" [ngClass]="showTextList ? 'focused' : ''" (click)="loadList('text')">Text</a></li>
+                        <li><a class="pointer" [ngClass]="showBackgroundList ? 'focused' : ''" (click)="loadList('background')">Background</a></li>
+                        <li><a class="pointer" [ngClass]="showUploadList ? 'focused' : ''" (click)="loadList('uploads')">Uploads</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-2 max_height" style="background-color: #3f4652; margin-top:0px;">
+                    <div class="col-md-12" style="border:0; margin-top:15px;">
+                        <div *ngIf="showSearchBar" class="text-center">
+                            Search Bar
+                        </div>
+                        <div *ngIf="showLayoutList" class="text-center">
+                            Layout List
+                        </div>
+                        <div *ngIf="showTextList" class="text-center" style="margin-top:15px; margin-bottom:15px; border:0;">
+                            <div *ngFor="let text of textList" class="text-center pointer" (click)="insertText(text)" style="border:0;">
+                                <div class="checkFocus" [p3x-compile]="displayText(text)" [p3x-compile-ctx]="this"></div>
+                            </div>
+                        </div>
+                        <div *ngIf="showElementList" class="text-center">
+                            <h2>Element List</h2>
+                            <div *ngIf="showElementList" class="text-center">
+                                <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" (click)="loadList('elements','image')">Image List</button>
+                                <div *ngIf="showImageList" class="text-center" >
+                                    <div  *ngFor="let image of imageList" (click)="insertImage(image)">
+                                        <div   [p3x-compile]="displayImage(image)" [p3x-compile-ctx]="this" ></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div *ngIf="showElementList" class="text-center">
+                                <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" (click)="loadList('elements','shape')">Shape List</button>
+                                <div *ngIf="showShapeList" class="text-center">
+                                    Shapes
+                                </div>
+                            </div>
+                        </div>
+                        <div *ngIf="showBackgroundList" class="text-center">
+                            Background List
+                        </div>
+                        <div *ngIf="showUploadList" class="text-center">
+                            Upload your own image
+                        </div>
+                    </div>
+                </div>
+                <canvas-design-edit></canvas-design-edit>
+            </div>
+        </div>
+    </div>
+</div>

@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {Router, ActivatedRoute} from '@angular/router';
 
 import {SharedService} from './../shared/service/shared.service';
+import {templateList} from './../shared/data/templates';
 
 @Component({
     selector: 'canvas-home',
@@ -12,6 +13,7 @@ export class HomeComponent implements OnInit {
     //Variables
     public loggedInUserData;
     public templates;
+    public designs;
     public show_my_designs = true;
 
     //Constructor parameters
@@ -40,43 +42,38 @@ export class HomeComponent implements OnInit {
 
     //Angular Hooks
     ngOnInit() {
-        this.templates = [
-            {
-                uuid: '1',
-                img: '',
-                title: 'Presentation',
-                size: '1024 x 768 px'
-            },
-            {
-                uuid: '2',
-                img: '',
-                title: 'Desktop Wallpaper',
-                size: '1024 x 768 px'
-            },
-            {
-                uuid: '3',
-                img: '',
-                title: 'Social Media',
-                size: '1024 x 768 px'
-            },
-            {
-                uuid: '4',
-                img: '',
-                title: 'Poster',
-                size: '1024 x 768 px'
-            },
-            {
-                uuid: '5',
-                img: '',
-                title: 'Graphic Blog',
-                size: '1024 x 768 px'
-            }
-        ];
+        this.templates = templateList;
+        
+        this._sharedService.getStorageService().getLocal().clear('activeDesignId');
+        
+        this.loadMyDesigns();
     }
 
     //Custom Methods
-    loadTemplate(template) {
-        this._router.navigate(['/design'], {queryParams: {action: 'create', type: template.uuid}});
+    editTemplate(template) {
+        this._router.navigate(['/design'], {queryParams: {action: 'create', template: template.uuid}});
+    }
+    
+    loadMyDesigns() {
+        this.designs = [];
+        var localStorage = window.localStorage;
+        for (var i = 0; i < localStorage.length; i++){
+            if (localStorage.key(i).substring(0, 50) == 'canvas.design.' + this.loggedInUserData.uuid) {
+                var design = localStorage.key(i).split('.');
+                //console.log('design', design);
+                var value = JSON.parse(localStorage.getItem(localStorage.key(i)));
+                var designData = {
+                    id: design[3],
+                    header_text: value.header_text
+                };
+                this.designs.push(designData);
+            }
+        }
+        //console.log('this.designs', this.designs);
+    }
+    
+    editMyDesign(design) {
+        this._router.navigate(['/design', design.id, 'edit']);
     }
 
     logout() {

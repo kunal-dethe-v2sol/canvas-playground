@@ -1,1 +1,19 @@
 /* You can add global styles to this file, and also import other style files */
+.full_height {
+    height: 100%;
+    overflow: auto;
+}
+.max_height {
+    height: 90%;
+    overflow: auto;
+    margin-top: 15px;
+}
+.pointer {
+    cursor: pointer;
+}
+.checkFocus:hover {
+    border: 1px dashed rgba(0,0,0,.5);
+}
+.black {
+    color: #000000 !important;
+}

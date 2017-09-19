@@ -1,0 +1,59 @@
+<div class="col-md-9 max_height" style="background-color: #ebeced; margin-top:0px;">
+    <div class="col-md-12">
+        <!--Options Menu-->
+        <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" (click)="showfilter()">Filter</button>
+        <div *ngIf="show3==true" style="width:300px">
+            Brightness
+            <input class="mdl-slider mdl-js-slider" type="range" min="0" max="100" tabindex="0" step="5" [(ngModel)]="currentValue1" (input)="brightness(currentValue1)">
+        </div>
+        <div *ngIf="show3==true" style="width:300px">
+            Contrast
+            <input class="mdl-slider mdl-js-slider" type="range" min="0" max="100" tabindex="0" step="5" [(ngModel)]="currentValue2" (input)="contrast(currentValue2)">
+        </div>
+        <div *ngIf="show3==true" style="width:300px">
+            Saturation
+            <input class="mdl-slider mdl-js-slider" type="range" min="0" max="100" tabindex="0" step="5" [(ngModel)]="currentValue3" (input)="saturate(currentValue3)">
+        </div>
+        <div *ngIf="show3==true" style="width:300px">
+            Grey Scale
+            <input class="mdl-slider mdl-js-slider" type="range" min="0" max="100" tabindex="0" step="5" [(ngModel)]="currentValue4" (input)="grayscale(currentValue4)">
+        </div>
+        <div *ngIf="show3==true" style="width:300px">
+            Blur
+            <input class="mdl-slider mdl-js-slider" type="range" min="0" max="100" tabindex="0" step="0.1" [(ngModel)]="currentValue5" (input)="blur(currentValue5)">
+        </div>
+    </div>
+
+    <div class="col-md-12 max_height">
+        <div class="col-md-1 text-center full_height">
+            <!--Empty space-->
+            <div class="text-center black">Total Pages: {{design.last_page_no}}</div>
+            <div class="text-center black">Cur. Page: {{getCurrentPage()}}</div>
+        </div>
+        <div class="col-md-10 full_height">
+            <div class="col-md-12 max_height">
+                <div class="col-md-12 full_height" #single_page_wrapper>
+                    <div *ngFor="let page of design.pages" class="single_page_wrapper full_height" in-viewport [inViewportOptions]="{rootElement:single_page_wrapper, partial:false}" (inViewportAction)="elementFocused(page.page_no)">
+                        <div class="col-md-11 max_height single_page">
+                            <div *ngFor="let element of page.elements">
+                                <div class="checkFocus" [p3x-compile]="displayElement(element)" [p3x-compile-ctx]="this" ></div>
+                            </div>
+                        </div>
+                        <div class="col-md-1 max_height single_page_options text-center">
+                            <p class="page_no">{{page.page_no}}</p>
+                            <br />
+                            <br />
+                            <a class="mdl-button mdl-js-button mdl-button--raised clone_page_btn" (click)="clonePage(page, false)">Copy</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 text-center">
+                <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" (click)="createEmptyPage()">+ Add a new page</button>
+            </div>
+        </div>
+        <div class="col-md-1 text-center full_height">
+            <!--Empty space-->
+        </div>
+    </div>
+</div>
