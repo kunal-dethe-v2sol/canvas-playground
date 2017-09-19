@@ -218,9 +218,17 @@ export class DesignEditComponent implements OnInit {
 
     blur(value) {
         var blur = {
-             "-webkit-filter":  "blur(" + value + "px)",
-             "filter": "blur(" + value + "px)",
+             "-webkit-filter":  "blur(" + 5 + "px)",
+             "filter": "blur(" + 5 + "px)",
         }
         this.imageStyle = blur;
+        var blur_dis = {
+             "-webkit-filter":  "blur(" + 0 + "px)",
+             "filter": "blur(" + 0 + "px)",
+        }
+        if(value < 10){
+            this.imageStyle = blur_dis;
+        }
+        
     }
 }
