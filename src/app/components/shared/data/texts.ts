@@ -118,7 +118,8 @@ export let formatTextStyle = function (text) {
 
 export let displayText = function (text) {
     console.log('in displayText');
-    var style = formatTextStyle(text);
+    //var style = formatTextStyle(text);
     //console.log('style', style);
-    return '<div style="'+style+'">'+text.text+'</div>';
+    //return '<div style="'+style+'">'+text.text+'</div>';
+    return '<div style="">'+text.text+'</div>';
 }
