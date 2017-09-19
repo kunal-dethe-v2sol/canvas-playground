@@ -167,15 +167,12 @@ export class DesignEditComponent implements OnInit {
         console.log('this.design', this.design);
     }
 
-
     insertImage(image) {
         //console.log('image:', image);
         //load a element in the current page.
         //console.log('this._current_page_no', this._current_page_no);
-        
         var current_page_no = this._current_page_no - 1;
         this.design['pages'][current_page_no].elements.push(image);
-        
         //console.log('this.design', this.design);
     }
     
@@ -214,6 +211,23 @@ export class DesignEditComponent implements OnInit {
             "filter": "grayscale(" + value + "%)",
         }
         this.imageStyle = grayscale;
+    }
+
+    opacity(value) {
+        //console.log('value', value);
+        var grayscale = {
+            "-webkit-filter": "opacity(" + value + "%)",
+            "filter": "opacity(" + value + "%)",
+        }
+        this.imageStyle = grayscale;
+    }
+
+    rotate() {
+        var rotate = {
+            "-webkit-transform": "rotate("+ 180 + "deg)", 
+            "transform": "rotate("+ 180 + "deg)", 
+        }
+        this.imageStyle = rotate;
     }
 
     blur(value) {

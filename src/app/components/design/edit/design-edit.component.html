@@ -18,10 +18,15 @@
             Grey Scale
             <input class="mdl-slider mdl-js-slider" type="range" min="0" max="100" tabindex="0" step="5" [(ngModel)]="currentValue4" (input)="grayscale(currentValue4)">
         </div>
+         <div *ngIf="show3==true" style="width:300px">
+            Opacity
+            <input class="mdl-slider mdl-js-slider" type="range" min="0" max="100" tabindex="0" step="5" [(ngModel)]="currentValue5" (input)="opacity(currentValue5)">
+        </div>
         <div *ngIf="show3==true" style="width:300px">
             Blur
-            <input class="mdl-slider mdl-js-slider" type="range" min="0" max="100" tabindex="0" step="0.1" [(ngModel)]="currentValue5" (input)="blur(currentValue5)">
+            <input class="mdl-slider mdl-js-slider" type="range" min="0" max="100" tabindex="0" step="0.1" [(ngModel)]="currentValue6" (input)="blur(currentValue6)">
         </div>
+        <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" (click)="rotate()">Rotate</button>
     </div>
 
     <div class="col-md-12 max_height">

@@ -32,5 +32,5 @@ export let imageList = [
 ];
 
 export let getImage = function (image) {
-    return '<img src="'+image.src+'" height="150" width="150" [ngStyle]="context.imageStyle">';
+    return '<img src="'+image.src+'" height="150" width="150" [ngStyle]="context.imageStyle" >';
 }
