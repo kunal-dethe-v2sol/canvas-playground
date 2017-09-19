@@ -2,7 +2,7 @@ import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {Router, ActivatedRoute} from '@angular/router';
 
 import {SharedService} from './../../shared/service/shared.service';
-import {textList, displayText} from './../../shared/data/texts';
+import {textList, fontFamilyList, fontSizeList, getText} from './../../shared/data/texts';
 
 declare var $: any;
 
@@ -22,6 +22,11 @@ export class DesignEditComponent implements OnInit {
 
     public design: any = [];
     public selected_element: any;
+
+    public fontFamilyList = fontFamilyList;
+    public fontSizeList = fontSizeList;
+
+    public showTextOptions = false;
     
     //Constructor parameters
     static get parameters() {
@@ -72,7 +77,7 @@ export class DesignEditComponent implements OnInit {
         this._sharedService.getStorageService().getLocal().store('design.' + this.loggedInUserData.uuid + '.' + this._design_id, storageData);
     }
     
-    elementFocused(page_no) {
+    pageFocused(page_no) {
         this._current_page_no = page_no;
         //console.log('scrolled to page_no', this._current_page_no);
     }
@@ -86,8 +91,8 @@ export class DesignEditComponent implements OnInit {
         
         switch(element.type) {
             case 'text':
-                console.log('element.type', element.type);
-                html = displayText(element);
+                //console.log('element.type', element.type);
+                html = getText(element, true);
                 break;
                 
             default:
@@ -145,17 +150,100 @@ export class DesignEditComponent implements OnInit {
         this.saveDesign();
     }
 
-    insertText(text) {
-        //load a element in the current page.
-        console.log('this._current_page_no', this._current_page_no);
-        
-        var current_page_no = this._current_page_no - 1;
-        this.design['pages'][current_page_no].elements.push(text);
-        
-        console.log('this.design', this.design);
+    hideToolbar() {
+        this.showTextOptions = false;
     }
 
     setElementLocation(element) {
         
     }
+
+    /**
+     * Sets the selected element.
+     * @param element 
+     */
+    selectedElement(element) {
+        $('.single_element').removeClass('focused_element');
+        $(element).addClass('focused_element');
+        this.selected_element = element;
+        console.log('this.selected_element', this.selected_element);
+        console.log("this.design", this.design);
+    }
+
+    manageElement($event) {
+        //console.log('in manageElement', $event);
+
+        this.showTextOptions = false;
+
+        if($event) {
+            switch($event.target.dataset.type) {
+                case 'text':
+                    this.selectedElement($event.target);
+                    this.showTextOptions = true;
+                    break;
+
+                default:
+                    this.showTextOptions = false;
+            }
+        }
+    }
+
+    generateId() {
+        var text = "";
+        var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        for (var i = 0; i < 30; i++) {
+            text += possible.charAt(Math.floor(Math.random() * possible.length));
+        }
+        return text;
+    }
+
+    pushElementToDesignObject(current_page_no, element) {
+        //generate a random identifier for this element
+        element.guid = this.generateId();
+        this.design['pages'][current_page_no].elements.push(element);
+    }
+
+    /**
+     * Start :: Text Options
+     */
+    insertText(text) {
+        //load a element in the current page.
+        console.log('this._current_page_no', this._current_page_no);
+        
+        this.pushElementToDesignObject(this._current_page_no - 1, text);
+        
+        console.log('this.design', this.design);
+    }
+
+    fontFamilyChanged($event) {
+        var newfontFamily = $event.target.value;
+        
+        //get guid from the selected element
+        var guid = this.selected_element.dataset.guid;
+        
+        //find the element object from the design variable for this guid
+        var elements = this.design['pages'][this._current_page_no - 1].elements;
+        for(var i in elements) {
+            if(guid == elements[i].guid) {
+                this.design['pages'][this._current_page_no - 1].elements[i].style['font-family'] = newfontFamily;
+            }
+        }
+    }
+    fontSizeChanged($event) {
+        var newfontSize = $event.target.value;
+        
+        //get guid from the selected element
+        var guid = this.selected_element.dataset.guid;
+        
+        //find the element object from the design variable for this guid
+        var elements = this.design['pages'][this._current_page_no - 1].elements;
+        for(var i in elements) {
+            if(guid == elements[i].guid) {
+                this.design['pages'][this._current_page_no - 1].elements[i].style['font-size'] = newfontSize + 'px';
+            }
+        }
+    }
+    /**
+     * End :: Text Options
+     */
 }

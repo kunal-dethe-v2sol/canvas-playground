@@ -1,7 +1,7 @@
 import {CommonModule} from '@angular/common';
 import {NgModule, CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import {FormsModule} from '@angular/forms';
-import {CompileModule} from "p3x-angular-compile"
+import {CompileModule} from "p3x-angular-compile";
 import {ViewportModule} from 'angular2-viewport';
 import {InViewportModule} from 'ng-in-viewport';
 import 'intersection-observer';

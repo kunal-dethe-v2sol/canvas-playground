@@ -4,7 +4,9 @@ import {Router, ActivatedRoute} from '@angular/router';
 import {DesignEditComponent} from './edit/design-edit.component';
 
 import {SharedService} from './../shared/service/shared.service';
-import {textList, displayText} from './../shared/data/texts';
+import {textList, getText} from './../shared/data/texts';
+
+declare var $: any;
 
 @Component({
     selector: 'canvas-design',
@@ -34,7 +36,6 @@ export class DesignComponent implements OnInit {
     public design_id: any = '';
     public design: any = [];
     public design_header_text = '';
-    public selected_element: any;
 
     //Constructor parameters
     static get parameters() {
@@ -84,8 +85,8 @@ export class DesignComponent implements OnInit {
         if (this._design_id) {
             var designExists = this._sharedService.getStorageService().getLocal().retrieve('design.' + this.loggedInUserData.uuid + '.' + this._design_id);
             if(designExists) {
-                console.log('from storage', designExists);
-                console.log('header from storage', designExists.header_text);
+                //console.log('from storage', designExists);
+                //console.log('header from storage', designExists.header_text);
                 this.design_header_text = designExists.header_text;
                 this._sharedService.getStorageService().getLocal().store('activeDesignId', this._design_id);
             } else {
@@ -136,6 +137,23 @@ export class DesignComponent implements OnInit {
         }
     }
 
+    handleClickOnAnyElement($event) {
+        console.log('clicked here', $event.target);
+        //is child of toolbar
+        //or
+        //is .focused_element
+        if(document.getElementsByClassName('element_options').length) {
+            if($.contains(document.getElementsByClassName('element_options')[0], $event.target)
+                || $($event.target).hasClass('focused_element')) {
+
+                //console.log('valid element');
+            } else {
+                //console.log('invalid element');
+                this.designEditComponent.hideToolbar();    
+            }
+        }
+    }
+
     updateDesignHeader($event) {
         var savedDesign = this._sharedService.getStorageService().getLocal().retrieve('design.' + this.loggedInUserData.uuid + '.' + this._design_id);
         if(savedDesign) {
@@ -150,8 +168,8 @@ export class DesignComponent implements OnInit {
     }
 
     displayText(text) {
-        console.log('displayText text', text);
-        return displayText(text);
+        //console.log('displayText text', text);
+        return getText(text);
     }
 
     insertText(text) {
