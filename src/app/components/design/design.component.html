@@ -43,24 +43,25 @@
                 <div class="col-md-9 max_height">
                     <div *ngIf="show==false" class="col-md-12">
                         Options Menu - 
-                        <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" (click)="showfilterdiv(brightness)">Brightness</button>
+                        <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" (click)="showfilter()">Filter</button>
                         <div *ngIf="show3==true" style="width:300px">
+                            Brightness
                             <input class="mdl-slider mdl-js-slider" type="range" min="0" max="100" tabindex="0" step="5" [(ngModel)]="currentValue1" (input)="brightness(currentValue1)">
                         </div>
-                        <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" (click)="showfilterdiv(contrast)" >Contrast</button>
-                        <div *ngIf="show4==true" style="width:300px">
+                        <div *ngIf="show3==true" style="width:300px">
+                            Contrast
                             <input class="mdl-slider mdl-js-slider" type="range" min="0" max="100" tabindex="0" step="5" [(ngModel)]="currentValue2" (input)="contrast(currentValue2)">
                         </div>
-                        <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" (click)="showfilterdiv(saturate)">Saturation</button>
-                        <div *ngIf="show5==true" style="width:300px">
+                        <div *ngIf="show3==true" style="width:300px">
+                            Saturation
                             <input class="mdl-slider mdl-js-slider" type="range" min="0" max="100" tabindex="0" step="5" [(ngModel)]="currentValue3" (input)="saturate(currentValue3)">
                         </div>
-                        <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" (click)="showfilterdiv(grayscale)">Grey Scale</button>
-                        <div *ngIf="show6==true" style="width:300px">
+                        <div *ngIf="show3==true" style="width:300px">
+                            Grey Scale
                             <input class="mdl-slider mdl-js-slider" type="range" min="0" max="100" tabindex="0" step="5" [(ngModel)]="currentValue4" (input)="grayscale(currentValue4)">
                         </div>
-                        <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" (click)="showfilterdiv(blur)">Blur</button>
-                        <div *ngIf="show7==true" style="width:300px">
+                        <div *ngIf="show3==true" style="width:300px">
+                            Blur
                             <input class="mdl-slider mdl-js-slider" type="range" min="0" max="100" tabindex="0" step="5" [(ngModel)]="currentValue5" (input)="blur(currentValue5)">
                         </div>
                         <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" (click)="showdiv1()">Crop</button>
