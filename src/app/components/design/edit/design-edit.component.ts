@@ -91,6 +91,7 @@ export class DesignEditComponent implements OnInit {
     showCopy(){
          this.show2 = !this.show2;
     }
+    
 
     //Custom Methods
     saveDesign() {
@@ -249,6 +250,18 @@ export class DesignEditComponent implements OnInit {
             "transform": "rotate("+ 180 + "deg)", 
         }
         this.imageStyle = rotate;
+    }
+
+    flip() {
+        var flip = {
+            "-webkit-transform": "rotateY("+ 180 + "deg)", 
+            "transform": "rotateY("+ 180 + "deg)", 
+        }
+        /*var back = {
+            "-webkit-transform": "rotateY("+ 0 + "deg)", 
+            "transform": "rotateY("+ 0 + "deg)", 
+        }*/
+        this.imageStyle = flip;
     }
 
     blur(value) {
