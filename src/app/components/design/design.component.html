@@ -63,6 +63,12 @@
                         </div>
                         <div *ngIf="showUploadList" class="text-center">
                             Upload your own image
+                            <image-upload
+                                [dropBoxMessage]="'Drop your images here!'"
+                                (onFileUploadFinish)="imageUploaded($event)"
+                                (onRemove)="imageRemoved($event)"
+                                (isPending)="disableSendButton($event)">
+                            </image-upload>
                         </div>
                     </div>
                 </div>

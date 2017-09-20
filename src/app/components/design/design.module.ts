@@ -4,6 +4,7 @@ import {FormsModule} from '@angular/forms';
 import {CompileModule} from "p3x-angular-compile";
 import {ViewportModule} from 'angular2-viewport';
 import {InViewportModule} from 'ng-in-viewport';
+import {ImageUploadModule} from 'angular2-image-upload';
 import 'intersection-observer';
 
 import {DesignRoutes} from './design.routes';
@@ -26,6 +27,7 @@ import {ImageCropperComponent, CropperSettings} from 'ng2-img-cropper';
         }),
         ViewportModule,
         InViewportModule.forRoot(),
+        ImageUploadModule.forRoot(),
         FormsModule,
         DesignRoutes
     ],
