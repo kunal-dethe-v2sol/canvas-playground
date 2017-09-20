@@ -140,6 +140,6 @@ export let getText = function (text, forPage = false) {
     if(forPage) {
         return '<div class="single_element text_element" data-type="text" data-guid="'+text.guid+'" (click)="context.manageElement($event)" style="'+style+'">'+text.text+'</div>';
     } else {
-        return '<div class="single_element text_element" style="'+style+'">'+text.text+'</div>';
+        return '<div class="display_element" style="'+style+'">'+text.text+'</div>';
     }
 }

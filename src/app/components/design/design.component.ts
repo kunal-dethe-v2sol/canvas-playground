@@ -138,7 +138,7 @@ export class DesignComponent implements OnInit {
     }
 
     handleClickOnAnyElement($event) {
-        console.log('clicked here', $event.target);
+        //console.log('clicked here', $event.target);
         //is child of toolbar
         //or
         //is .focused_element

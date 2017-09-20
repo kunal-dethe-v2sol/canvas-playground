@@ -12,6 +12,7 @@
     cursor: pointer;
 }
 .focused_element,
+.display_element:hover,
 .single_element:hover {
     border: 1px dashed rgba(0,0,0,.5);
 }

@@ -145,13 +145,14 @@ export class DesignEditComponent implements OnInit {
             this.design['pages'][new_page_no - 1].elements = [];
         }
         
-        console.log("this.design", this.design);
+        //console.log("this.design", this.design);
         
         this.saveDesign();
     }
 
     hideToolbar() {
         this.showTextOptions = false;
+        $('.single_element').removeClass('focused_element');
     }
 
     setElementLocation(element) {
@@ -166,8 +167,8 @@ export class DesignEditComponent implements OnInit {
         $('.single_element').removeClass('focused_element');
         $(element).addClass('focused_element');
         this.selected_element = element;
-        console.log('this.selected_element', this.selected_element);
-        console.log("this.design", this.design);
+        //console.log('this.selected_element', this.selected_element);
+        //console.log("this.design", this.design);
     }
 
     manageElement($event) {
@@ -208,16 +209,14 @@ export class DesignEditComponent implements OnInit {
      */
     insertText(text) {
         //load a element in the current page.
-        console.log('this._current_page_no', this._current_page_no);
+        //console.log('this._current_page_no', this._current_page_no);
         
         this.pushElementToDesignObject(this._current_page_no - 1, text);
         
-        console.log('this.design', this.design);
+        //console.log('this.design', this.design);
     }
 
-    fontFamilyChanged($event) {
-        var newfontFamily = $event.target.value;
-        
+    updateSelectedElementStyle(newStyles) {
         //get guid from the selected element
         var guid = this.selected_element.dataset.guid;
         
@@ -225,22 +224,45 @@ export class DesignEditComponent implements OnInit {
         var elements = this.design['pages'][this._current_page_no - 1].elements;
         for(var i in elements) {
             if(guid == elements[i].guid) {
-                this.design['pages'][this._current_page_no - 1].elements[i].style['font-family'] = newfontFamily;
+                for(var newStyleIndex in newStyles) {
+                    this.design['pages'][this._current_page_no - 1].elements[i].style[newStyleIndex] = newStyles[newStyleIndex];
+                }
+                return;
             }
         }
     }
-    fontSizeChanged($event) {
-        var newfontSize = $event.target.value;
+    fontPropertyChanged(type, $event) {
+        var newStyles = {};
         
-        //get guid from the selected element
-        var guid = this.selected_element.dataset.guid;
+        switch(type) {
+            case 'font-family':
+                newStyles[type] = $event.target.value;
+                break;
+                
+            case 'font-size':
+                newStyles['font-size'] = $event.target.value + 'px';
+                break;
+            
+            case 'font-style':
+                if($event == 'normal') {
+                    newStyles['font-weight'] = 'normal';
+                    newStyles['font-style'] = 'normal';
+                } else {
+                    newStyles[type] = $event;
+                }
+                break;
+                    
+            case 'font-weight':
+            case 'text-align':
+            case 'text-transform':
+                newStyles[type] = $event;
+                break;
+                
+            default:
+        }
         
-        //find the element object from the design variable for this guid
-        var elements = this.design['pages'][this._current_page_no - 1].elements;
-        for(var i in elements) {
-            if(guid == elements[i].guid) {
-                this.design['pages'][this._current_page_no - 1].elements[i].style['font-size'] = newfontSize + 'px';
-            }
+        if(Object.keys(newStyles).length) {
+            this.updateSelectedElementStyle(newStyles);
         }
     }
     /**
