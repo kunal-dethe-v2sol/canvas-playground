@@ -23,6 +23,9 @@ export class DesignEditComponent implements OnInit {
     public design: any = [];
     public selected_element: any;
 
+    public letterSpacing = 0;
+    public lineHeight = 1.4;
+
     public fontFamilyList = fontFamilyList;
     public fontSizeList = fontSizeList;
 
@@ -236,17 +239,19 @@ export class DesignEditComponent implements OnInit {
         
         switch(type) {
             case 'font-family':
+            case 'line-height':
                 newStyles[type] = $event.target.value;
                 break;
                 
             case 'font-size':
-                newStyles['font-size'] = $event.target.value + 'px';
+            case 'letter-spacing':
+                newStyles[type] = $event.target.value + 'px';
                 break;
             
             case 'font-style':
                 if($event == 'normal') {
-                    newStyles['font-weight'] = 'normal';
-                    newStyles['font-style'] = 'normal';
+                    newStyles['font-weight'] = $event;
+                    newStyles['font-style'] = $event;
                 } else {
                     newStyles[type] = $event;
                 }
