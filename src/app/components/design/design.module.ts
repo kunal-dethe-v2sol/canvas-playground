@@ -9,11 +9,13 @@ import 'intersection-observer';
 import {DesignRoutes} from './design.routes';
 import {DesignComponent} from './design.component';
 import {DesignEditComponent} from './edit/design-edit.component';
+import {ImageCropperComponent, CropperSettings} from 'ng2-img-cropper';
 
 @NgModule({
     declarations: [
         DesignComponent,
-        DesignEditComponent
+        DesignEditComponent,
+        ImageCropperComponent
     ],
     imports: [
         CommonModule,

@@ -27,6 +27,8 @@
             <input class="mdl-slider mdl-js-slider" type="range" min="0" max="100" tabindex="0" step="0.1" [(ngModel)]="currentValue6" (input)="blur(currentValue6)">
         </div>
         <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" (click)="rotate()">Rotate</button>
+        <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" (click)="showdiv()">Crop</button>
+        <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" (click)="showCopy()">Copy</button>
     </div>
 
     <div class="col-md-12 max_height">
@@ -40,8 +42,15 @@
                 <div class="col-md-12 full_height" #single_page_wrapper>
                     <div *ngFor="let page of design.pages" class="single_page_wrapper full_height" in-viewport [inViewportOptions]="{rootElement:single_page_wrapper, partial:false}" (inViewportAction)="elementFocused(page.page_no)">
                         <div class="col-md-11 max_height single_page">
+                            <div *ngIf="show1==true">
+                                    <img-cropper [image]="data" [settings]="cropperSettings"></img-cropper><br>
+                                    <img [src]="data.image" [width]="cropperSettings.croppedWidth" [height]="cropperSettings.croppedHeight">
+                                </div>
                             <div *ngFor="let element of page.elements">
                                 <div class="checkFocus" [p3x-compile]="displayElement(element)" [p3x-compile-ctx]="this" ></div>
+                                <div *ngIf="show2==true">
+                                    <div class="checkFocus" [p3x-compile]="displayElement(element)" [p3x-compile-ctx]="this" ></div>
+                                </div>
                             </div>
                         </div>
                         <div class="col-md-1 max_height single_page_options text-center">

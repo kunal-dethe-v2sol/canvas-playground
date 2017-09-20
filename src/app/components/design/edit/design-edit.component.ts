@@ -4,6 +4,8 @@ import {Router, ActivatedRoute} from '@angular/router';
 import {SharedService} from './../../shared/service/shared.service';
 import {textList, displayText} from './../../shared/data/texts';
 import {imageList, getImage} from './../../shared/data/images';
+import {ImageCropperComponent, CropperSettings} from 'ng2-img-cropper';
+ 
 
 declare var $: any;
 
@@ -15,7 +17,7 @@ declare var $: any;
 })
 
 export class DesignEditComponent implements OnInit {
-
+    
     //Variables
     private _design_id: any = '';
     
@@ -25,8 +27,12 @@ export class DesignEditComponent implements OnInit {
     public design: any = [];
     public selected_element: any;
     
+    public show1 = false;
+    public show2 = false;
     public show3 = false;
     public imageStyle;
+    public cropperSettings: CropperSettings;
+    public data: any;
     
     //Constructor parameters
     static get parameters() {
@@ -44,6 +50,15 @@ export class DesignEditComponent implements OnInit {
         private _sharedService) {
 
         this.loggedInUserData = this._sharedService.getLoggedInUserData();
+
+        this.cropperSettings = new CropperSettings();
+        this.cropperSettings.width = 100;
+        this.cropperSettings.height = 100;
+        this.cropperSettings.croppedWidth =100;
+        this.cropperSettings.croppedHeight = 100;
+        this.cropperSettings.canvasWidth = 400;
+        this.cropperSettings.canvasHeight = 300;
+        this.data = {};
     }
 
     //Angular Hooks
@@ -67,8 +82,14 @@ export class DesignEditComponent implements OnInit {
         }
     }
 
+    showdiv(){
+         this.show1 = !this.show1;
+    }
     showfilter(){
          this.show3 = !this.show3;
+    }
+    showCopy(){
+         this.show2 = !this.show2;
     }
 
     //Custom Methods
@@ -187,7 +208,7 @@ export class DesignEditComponent implements OnInit {
         }
         this.imageStyle = brightness;
     }
-
+    
     contrast(value) {
         var contrast = {
             "-webkit-filter": "contrast(" + value + "%)",
