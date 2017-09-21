@@ -155,7 +155,9 @@ export class DesignComponent implements OnInit {
     }
 
     updateDesignHeader($event) {
-        var savedDesign = this._sharedService.getStorageService().getLocal().retrieve('design.' + this.loggedInUserData.uuid + '.' + this._design_id);
+        this.designEditComponent.updateDesignHeader($event.target.value);
+
+        /*var savedDesign = this._sharedService.getStorageService().getLocal().retrieve('design.' + this.loggedInUserData.uuid + '.' + this._design_id);
         if(savedDesign) {
             savedDesign.header_text = $event.target.value;
             var storageData = {
@@ -164,7 +166,7 @@ export class DesignComponent implements OnInit {
                 pages: savedDesign.pages
             };
             this._sharedService.getStorageService().getLocal().store('design.' + this.loggedInUserData.uuid + '.' + this._design_id, storageData);
-        }
+        }*/
     }
 
     displayText(text) {

@@ -153,6 +153,11 @@ export class DesignEditComponent implements OnInit {
         this.saveDesign();
     }
 
+    updateDesignHeader(header_text) {
+        this.design.header_text = header_text;
+        this.saveDesign();
+    }
+
     hideToolbar() {
         this.showTextOptions = false;
         $('.single_element').removeClass('focused_element');
