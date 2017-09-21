@@ -32,9 +32,9 @@ export class DesignEditComponent implements OnInit {
 
     public brightness = 50;
     public contrast = 50;
-    public saturation = 50;
+    public saturation = 0;
     public tint = 50;
-    public blur = 50;
+    public blur = 0;
     public x_process = 50;
     public vignette = 50;
     public opacity = 1;
@@ -207,7 +207,9 @@ export class DesignEditComponent implements OnInit {
     }
 
     hideToolbar() {
+        this.showOptions = false;
         this.showTextOptions = false;
+        this.showImageOptions = false;
         $('.single_element').removeClass('focused_element');
     }
 
@@ -259,6 +261,20 @@ export class DesignEditComponent implements OnInit {
             text += possible.charAt(Math.floor(Math.random() * possible.length));
         }
         return text;
+    }
+
+    cloneElement() {
+        //get guid from the selected element
+        var guid = this.selected_element.dataset.guid;
+
+        //find the element object from the design variable for this guid
+        var elements = this.design['pages'][this._current_page_no - 1].elements;
+        for(var i in elements) {
+            if(guid == elements[i].guid) {
+                this.pushElementToDesignObject(this._current_page_no - 1, elements[i]);
+                return;
+            }
+        }
     }
 
     pushElementToDesignObject(current_page_no, element) {

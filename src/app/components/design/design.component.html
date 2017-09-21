@@ -38,24 +38,30 @@
                             Layout List
                         </div>
                         <div *ngIf="showTextList" class="text-center" style="margin-top:15px; margin-bottom:15px; border:0;">
+                            <h2>Text List</h2>
                             <div *ngFor="let text of textList" class="text-center pointer" (click)="insertText(text)" style="border:0;">
                                 <div [p3x-compile]="displayText(text)" [p3x-compile-ctx]="this"></div>
                             </div>
                         </div>
                         <div *ngIf="showElementList" class="text-center">
                             <h2>Element List</h2>
-                            <div *ngIf="showElementList" class="text-center">
-                                <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" (click)="loadList('elements','image')">Image List</button>
-                                <div *ngIf="showImageList" class="text-center" >
-                                    <div  *ngFor="let image of imageList" (click)="insertImage(image)">
-                                        <div   [p3x-compile]="displayImage(image)" [p3x-compile-ctx]="this" ></div>
-                                    </div>
+                            <div class="col-md-12">
+                                <div class="col-md-6">
+                                    <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect white" (click)="loadList('elements','image')">Images</button>
+                                </div>
+                                <div class="col-md-6">
+                                    <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect white" (click)="loadList('elements','shape')">Shapes</button>
                                 </div>
                             </div>
-                            <div *ngIf="showElementList" class="text-center">
-                                <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" (click)="loadList('elements','shape')">Shape List</button>
+
+                            <div class="col-md-12" style="margin-top:50px;">
+                                <div *ngIf="showImageList" class="text-center" >
+                                    <div *ngFor="let image of imageList" (click)="insertImage(image)" class="col-md-6" style="margin-bottom:25px;">
+                                        <div [p3x-compile]="displayImage(image)" [p3x-compile-ctx]="this"></div>
+                                    </div>
+                                </div>
                                 <div *ngIf="showShapeList" class="text-center">
-                                    Shapes
+                                    Shape List
                                 </div>
                             </div>
                         </div>
