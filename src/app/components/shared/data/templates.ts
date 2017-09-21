@@ -16,3 +16,15 @@ export let templateList = [
         height: '400',
     }
 ];
+
+export let formatElementStyle = function (text) {
+    var styleString = JSON.stringify(text.style, null)
+            .replace(/"/g, '')
+            .replace(/,/g, ';')
+            .replace(/#/g, ',')
+            .replace(/\{/g, '')
+            .replace(/\}/g, ';')
+            .replace(/\s/g, '');
+    //console.log('styleString', styleString);
+    return styleString;
+}

@@ -1,3 +1,5 @@
+import {formatElementStyle} from './templates';
+
 declare var $: any;
 
 export let textList = [
@@ -125,21 +127,10 @@ export let fontSizeList = [
 
 //console.log('textList', textList);
 
-export let formatTextStyle = function (text) {
-    var styleString = JSON.stringify(text.style, null)
-            .replace(/"/g, '')
-            .replace(/,/g, ';')
-            .replace(/\{/g, '')
-            .replace(/\}/g, ';')
-            .replace(/\s/g, '');
-    //console.log('styleString', styleString);
-    return styleString;
-}
-
 export let getText = function (text, forPage = false) {
     //console.log('in getText', text);
     var element = $.extend(true, {}, text);
-    var style = formatTextStyle(element);
+    var style = formatElementStyle(element);
     if(forPage) {
         return '<div class="single_element text_element" data-type="text" data-guid="'+element.guid+'" (click)="context.manageElement($event)" style="'+style+'">'+element.text+'</div>';
     } else {

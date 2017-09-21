@@ -265,10 +265,14 @@ export class DesignEditComponent implements OnInit {
         this.saveDesign();
     }
 
-    hideToolbar() {
+    hideAllOptions() {
         this.showOptions = false;
         this.showTextOptions = false;
         this.showImageOptions = false;
+    }
+
+    hideToolbar() {
+        this.hideAllOptions();
         $('.single_element').removeClass('focused_element');
     }
 
@@ -286,9 +290,7 @@ export class DesignEditComponent implements OnInit {
 
     manageElement($event) {
         //console.log('in manageElement', $event);
-        this.showOptions = false;
-        this.showTextOptions = false;
-        this.showImageOptions = false;
+        this.hideAllOptions();
 
         if ($event) {
             switch ($event.target.dataset.type) {
@@ -342,13 +344,26 @@ export class DesignEditComponent implements OnInit {
         for (var i in elements) {
             if (guid == elements[i].guid) {
                 this.design['pages'][this._current_page_no - 1].elements.splice(i, 1);
+
+                this.saveDesign();
+
+                //hide all the options
+                this.hideAllOptions();
+
                 return;
             }
         }
     }
 
     setElementLocation(element) {
-        element.style['transform'] = 'translate(476px, 304px)';
+        //get the middle of the page
+        var x = parseInt(this.page_size.width) / 2;
+        var y = parseInt(this.page_size.height) / 4;
+
+        x = 0;
+        y = 0;
+
+        element.style['transform'] = 'translate('+x+'px# '+y+'px)';
         return element;
     }
 

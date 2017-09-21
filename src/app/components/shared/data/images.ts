@@ -1,3 +1,5 @@
+import {formatElementStyle} from './templates';
+
 declare var $: any;
 
 export let imageList = [
@@ -57,20 +59,9 @@ export let imageList = [
     }
 ];
 
-export let formatImageStyle = function (image) {
-    var styleString = JSON.stringify(image.style, null)
-            .replace(/"/g, '')
-            .replace(/,/g, ';')
-            .replace(/\{/g, '')
-            .replace(/\}/g, ';')
-            .replace(/\s/g, '');
-    //console.log('styleString', styleString);
-    return styleString;
-}
-
 export let getImage = function (image, forPage = false) {
     var element = $.extend(true, {}, image);
-    var style = formatImageStyle(element);
+    var style = formatElementStyle(element);
     if(forPage) {
         return '<img src="'+element.src+'" class="single_element image_element" data-type="image" data-guid="'+element.guid+'" (click)="context.manageElement($event)" style="'+style+'" />';
     } else {
