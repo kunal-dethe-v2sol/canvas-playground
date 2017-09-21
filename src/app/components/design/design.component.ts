@@ -4,8 +4,11 @@ import {Router, ActivatedRoute} from '@angular/router';
 import {DesignEditComponent} from './edit/design-edit.component';
 
 import {SharedService} from './../shared/service/shared.service';
-import {textList, displayText} from './../shared/data/texts';
+
+import {textList, getText} from './../shared/data/texts';
 import {imageList, getImage} from './../shared/data/images';
+
+declare var $: any;
 
 @Component({
     selector: 'canvas-design',
@@ -38,7 +41,6 @@ export class DesignComponent implements OnInit {
     public design_id: any = '';
     public design: any = [];
     public design_header_text = '';
-    public selected_element: any;
 
     //Constructor parameters
     static get parameters() {
@@ -151,8 +153,27 @@ export class DesignComponent implements OnInit {
         }
     }
 
+    handleClickOnAnyElement($event) {
+        //console.log('clicked here', $event.target);
+        //is child of toolbar
+        //or
+        //is .focused_element
+        if(document.getElementsByClassName('element_options').length) {
+            if($.contains(document.getElementsByClassName('element_options')[0], $event.target)
+                || $($event.target).hasClass('focused_element')) {
+
+                //console.log('valid element');
+            } else {
+                //console.log('invalid element');
+                this.designEditComponent.hideToolbar();    
+            }
+        }
+    }
+
     updateDesignHeader($event) {
-        var savedDesign = this._sharedService.getStorageService().getLocal().retrieve('design.' + this.loggedInUserData.uuid + '.' + this._design_id);
+        this.designEditComponent.updateDesignHeader($event.target.value);
+
+        /*var savedDesign = this._sharedService.getStorageService().getLocal().retrieve('design.' + this.loggedInUserData.uuid + '.' + this._design_id);
         if(savedDesign) {
             savedDesign.header_text = $event.target.value;
             var storageData = {
@@ -161,12 +182,12 @@ export class DesignComponent implements OnInit {
                 pages: savedDesign.pages
             };
             this._sharedService.getStorageService().getLocal().store('design.' + this.loggedInUserData.uuid + '.' + this._design_id, storageData);
-        }
+        }*/
     }
 
     displayText(text) {
         //console.log('displayText text', text);
-        return displayText(text);
+        return getText(text);
     }
 
     insertText(text) {

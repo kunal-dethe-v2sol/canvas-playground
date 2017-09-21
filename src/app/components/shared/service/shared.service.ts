@@ -35,6 +35,9 @@ export class SharedService {
     }
 
     //Custom Methods
+    hasClass(element, className) {
+        return element.className && new RegExp("(^|\\s)" + className + "(\\s|$)").test(element.className);
+    }
     /**
      * Returns the Auth Service instance.
      */

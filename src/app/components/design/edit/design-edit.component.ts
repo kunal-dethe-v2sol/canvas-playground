@@ -2,10 +2,10 @@ import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {Router, ActivatedRoute} from '@angular/router';
 
 import {SharedService} from './../../shared/service/shared.service';
-import {textList, displayText} from './../../shared/data/texts';
+
+import {textList, fontFamilyList, fontSizeList, getText} from './../../shared/data/texts';
 import {imageList, getImage} from './../../shared/data/images';
 import {ImageCropperComponent, CropperSettings} from 'ng2-img-cropper';
- 
 
 declare var $: any;
 
@@ -26,6 +26,27 @@ export class DesignEditComponent implements OnInit {
 
     public design: any = [];
     public selected_element: any;
+
+    public letterSpacing = 0;
+    public lineHeight = 1.4;
+
+    public brightness = 50;
+    public contrast = 50;
+    public saturation = 50;
+    public tint = 50;
+    public blur = 50;
+    public x_process = 50;
+    public vignette = 50;
+    public opacity = 1;
+    public rotateX = 180;
+    public rotateY = 180;
+
+    public fontFamilyList = fontFamilyList;
+    public fontSizeList = fontSizeList;
+
+    public showOptions = false;
+    public showTextOptions = false;
+    public showImageOptions = false;
     
     public show1 = false;
     public show2 = false;
@@ -103,7 +124,7 @@ export class DesignEditComponent implements OnInit {
         this._sharedService.getStorageService().getLocal().store('design.' + this.loggedInUserData.uuid + '.' + this._design_id, storageData);
     }
     
-    elementFocused(page_no) {
+    pageFocused(page_no) {
         this._current_page_no = page_no;
         //console.log('scrolled to page_no', this._current_page_no);
     }
@@ -116,12 +137,13 @@ export class DesignEditComponent implements OnInit {
         var html = '';
         switch(element.type) {
             case 'text':
-               //console.log('element.type', element.type);
-                html = displayText(element);
+                //console.log('element.type', element.type);
+                html = getText(element, true);
                 break;
+
             case 'image':
                //console.log('element.type', element.type);
-                html = getImage(element);
+                html = getImage(element, true);
                 break;
                 
             default:
@@ -174,58 +196,188 @@ export class DesignEditComponent implements OnInit {
             this.design['pages'][new_page_no - 1].elements = [];
         }
         
-        console.log("this.design", this.design);
+        //console.log("this.design", this.design);
         
         this.saveDesign();
     }
 
-    insertText(text) {
-        //load a element in the current page.
-        console.log('this._current_page_no', this._current_page_no);
-        
-        var current_page_no = this._current_page_no - 1;
-        this.design['pages'][current_page_no].elements.push(text);
-        
-        console.log('this.design', this.design);
+    updateDesignHeader(header_text) {
+        this.design.header_text = header_text;
+        this.saveDesign();
     }
 
-    insertImage(image) {
-        //console.log('image:', image);
-        //load a element in the current page.
-        //console.log('this._current_page_no', this._current_page_no);
-        var current_page_no = this._current_page_no - 1;
-        this.design['pages'][current_page_no].elements.push(image);
-        //console.log('this.design', this.design);
+    hideToolbar() {
+        this.showTextOptions = false;
+        $('.single_element').removeClass('focused_element');
     }
-    
+
     setElementLocation(element) {
         
     }
 
-    brightness(value) {
-        var brightness = {
-            "-webkit-filter": "brightness(" + value + "%)",
-            "filter": "brightness(" + value + "%)",
+    /**
+     * Sets the selected element.
+     * @param element 
+     */
+    selectedElement(element) {
+        $('.single_element').removeClass('focused_element');
+        $(element).addClass('focused_element');
+        this.selected_element = element;
+        //console.log('this.selected_element', this.selected_element);
+        //console.log("this.design", this.design);
+    }
+
+    manageElement($event) {
+        console.log('in manageElement', $event);
+        this.showOptions = false;
+        this.showTextOptions = false;
+        this.showImageOptions = false;
+
+        if($event) {
+            switch($event.target.dataset.type) {
+                case 'text':
+                    this.selectedElement($event.target);
+                    this.showOptions = true;
+                    this.showTextOptions = true;
+                    break;
+
+                case 'image':
+                    this.selectedElement($event.target);
+                    this.showOptions = true;
+                    this.showImageOptions = true;
+                    break;
+
+                default:
+            }
         }
-        this.imageStyle = brightness;
+    }
+
+    generateId() {
+        var text = "";
+        var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        for (var i = 0; i < 30; i++) {
+            text += possible.charAt(Math.floor(Math.random() * possible.length));
+        }
+        return text;
+    }
+
+    pushElementToDesignObject(current_page_no, element) {
+        //generate a random identifier for this element
+        var elem = $.extend(true, {}, element);
+
+        elem.guid = this.generateId();
+        this.design['pages'][current_page_no].elements.push(elem);
+    }
+
+    updateSelectedElementStyle(newStyles) {
+        //get guid from the selected element
+        var guid = this.selected_element.dataset.guid;
+        
+        //find the element object from the design variable for this guid
+        var elements = this.design['pages'][this._current_page_no - 1].elements;
+        for(var i in elements) {
+            if(guid == elements[i].guid) {
+                for(var newStyleIndex in newStyles) {
+                    this.design['pages'][this._current_page_no - 1].elements[i].style[newStyleIndex] = newStyles[newStyleIndex];
+                }
+                return;
+            }
+        }
+    }
+
+    fontPropertyChanged(type, $event) {
+        var newStyles = {};
+        
+        switch(type) {
+            case 'font-family':
+            case 'line-height':
+            case 'opacity':
+                newStyles[type] = $event.target.value;
+                break;
+                
+            case 'font-size':
+            case 'letter-spacing':
+                newStyles[type] = $event.target.value + 'px';
+                break;
+            
+            case 'font-style':
+                if($event == 'normal') {
+                    newStyles['font-weight'] = $event;
+                    newStyles['font-style'] = $event;
+                } else {
+                    newStyles[type] = $event;
+                }
+                break;
+                    
+            case 'font-weight':
+            case 'text-align':
+            case 'text-transform':
+                newStyles[type] = $event;
+                break;
+                
+            case 'brightness':
+            case 'contrast':
+                newStyles['-webkit-filter'] = type + "(" + $event.target.value + "%)";
+                newStyles['filter'] = type + "(" + $event.target.value + "%)";
+                break;
+
+            case 'saturate':
+                newStyles['-webkit-filter'] = type + "(" + $event.target.value + ")";
+                newStyles['filter'] = type + "(" + $event.target.value + ")";
+                break;
+
+            case 'blur':
+                newStyles['-webkit-filter'] = type + "(" + $event.target.value + "px)";
+                newStyles['filter'] = type + "(" + $event.target.value + "px)";
+                break;
+
+            case 'rotateX':
+                this.rotateX = this.rotateX == 180 ? 0 : 180;
+                newStyles['-webkit-transform'] = type + "(" + this.rotateX + "deg)";
+                newStyles['transform'] = type + "(" + this.rotateX + "deg)";
+                break;
+
+            case 'rotateY':
+                this.rotateY = this.rotateY == 180 ? 0 : 180;
+                newStyles['-webkit-transform'] = type + "(" + this.rotateY + "deg)";
+                newStyles['transform'] = type + "(" + this.rotateY + "deg)";
+                break;
+
+            case 'tint':
+            case 'x_process':
+            case 'vignette':
+                break;
+
+            default:
+        }
+        
+        if(Object.keys(newStyles).length) {
+            this.updateSelectedElementStyle(newStyles);
+        }
     }
     
-    contrast(value) {
-        var contrast = {
-            "-webkit-filter": "contrast(" + value + "%)",
-            "filter": "contrast(" + value + "%)",
-        }
-        this.imageStyle = contrast;
+    /**
+     * Start :: Text Options
+     */
+    insertText(text) {
+        //load a element in the current page.
+        //console.log('this._current_page_no', this._current_page_no);
+        this.pushElementToDesignObject(this._current_page_no - 1, text);
+        //console.log('this.design', this.design);
     }
+    /**
+     * End :: Text Options
+     */
 
-    saturate(value) {
-        var saturate = {
-            "-webkit-filter": "saturate(" + value + "%)",
-            "filter": "saturate(" + value + "%)",
-        }
-        this.imageStyle = saturate;
+    /**
+     * Start :: Image Options
+     */
+    insertImage(image) {
+        //load a element in the current page.
+        //console.log('this._current_page_no', this._current_page_no);
+        this.pushElementToDesignObject(this._current_page_no - 1, image);
+        //console.log('this.design', this.design);
     }
-
     grayscale(value) {
         //console.log('value', value);
         var grayscale = {
@@ -234,16 +386,6 @@ export class DesignEditComponent implements OnInit {
         }
         this.imageStyle = grayscale;
     }
-
-    opacity(value) {
-        //console.log('value', value);
-        var grayscale = {
-            "-webkit-filter": "opacity(" + value + "%)",
-            "filter": "opacity(" + value + "%)",
-        }
-        this.imageStyle = grayscale;
-    }
-
     rotate() {
         var rotate = {
             "-webkit-transform": "rotate("+ 180 + "deg)", 
@@ -251,32 +393,7 @@ export class DesignEditComponent implements OnInit {
         }
         this.imageStyle = rotate;
     }
-
-    flip() {
-        var flip = {
-            "-webkit-transform": "rotateY("+ 180 + "deg)", 
-            "transform": "rotateY("+ 180 + "deg)", 
-        }
-        /*var back = {
-            "-webkit-transform": "rotateY("+ 0 + "deg)", 
-            "transform": "rotateY("+ 0 + "deg)", 
-        }*/
-        this.imageStyle = flip;
-    }
-
-    blur(value) {
-        var blur = {
-             "-webkit-filter":  "blur(" + 5 + "px)",
-             "filter": "blur(" + 5 + "px)",
-        }
-        this.imageStyle = blur;
-        var blur_dis = {
-             "-webkit-filter":  "blur(" + 0 + "px)",
-             "filter": "blur(" + 0 + "px)",
-        }
-        if(value < 10){
-            this.imageStyle = blur_dis;
-        }
-        
-    }
+    /**
+     * End :: Text Options
+     */
 }

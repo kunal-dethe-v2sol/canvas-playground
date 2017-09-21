@@ -1,3 +1,5 @@
+declare var $: any;
+
 export let textList = [
     {
         uuid: 1,
@@ -85,41 +87,62 @@ export let textList = [
     }
 ];
 
+export let fontFamilyList = [
+    {
+        uuid: 1,
+        label: "Arial",
+        value: "sans-serif"
+    },
+    {
+        uuid: 2,
+        label: "Times New Roman",
+        value: "serif"
+    }
+];
+
+export let fontSizeList = [
+    {
+        uuid: 1,
+        label: "8",
+        value: "8"
+    },
+    {
+        uuid: 2,
+        label: "16",
+        value: "16"
+    },
+    {
+        uuid: 3,
+        label: "32",
+        value: "32"
+    },
+    {
+        uuid: 4,
+        label: "64",
+        value: "64"
+    }
+];
+
 //console.log('textList', textList);
 
 export let formatTextStyle = function (text) {
-    /*console.log('in formatTextStyle');
-    console.log('text', text);
-    console.log('text.style', text.style);
-    console.log('Object.keys(text.style)', Object.keys(text.style));*/
-    var style = Object.keys(text.style).map(key => text.style[key]);
-   
-    for(var i in text.style) {
-        // console.log(i + "=" + text.style[i]);
-    } 
-   
-    //console.log('style 0', style);
-//    console.log('JSON.stringify(text.style)', JSON.stringify(text.style));
-//    console.log('typeof JSON.stringify(text.style)', typeof JSON.stringify(text.style));
-//    console.log('JSON.stringify(text.style)', JSON.stringify(text.style).replace(/-/g, '-').replace(/,/g, ';'));
     var styleString = JSON.stringify(text.style, null)
             .replace(/"/g, '')
             .replace(/,/g, ';')
             .replace(/\{/g, '')
             .replace(/\}/g, ';')
             .replace(/\s/g, '');
-            
-    var styleString = JSON.stringify(text.style,function(key, value){
-            return (typeof value === 'function' ) ? value.toString() : value;
-        }); 
-//    console.log('styleString', styleString);
+    //console.log('styleString', styleString);
     return styleString;
 }
 
-export let displayText = function (text) {
-    //console.log('in displayText');
-    //var style = formatTextStyle(text);
-    //console.log('style', style);
-    //return '<div style="'+style+'">'+text.text+'</div>';
-    return '<div style="">'+text.text+'</div>';
+export let getText = function (text, forPage = false) {
+    //console.log('in getText', text);
+    var element = $.extend(true, {}, text);
+    var style = formatTextStyle(element);
+    if(forPage) {
+        return '<div class="single_element text_element" data-type="text" data-guid="'+element.guid+'" (click)="context.manageElement($event)" style="'+style+'">'+element.text+'</div>';
+    } else {
+        return '<div class="display_element" style="'+style+'">'+element.text+'</div>';
+    }
 }
