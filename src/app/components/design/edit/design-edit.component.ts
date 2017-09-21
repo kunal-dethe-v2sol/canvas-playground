@@ -214,10 +214,6 @@ export class DesignEditComponent implements OnInit {
         $('.single_element').removeClass('focused_element');
     }
 
-    setElementLocation(element) {
-        
-    }
-
     /**
      * Sets the selected element.
      * @param element 
@@ -292,14 +288,17 @@ export class DesignEditComponent implements OnInit {
         }
     }
 
+    setElementLocation(element) {
+        //element.style[''] = 'translate(476px, 304px)';
+    }
+
     pushElementToDesignObject(current_page_no, element) {
         //generate a random identifier for this element
         var elem = $.extend(true, {}, element);
 
         elem.guid = this.generateId();
+        this.setElementLocation(elem);
         this.design['pages'][current_page_no].elements.push(elem);
-
-        this.setElementLocation(element);
     }
 
     updateSelectedElementStyle(newStyles) {
