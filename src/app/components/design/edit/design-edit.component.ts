@@ -114,11 +114,13 @@ export class DesignEditComponent implements OnInit {
     ngOnInit() {
         this._design_id = this._sharedService.getStorageService().getLocal().retrieve('activeDesignId');
 
+        var header_text = '';
         var template_id = this._design_id.split('-');
         template_id = template_id[0];
         var template = {};
         for (var templateIndex in templateList) {
             if (template_id == templateList[templateIndex].uuid) {
+                header_text = templateList[templateIndex].title;
                 this.page_size.width = templateList[templateIndex].width;
                 this.page_size.height = templateList[templateIndex].height;
 
@@ -131,7 +133,7 @@ export class DesignEditComponent implements OnInit {
         if (savedDesign) {
             this.design = savedDesign;
         } else {
-            this.design.header_text = '';
+            this.design.header_text = header_text || '';
             this.design.last_page_no = 1;
             this.design.pages = [
                 {
