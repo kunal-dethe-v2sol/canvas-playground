@@ -2,6 +2,10 @@
 .clone_page_btn {
     color: #000000 !important;
 }
+.clone_page_btn {
+    margin-bottom: 10px;
+}
+
 .single_page {
     background-color: #ffffff;
     color: #000000 !important;

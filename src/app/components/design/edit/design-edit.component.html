@@ -42,7 +42,7 @@
                 </div>
             </div>
             
-            <div *ngIf="showTextOptions" class="col-md-8">
+            <div *ngIf="showTextOptions" class="col-md-8" [@slideInOut]>
                 <div class="btn-toolbar">
                     <div class="btn-group">
                         <select class="form-control" (change)="fontPropertyChanged('font-family', $event)">
@@ -121,9 +121,9 @@
         <div class="col-md-10 full_height">
             <div class="col-md-12 max_height">
                 <div class="col-md-12 full_height" #single_page_wrapper>
-                    <div *ngFor="let page of design.pages" class="single_page_wrapper full_height" in-viewport [inViewportOptions]="{rootElement:single_page_wrapper, partial:false}"
-                        (inViewportAction)="pageFocused(page.page_no)">
-                        <div class="col-md-11 max_height single_page" [ngStyle]="{'width': page_size.width, 'height': page_size.height}">
+                    <div *ngFor="let page of design.pages; let pageIndex = index" class="single_page_wrapper" in-viewport [inViewportOptions]="{rootElement:single_page_wrapper, partial:false}"
+                        (inViewportAction)="pageFocused(page.page_no)" [ngStyle]="{'height': page_wrapper_size.height+'px'}">
+                        <div class="col-md-11 max_height single_page" [ngStyle]="{'width': page_size.width+'px', 'height': page_size.height+'px'}">
                             <div *ngIf="show1==true">
                                     <img-cropper [image]="data" [settings]="cropperSettings"></img-cropper><br>
                                     <img [src]="data.image" [width]="cropperSettings.croppedWidth" [height]="cropperSettings.croppedHeight">
@@ -137,6 +137,7 @@
                             <br />
                             <br />
                             <a class="mdl-button mdl-js-button mdl-button--raised clone_page_btn" (click)="clonePage(page, false)">Copy</a>
+                            <a *ngIf="showDeletePageBtn" class="mdl-button mdl-js-button mdl-button--raised" (click)="deletePage(pageIndex)">Delete</a>
                         </div>
                     </div>
                 </div>
