@@ -40,10 +40,6 @@
                         <li><a href="javascript:void(0);" (click)="fontPropertyChanged('rotateX', rotateX)"><i class="icon-fixed-width icon-flip-vertical"></i> Flip Vertically</a></li>
                     </ul>
                 </div>
-                <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" (click)="rotate()">Rotate</button>
-                <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" (click)="showdiv()">Crop</button>
-                <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" (click)="showCopy()">Copy</button>
-                <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" (click)="flip()">Flip</button>
             </div>
             
             <div *ngIf="showTextOptions" class="col-md-8">
@@ -110,6 +106,8 @@
                         <span><input type="range" [(ngModel)]="opacity" class="slider" min="0" max="1" step="0.1" value="1" (change)="fontPropertyChanged('opacity', $event)" />&nbsp; {{opacity}}</span>
                     </li>
                 </ul>
+
+                <button class="btn btn-default" data-original-title="Delete" (click)="deleteElement()"><i class="icon-trash"></i> Delete</button>
             </div>
         </div>
     </div>
@@ -125,7 +123,7 @@
                 <div class="col-md-12 full_height" #single_page_wrapper>
                     <div *ngFor="let page of design.pages" class="single_page_wrapper full_height" in-viewport [inViewportOptions]="{rootElement:single_page_wrapper, partial:false}"
                         (inViewportAction)="pageFocused(page.page_no)">
-                        <div class="col-md-11 max_height single_page">
+                        <div class="col-md-11 max_height single_page" [ngStyle]="{'width': page_size.width, 'height': page_size.height}">
                             <div *ngIf="show1==true">
                                     <img-cropper [image]="data" [settings]="cropperSettings"></img-cropper><br>
                                     <img [src]="data.image" [width]="cropperSettings.croppedWidth" [height]="cropperSettings.croppedHeight">

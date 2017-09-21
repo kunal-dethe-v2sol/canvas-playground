@@ -5,7 +5,7 @@
 }
 .max_height {
     height: 90%;
-    overflow: auto;
+    /*overflow: auto;*/
     margin-top: 15px;
 }
 .pointer {

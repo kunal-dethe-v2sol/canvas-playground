@@ -113,7 +113,7 @@ export class DesignComponent implements OnInit {
     }
 
     createDesign() {
-        this.design_id = this.generateId();
+        this.design_id = this._template_id + '-' + this.generateId();
         this._sharedService.getStorageService().getLocal().store('activeDesignId', this.design_id);
         this._sharedService.getStorageService().getLocal().clear('activeDesign');
 

@@ -50,10 +50,6 @@ export class HomeComponent implements OnInit {
     }
 
     //Custom Methods
-    editTemplate(template) {
-        this._router.navigate(['/design'], {queryParams: {action: 'create', template: template.uuid}});
-    }
-    
     loadMyDesigns() {
         this.designs = [];
         var localStorage = window.localStorage;
@@ -70,6 +66,10 @@ export class HomeComponent implements OnInit {
             }
         }
         //console.log('this.designs', this.designs);
+    }
+    
+    editTemplate(template) {
+        this._router.navigate(['/design'], {queryParams: {action: 'create', template: template.uuid}});
     }
     
     editMyDesign(design) {

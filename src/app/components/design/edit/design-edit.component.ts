@@ -3,6 +3,7 @@ import {Router, ActivatedRoute} from '@angular/router';
 
 import {SharedService} from './../../shared/service/shared.service';
 
+import {templateList} from './../../shared/data/templates';
 import {textList, fontFamilyList, fontSizeList, getText} from './../../shared/data/texts';
 import {imageList, getImage} from './../../shared/data/images';
 import {ImageCropperComponent, CropperSettings} from 'ng2-img-cropper';
@@ -20,11 +21,12 @@ export class DesignEditComponent implements OnInit {
     
     //Variables
     private _design_id: any = '';
+    private _current_page_no = 1;
     
     public loggedInUserData;
-    public _current_page_no = 1;
 
     public design: any = [];
+    public page_size: any = {};
     public selected_element: any;
 
     public letterSpacing = 0;
@@ -86,6 +88,16 @@ export class DesignEditComponent implements OnInit {
     ngOnInit() {
         this._design_id = this._sharedService.getStorageService().getLocal().retrieve('activeDesignId');
         
+        var template_id = this._design_id.split('-');
+        template_id = template_id[0];
+        var template = {};
+        for(var templateIndex in templateList) {
+            if(template_id == templateList[templateIndex].uuid) {
+                this.page_size.width = templateList[templateIndex].width;
+                this.page_size.height = templateList[templateIndex].height;
+            }
+        }
+
         //Check if some design is already saved in the local storage
         var savedDesign = this._sharedService.getStorageService().getLocal().retrieve('design.' + this.loggedInUserData.uuid + '.' + this._design_id);
         if(savedDesign) {
@@ -102,17 +114,6 @@ export class DesignEditComponent implements OnInit {
             this.saveDesign();
         }
     }
-
-    showdiv(){
-         this.show1 = !this.show1;
-    }
-    showfilter(){
-         this.show3 = !this.show3;
-    }
-    showCopy(){
-         this.show2 = !this.show2;
-    }
-    
 
     //Custom Methods
     saveDesign() {
@@ -272,6 +273,20 @@ export class DesignEditComponent implements OnInit {
         for(var i in elements) {
             if(guid == elements[i].guid) {
                 this.pushElementToDesignObject(this._current_page_no - 1, elements[i]);
+                return;
+            }
+        }
+    }
+
+    deleteElement() {
+        //get guid from the selected element
+        var guid = this.selected_element.dataset.guid;
+
+        //find the element object from the design variable for this guid
+        var elements = this.design['pages'][this._current_page_no - 1].elements;
+        for(var i in elements) {
+            if(guid == elements[i].guid) {
+                this.design['pages'][this._current_page_no - 1].elements.splice(i, 1);
                 return;
             }
         }
