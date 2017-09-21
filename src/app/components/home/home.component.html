@@ -49,12 +49,13 @@
                             <div class="col-md-12">
                                 List of my designs
                             </div>
-                        <div *ngFor="let design of designs" (click)="editMyDesign(design)" class="col-md-3 text-center margin" style="margin:5px; border:1px grey dashed; cursor:pointer;">
+                        <div *ngFor="let design of designs; let i = index" class="col-md-3 text-center margin" style="margin:5px; border:1px grey dashed;">
                             <div class="col-md-12">
-                                {{design.id}}
+                                <span (click)="editMyDesign(design)" style="cursor:pointer;">{{design.id}}</span>
                                 <br />
                                 <br />
                                 {{design.header_text}}
+                                <button class="btn btn-default" (click)="deleteMyDesign(design, i)">Delete</button>
                             </div>
                         </div>
                     </div>

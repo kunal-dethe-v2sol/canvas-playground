@@ -298,6 +298,8 @@ export class DesignEditComponent implements OnInit {
 
         elem.guid = this.generateId();
         this.design['pages'][current_page_no].elements.push(elem);
+
+        this.setElementLocation(element);
     }
 
     updateSelectedElementStyle(newStyles) {
@@ -408,14 +410,6 @@ export class DesignEditComponent implements OnInit {
         //console.log('this._current_page_no', this._current_page_no);
         this.pushElementToDesignObject(this._current_page_no - 1, image);
         //console.log('this.design', this.design);
-    }
-    grayscale(value) {
-        //console.log('value', value);
-        var grayscale = {
-            "-webkit-filter": "grayscale(" + value + "%)",
-            "filter": "grayscale(" + value + "%)",
-        }
-        this.imageStyle = grayscale;
     }
     rotate() {
         var rotate = {

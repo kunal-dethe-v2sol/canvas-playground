@@ -76,6 +76,16 @@ export class HomeComponent implements OnInit {
         this._router.navigate(['/design', design.id, 'edit']);
     }
 
+    deleteMyDesign(design, index) {
+        var designExists = this._sharedService.getStorageService().getLocal().retrieve('design.' + this.loggedInUserData.uuid + '.' + design.id);
+        if(designExists) {
+            if(confirm('Are you sure to delete this design?')) {
+                this.designs.splice(index, 1);
+                this._sharedService.getStorageService().getLocal().clear('design.' + this.loggedInUserData.uuid + '.' + design.id);
+            }
+        }
+    }
+
     logout() {
         this._sharedService.getAuthService().logout();
         this._sharedService.loginEventEmitter.emit(false);
