@@ -128,7 +128,7 @@
                     <!--<div *ngFor="let page of design.pages; let pageIndex = index" class="single_page_wrapper" in-viewport [inViewportOptions]="{rootElement:single_page_wrapper, partial:false}"
                         (inViewportAction)="pageFocused(page.page_no)" [ngStyle]="{'height': page_wrapper_size.height+'px'}">-->
                     <div *ngFor="let page of design.pages; let pageIndex = index" class="single_page_wrapper" (click)="pageFocused(page.page_no)" [ngStyle]="{'height': page_wrapper_size.height+'px'}">
-                        <div class="col-md-11 max_height single_page" [ngStyle]="{'width': page_size.width+'px', 'height': page_size.height+'px'}">
+                        <div class="col-md-11 max_height single_page" id="single_page_{{pageIndex}}" [ngStyle]="{'width': page_size.width+'px', 'height': page_size.height+'px'}">
                             <div *ngIf="show1==true">
                                     <img-cropper [image]="data" [settings]="cropperSettings"></img-cropper><br>
                                     <img [src]="data.image" [width]="cropperSettings.croppedWidth" [height]="cropperSettings.croppedHeight">

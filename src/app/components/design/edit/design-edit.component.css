@@ -19,6 +19,13 @@
     height: 100% !important;
 }
 
+.ui-resizable-helper {
+    border: 1px dotted gray;
+}
+.ui-resizable-ghost {
+    border: 1px dotted gray;
+}
+
 /*Start:: Slider*/
 .dropdown-menu li {
     padding: 10px;

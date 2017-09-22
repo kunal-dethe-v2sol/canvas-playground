@@ -16,6 +16,7 @@ export let textList = [
             'margin-left': '0',
             'margin-right': '0',
             'font-weight': 'bold',
+            'width': 'fit-content',
         }
     },
     {
@@ -31,6 +32,7 @@ export let textList = [
             'margin-left': '0',
             'margin-right': '0',
             'font-weight': 'bold',
+            'width': 'fit-content',
         }
     },
     {
@@ -46,6 +48,7 @@ export let textList = [
             'margin-left': '0',
             'margin-right': '0',
             'font-weight': 'bold',
+            'width': 'fit-content',
         }
     },
     {
@@ -61,6 +64,7 @@ export let textList = [
             'margin-left': '0',
             'margin-right': '0',
             'font-weight': 'bold',
+            'width': 'fit-content',
         }
     },
     {
@@ -76,6 +80,7 @@ export let textList = [
             'margin-left': '0',
             'margin-right': '0',
             'font-weight': 'bold',
+            'width': 'fit-content',
         }
     },
     {
@@ -91,6 +96,7 @@ export let textList = [
             'margin-left': '0',
             'margin-right': '0',
             'font-weight': 'bold',
+            'width': 'fit-content',
         }
     }
 ];

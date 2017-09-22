@@ -266,6 +266,9 @@ export class DesignEditComponent implements OnInit {
     hideToolbar() {
         this.hideAllOptions();
         $('.single_element').removeClass('focused_element');
+        if($('.ui-resizable').length) {
+            $('.ui-resizable').resizable("destroy");
+        }
     }
 
     setDefautllOptions() {
@@ -313,10 +316,38 @@ export class DesignEditComponent implements OnInit {
      */
     selectedElement(element) {
         $('.single_element').removeClass('focused_element');
+        if($('.ui-resizable').length) {
+            $('.ui-resizable').resizable("destroy");
+        }
+
         $(element).addClass('focused_element');
         this.selected_element = element;
 
         this.retainElementStyles(element);
+
+        var that = this;
+        $(this.selected_element).resizable({
+            animate: true,
+            //containment: "#single_page_"+(this._current_page_no - 1),
+            helper: "ui-resizable-helper",
+            maxWidth: this.page_size.width - 30,
+            resize: function( event, ui ) {
+                ui.size.height = Math.round( ui.size.height / 30 ) * 30;
+                ui.size.width = Math.round( ui.size.width / 30 ) * 30;
+                
+                var guid = event.target.dataset.guid;
+
+                //find the element object from the design variable for this guid
+                var elements = that.design['pages'][that._current_page_no - 1].elements;
+                for (var i in elements) {
+                    if (guid == elements[i].guid) {
+                        that.design['pages'][that._current_page_no - 1].elements[i].style['height'] = ui.size.height + 'px';
+                        that.design['pages'][that._current_page_no - 1].elements[i].style['width'] = ui.size.width + 'px';
+                        return;
+                    }
+                }
+            }
+        });
     }
 
     manageElement($event) {
@@ -386,10 +417,10 @@ export class DesignEditComponent implements OnInit {
     setElementLocation(element) {
         //get the middle of the page
         var x = parseInt(this.page_size.width) / 2;
-        var y = parseInt(this.page_size.height) / 4;
+        var y = parseInt(this.page_size.height) / 3;
 
-        x = 0;
-        y = 0;
+        //x = 0;
+        //y = 0;
 
         element.style['transform'] = 'translate('+x+'px# '+y+'px)';
         return element;
