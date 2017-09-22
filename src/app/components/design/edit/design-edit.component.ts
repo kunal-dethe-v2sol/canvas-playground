@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation, trigger, transition, style, animate, state } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, trigger, transition, style, animate } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 
 import { SharedService } from './../../shared/service/shared.service';
@@ -26,15 +26,13 @@ declare var $: any;
             ])
         ]),
         trigger('slideInOut', [
-            state('*', style({ 'overflow-y': 'hidden' })),
-            state('void', style({ 'overflow-y': 'hidden' })),
             transition('* => void', [
                 style({ height: '*' }),
-                animate(250, style({ height: 0 }))
+                animate(500, style({ height: 0 }))
             ]),
             transition('void => *', [
                 style({ height: '0' }),
-                animate(250, style({ height: '*' }))
+                animate(500, style({ height: '*' }))
             ])
         ])
     ]
