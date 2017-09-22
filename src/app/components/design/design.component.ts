@@ -185,6 +185,10 @@ export class DesignComponent implements OnInit {
         }*/
     }
 
+    saveDesign() {
+        this.designEditComponent.saveDesign();
+    }
+
     displayText(text) {
         //console.log('displayText text', text);
         return getText(text);

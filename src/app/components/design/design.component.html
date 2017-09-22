@@ -7,13 +7,18 @@
                     <a routerLink="/home" class="white">Canvas Playground</a>
                 </div>
                 <div class="row col-md-9" style="margin-top: 10px;">
-                    <div class="form-group">
-                        <div class="col-md-1 text-right" style="margin-top: 10px;">
-                            <label class="white">Header:</label>
+                    <div class="row col-md-9">
+                        <div class="form-group">
+                            <div class="col-md-1 text-right" style="margin-top: 10px;">
+                                <label class="white">Header:</label>
+                            </div>
+                            <div class="col-md-6">
+                                <input class="form-control black" type="text" maxlength="100" [(ngModel)]="design_header_text" (keyup)="updateDesignHeader($event)" placeholder="Enter the design header here" />
+                            </div>
                         </div>
-                        <div class="col-md-6">
-                            <input class="form-control black" type="text" maxlength="100" [(ngModel)]="design_header_text" (keyup)="updateDesignHeader($event)" placeholder="Enter the design header here" />
-                        </div>
+                    </div>
+                    <div class="row col-md-3">
+                        <button class="btn btn-success" (click)="saveDesign()">Save Design</button>
                     </div>
                 </div>
             </div>

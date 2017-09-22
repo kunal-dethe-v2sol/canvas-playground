@@ -141,7 +141,6 @@ export class DesignEditComponent implements OnInit {
                     elements: []
                 }
             ];
-            this.saveDesign();
         }
 
         if(this.design.pages.length > 1) {
@@ -176,6 +175,14 @@ export class DesignEditComponent implements OnInit {
         return this._current_page_no;
     }
 
+    toggleDeletePageButton() {
+        if(this.design.pages.length > 1) {
+            this.showDeletePageBtn = true;
+        } else {
+            this.showDeletePageBtn = false;
+        }
+    }
+
     displayElement(element) {
         var html = '';
         switch (element.type) {
@@ -192,7 +199,6 @@ export class DesignEditComponent implements OnInit {
             default:
         }
 
-        this.saveDesign();
         return html;
     }
 
@@ -207,7 +213,7 @@ export class DesignEditComponent implements OnInit {
         this.design.last_page_no++;
         //console.log('this.design.last_page_no', this.design.last_page_no);
 
-        this.saveDesign();
+        this.toggleDeletePageButton();
     }
 
     clonePage(page, empty = true) {
@@ -239,9 +245,9 @@ export class DesignEditComponent implements OnInit {
             this.design['pages'][new_page_no - 1].elements = [];
         }
 
-        //console.log("this.design", this.design);
+        this.toggleDeletePageButton();
 
-        this.saveDesign();
+        //console.log("this.design", this.design);
     }
 
     deletePage(pageIndex) {
@@ -256,12 +262,13 @@ export class DesignEditComponent implements OnInit {
             this.design['pages'][0].page_no = 1;
         }
         this.design.last_page_no--;
-        
-        this.saveDesign();
+
+        this.toggleDeletePageButton();
     }
 
     updateDesignHeader(header_text) {
         this.design.header_text = header_text;
+
         this.saveDesign();
     }
 
@@ -344,8 +351,6 @@ export class DesignEditComponent implements OnInit {
         for (var i in elements) {
             if (guid == elements[i].guid) {
                 this.design['pages'][this._current_page_no - 1].elements.splice(i, 1);
-
-                this.saveDesign();
 
                 //hide all the options
                 this.hideAllOptions();
