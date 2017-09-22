@@ -329,23 +329,52 @@ export class DesignEditComponent implements OnInit {
         $(this.selected_element).resizable({
             animate: true,
             //containment: "#single_page_"+(this._current_page_no - 1),
+            //containment: "parent",
             helper: "ui-resizable-helper",
-            maxWidth: this.page_size.width - 30,
+            minWidth: parseInt(this.selected_element.style.width),
+            maxWidth: this.page_size.width - parseInt(this.selected_element.style.width),
+            //handles: 'n, e, s, w',
+            handles: 'e, w',
             resize: function( event, ui ) {
                 ui.size.height = Math.round( ui.size.height / 30 ) * 30;
                 ui.size.width = Math.round( ui.size.width / 30 ) * 30;
-                
-                var guid = event.target.dataset.guid;
 
+                //console.log('ui', ui);
+                //console.log('ui.originalSize', ui.originalSize);
+
+                var elementIndex: any = 0;
+                var guid = event.target.dataset.guid;
                 //find the element object from the design variable for this guid
                 var elements = that.design['pages'][that._current_page_no - 1].elements;
                 for (var i in elements) {
                     if (guid == elements[i].guid) {
-                        that.design['pages'][that._current_page_no - 1].elements[i].style['height'] = ui.size.height + 'px';
-                        that.design['pages'][that._current_page_no - 1].elements[i].style['width'] = ui.size.width + 'px';
-                        return;
+                        elementIndex = i;
                     }
                 }
+
+                var changeWidth: any = 0;
+                if(ui.size.width > ui.originalSize.width) {
+                    //width increased
+                    changeWidth = ui.size.width - ui.originalSize.width;
+
+                    // console.log('ui.size.width', ui.size.width);
+                    // console.log('ui.originalSize.width', ui.originalSize.width);
+                    // console.log('changeWidth', changeWidth);
+
+                    // console.log("that.design['pages'][that._current_page_no - 1].elements[elementIndex].style['transformX']", that.design['pages'][that._current_page_no - 1].elements[elementIndex].style['transformX']);
+                    // console.log("that.design['pages'][that._current_page_no - 1].elements[elementIndex].style['transformY']", that.design['pages'][that._current_page_no - 1].elements[elementIndex].style['transformY']);
+
+                    var transformX = parseInt(that.design['pages'][that._current_page_no - 1].elements[elementIndex].style['transformX']) - parseInt(changeWidth);
+                    var transformY = parseInt(that.design['pages'][that._current_page_no - 1].elements[elementIndex].style['transformY']);
+                    that.design['pages'][that._current_page_no - 1].elements[i].style['transform'] = 'translate('+transformX+'px# '+transformY+'px)';
+                } else {
+                    //width decreased
+                    changeWidth = ui.originalSize.width - ui.size.width;
+
+                }
+                
+                that.design['pages'][that._current_page_no - 1].elements[i].style['height'] = ui.size.height + 'px';
+                that.design['pages'][that._current_page_no - 1].elements[i].style['width'] = ui.size.width + 'px';
             }
         });
     }
@@ -423,6 +452,8 @@ export class DesignEditComponent implements OnInit {
         //y = 0;
 
         element.style['transform'] = 'translate('+x+'px# '+y+'px)';
+        element.style['transformX'] = x;
+        element.style['transformY'] = y;
         return element;
     }
 
@@ -446,7 +477,6 @@ export class DesignEditComponent implements OnInit {
                 for (var newStyleIndex in newStyles) {
                     this.design['pages'][this._current_page_no - 1].elements[i].style[newStyleIndex] = newStyles[newStyleIndex];
                 }
-
                 return;
             }
         }
