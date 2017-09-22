@@ -277,6 +277,7 @@ export class DesignEditComponent implements OnInit {
         $('.single_element').removeClass('focused_element');
         $(element).addClass('focused_element');
         this.selected_element = element;
+        $(this.selected_element).resizable().rotatable();
     }
 
     manageElement($event) {
