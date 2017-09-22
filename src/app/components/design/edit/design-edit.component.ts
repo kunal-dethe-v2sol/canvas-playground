@@ -148,6 +148,8 @@ export class DesignEditComponent implements OnInit {
         } else {
             this.showDeletePageBtn = false;
         }
+
+        this.saveDesign();
     }
 
     //Custom Methods
@@ -199,6 +201,7 @@ export class DesignEditComponent implements OnInit {
             default:
         }
 
+        this.saveDesign();
         return html;
     }
 
@@ -214,6 +217,8 @@ export class DesignEditComponent implements OnInit {
         //console.log('this.design.last_page_no', this.design.last_page_no);
 
         this.toggleDeletePageButton();
+
+        this.saveDesign();
     }
 
     clonePage(page, empty = true) {
@@ -247,6 +252,8 @@ export class DesignEditComponent implements OnInit {
 
         this.toggleDeletePageButton();
 
+        this.saveDesign();
+
         //console.log("this.design", this.design);
     }
 
@@ -264,6 +271,8 @@ export class DesignEditComponent implements OnInit {
         this.design.last_page_no--;
 
         this.toggleDeletePageButton();
+
+        this.saveDesign();
     }
 
     updateDesignHeader(header_text) {
@@ -336,6 +345,8 @@ export class DesignEditComponent implements OnInit {
         for (var i in elements) {
             if (guid == elements[i].guid) {
                 this.pushElementToDesignObject(this._current_page_no - 1, elements[i]);
+
+                this.saveDesign();
                 return;
             }
         }
@@ -351,6 +362,8 @@ export class DesignEditComponent implements OnInit {
         for (var i in elements) {
             if (guid == elements[i].guid) {
                 this.design['pages'][this._current_page_no - 1].elements.splice(i, 1);
+
+                this.saveDesign();
 
                 //hide all the options
                 this.hideAllOptions();
@@ -379,6 +392,8 @@ export class DesignEditComponent implements OnInit {
         elem.guid = this.generateId();
         elem = this.setElementLocation(elem);
         this.design['pages'][current_page_no].elements.push(elem);
+
+        this.saveDesign();
     }
 
     updateSelectedElementStyle(newStyles) {
@@ -392,6 +407,8 @@ export class DesignEditComponent implements OnInit {
                 for (var newStyleIndex in newStyles) {
                     this.design['pages'][this._current_page_no - 1].elements[i].style[newStyleIndex] = newStyles[newStyleIndex];
                 }
+
+                this.saveDesign();
                 return;
             }
         }
@@ -425,6 +442,35 @@ export class DesignEditComponent implements OnInit {
             case 'text-align':
             case 'text-transform':
                 newStyles[type] = $event;
+                break;
+
+            case 'filter':
+                switch($event) {
+                    case 'normal':
+                        //brightness
+                        this.brightness = 50;
+                        newStyles['-webkit-filter'] = "brightness(50%)";
+                        newStyles['filter'] = "brightness(50%)";
+
+                        //contrast
+                        this.contrast = 50;
+                        newStyles['-webkit-filter'] = "contrast(50%)";
+                        newStyles['filter'] = "contrast(50%)";
+
+                        //saturate
+                        this.saturation = 0;
+                        newStyles['-webkit-filter'] = "saturate(0)";
+                        newStyles['filter'] = "saturate(0)";
+
+                        //blur
+                        this.blur = 0;
+                        newStyles['-webkit-filter'] = "blur(0px)";
+                        newStyles['filter'] = "blur(0px)";
+                        break;
+
+                    default:
+                        break;
+                }
                 break;
 
             case 'brightness':

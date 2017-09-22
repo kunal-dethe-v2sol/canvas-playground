@@ -8,6 +8,10 @@
                         Filter <span class="icon-caret-down"></span>
                     </a>
                     <ul class="dropdown-menu">
+                        <li>
+                            <span><button class="btn btn-default" (click)="fontPropertyChanged('filter', 'normal')">Normal</button></span>
+                        </li>
+                        
                         <li><span>Brightness</span><br />
                             <span><input type="range" [(ngModel)]="brightness" class="slider" min="0" max="100" step="1" value="50" (change)="fontPropertyChanged('brightness', $event)" />&nbsp; {{brightness}}</span>
                         </li>
