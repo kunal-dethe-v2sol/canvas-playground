@@ -56,7 +56,6 @@ export class HomeComponent implements OnInit {
         for (var i = 0; i < localStorage.length; i++){
             if (localStorage.key(i).substring(0, 50) == 'canvas.design.' + this.loggedInUserData.uuid) {
                 var design = localStorage.key(i).split('.');
-                //console.log('design', design);
                 var value = JSON.parse(localStorage.getItem(localStorage.key(i)));
                 var designData = {
                     id: design[3],
@@ -65,7 +64,6 @@ export class HomeComponent implements OnInit {
                 this.designs.push(designData);
             }
         }
-        //console.log('this.designs', this.designs);
     }
     
     editTemplate(template) {

@@ -128,7 +128,7 @@ export class DesignEditComponent implements OnInit {
 
         //Check if some design is already saved in the local storage
         var savedDesign = this._sharedService.getStorageService().getLocal().retrieve('design.' + this.loggedInUserData.uuid + '.' + this._design_id);
-        if (savedDesign) {
+        if (savedDesign.last_page_no) {
             this.design = savedDesign;
         } else {
             this.design.header_text = header_text || '';
@@ -146,11 +146,13 @@ export class DesignEditComponent implements OnInit {
         } else {
             this.showDeletePageBtn = false;
         }
-
-        this.saveDesign();
     }
 
     //Custom Methods
+    clearDesignObject() {
+        this.design = [];
+    }
+
     saveDesign() {
         var storageData = {
             header_text: this.design.header_text,
@@ -159,16 +161,11 @@ export class DesignEditComponent implements OnInit {
         };
         this._sharedService.getStorageService().getLocal().store('design.' + this.loggedInUserData.uuid + '.' + this._design_id, storageData);
 
-        if(this.design.pages.length > 1) {
-            this.showDeletePageBtn = true;
-        } else {
-            this.showDeletePageBtn = false;
-        }
+        this.toggleDeletePageButton();
     }
 
     pageFocused(page_no) {
         this._current_page_no = page_no;
-        //console.log('scrolled to page_no', this._current_page_no);
     }
 
     getCurrentPage() {
@@ -187,24 +184,20 @@ export class DesignEditComponent implements OnInit {
         var html = '';
         switch (element.type) {
             case 'text':
-                //console.log('element.type', element.type);
                 html = getText(element, true);
                 break;
 
             case 'image':
-                //console.log('element.type', element.type);
                 html = getImage(element, true);
                 break;
 
             default:
         }
 
-        this.saveDesign();
         return html;
     }
 
     createEmptyPage() {
-        //console.log('this.design.last_page_no', this.design.last_page_no);
         var max_page_no = this.design.last_page_no;
         max_page_no++;
         this.design['pages'][max_page_no - 1] = Object.assign({}, this.design['pages'][max_page_no - 1]);
@@ -212,11 +205,8 @@ export class DesignEditComponent implements OnInit {
         this.design['pages'][max_page_no - 1].elements = [];
 
         this.design.last_page_no++;
-        //console.log('this.design.last_page_no', this.design.last_page_no);
-
+        
         this.toggleDeletePageButton();
-
-        this.saveDesign();
     }
 
     clonePage(page, empty = true) {
@@ -225,18 +215,15 @@ export class DesignEditComponent implements OnInit {
 
         if (this.design.last_page_no == 1) {
             //there is only one page in the design
-            //console.log('only one page');
         } else if (clone_page_no != this.design.last_page_no) {
             //if cloning page is not the last page, so inserting in-between the pages
             //increment page_no by 1 for all further pages
-            //console.log('in-between pages');
             for (var i = this.design.last_page_no; i > clone_page_no; i--) {
                 this.design['pages'][i] = this.design['pages'][i - 1];
                 this.design['pages'][i].page_no++;
             }
         } else {
             //there are multiple pages and cloning the last page
-            //console.log('multiple pages');
         }
 
         new_page_no = clone_page_no + 1;
@@ -249,10 +236,6 @@ export class DesignEditComponent implements OnInit {
         }
 
         this.toggleDeletePageButton();
-
-        this.saveDesign();
-
-        //console.log("this.design", this.design);
     }
 
     deletePage(pageIndex) {
@@ -269,14 +252,10 @@ export class DesignEditComponent implements OnInit {
         this.design.last_page_no--;
 
         this.toggleDeletePageButton();
-
-        this.saveDesign();
     }
 
     updateDesignHeader(header_text) {
         this.design.header_text = header_text;
-
-        this.saveDesign();
     }
 
     hideAllOptions() {
@@ -298,12 +277,9 @@ export class DesignEditComponent implements OnInit {
         $('.single_element').removeClass('focused_element');
         $(element).addClass('focused_element');
         this.selected_element = element;
-        //console.log('this.selected_element', this.selected_element);
-        //console.log("this.design", this.design);
     }
 
     manageElement($event) {
-        //console.log('in manageElement', $event);
         this.hideAllOptions();
 
         if ($event) {
@@ -343,8 +319,6 @@ export class DesignEditComponent implements OnInit {
         for (var i in elements) {
             if (guid == elements[i].guid) {
                 this.pushElementToDesignObject(this._current_page_no - 1, elements[i]);
-
-                this.saveDesign();
                 return;
             }
         }
@@ -360,8 +334,6 @@ export class DesignEditComponent implements OnInit {
         for (var i in elements) {
             if (guid == elements[i].guid) {
                 this.design['pages'][this._current_page_no - 1].elements.splice(i, 1);
-
-                this.saveDesign();
 
                 //hide all the options
                 this.hideAllOptions();
@@ -390,8 +362,6 @@ export class DesignEditComponent implements OnInit {
         elem.guid = this.generateId();
         elem = this.setElementLocation(elem);
         this.design['pages'][current_page_no].elements.push(elem);
-
-        this.saveDesign();
     }
 
     updateSelectedElementStyle(newStyles) {
@@ -406,7 +376,6 @@ export class DesignEditComponent implements OnInit {
                     this.design['pages'][this._current_page_no - 1].elements[i].style[newStyleIndex] = newStyles[newStyleIndex];
                 }
 
-                this.saveDesign();
                 return;
             }
         }
@@ -512,36 +481,7 @@ export class DesignEditComponent implements OnInit {
         }
     }
 
-    /**
-     * Start :: Text Options
-     */
-    insertText(text) {
-        //load a element in the current page.
-        //console.log('this._current_page_no', this._current_page_no);
-        this.pushElementToDesignObject(this._current_page_no - 1, text);
-        //console.log('this.design', this.design);
+    insertElement(element) {
+        this.pushElementToDesignObject(this._current_page_no - 1, element);
     }
-    /**
-     * End :: Text Options
-     */
-
-    /**
-     * Start :: Image Options
-     */
-    insertImage(image) {
-        //load a element in the current page.
-        //console.log('this._current_page_no', this._current_page_no);
-        this.pushElementToDesignObject(this._current_page_no - 1, image);
-        //console.log('this.design', this.design);
-    }
-    rotate() {
-        var rotate = {
-            "-webkit-transform": "rotate(" + 180 + "deg)",
-            "transform": "rotate(" + 180 + "deg)",
-        }
-        this.imageStyle = rotate;
-    }
-    /**
-     * End :: Text Options
-     */
 }

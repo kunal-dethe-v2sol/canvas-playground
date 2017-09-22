@@ -63,11 +63,12 @@ export class DesignComponent implements OnInit {
             //on load of the design edit route.
             this.loadList('layouts');
         }
-        //console.log('imageList', imageList)
     }
 
     //Angular Hooks
     ngOnInit() {
+        this.designEditComponent.clearDesignObject();
+
         //When creating a new design.
         //ie. clicked ona template on the home page
         this._activatedRoute
@@ -91,8 +92,6 @@ export class DesignComponent implements OnInit {
         if (this._design_id) {
             var designExists = this._sharedService.getStorageService().getLocal().retrieve('design.' + this.loggedInUserData.uuid + '.' + this._design_id);
             if(designExists) {
-                //console.log('from storage', designExists);
-                //console.log('header from storage', designExists.header_text);
                 this.design_header_text = designExists.header_text;
                 this._sharedService.getStorageService().getLocal().store('activeDesignId', this._design_id);
             } else {
@@ -172,38 +171,41 @@ export class DesignComponent implements OnInit {
 
     updateDesignHeader($event) {
         this.designEditComponent.updateDesignHeader($event.target.value);
-
-        /*var savedDesign = this._sharedService.getStorageService().getLocal().retrieve('design.' + this.loggedInUserData.uuid + '.' + this._design_id);
-        if(savedDesign) {
-            savedDesign.header_text = $event.target.value;
-            var storageData = {
-                header_text: savedDesign.header_text,
-                last_page_no: savedDesign.last_page_no,
-                pages: savedDesign.pages
-            };
-            this._sharedService.getStorageService().getLocal().store('design.' + this.loggedInUserData.uuid + '.' + this._design_id, storageData);
-        }*/
     }
 
     saveDesign() {
         this.designEditComponent.saveDesign();
     }
 
-    displayText(text) {
-        //console.log('displayText text', text);
-        return getText(text);
-    }
+    displayElement(type, element) {
+        var html = '';
+        switch(type) {
+            case 'text':
+                html = getText(element);
+                break;
 
-    insertText(text) {
-        this.designEditComponent.insertText(text);
-    }
+            case 'image':
+                html = getImage(element);
+                break;
 
-    displayImage(image) {
-        return getImage(image);
-    }
+            default:
 
-    insertImage(image) {
-        //console.log('image1:', image);
-        this.designEditComponent.insertImage(image);
+        }
+        return html;
+    }
+    
+    insertElement(type, element) {
+        switch(type) {
+            case 'text':
+                this.designEditComponent.insertElement(element);
+                break;
+
+            case 'image':
+                this.designEditComponent.insertElement(element);
+                break;
+
+            default:
+
+        }
     }
 }
