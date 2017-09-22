@@ -9,6 +9,7 @@ export let textList = [
         text: 'Header 1',
         style: {
             'display': 'block',
+            'font-family': 'sans-serif',
             'font-size': '2em',
             'margin-top': '0.67em',
             'margin-bottom': '0.67em',
@@ -23,6 +24,7 @@ export let textList = [
         text: 'Header 2',
         style: {
             'display': 'block',
+            'font-family': 'sans-serif',
             'font-size': '1.5em',
             'margin-top': '0.83em',
             'margin-bottom': '0.83em',
@@ -37,6 +39,7 @@ export let textList = [
         text: 'Header 3',
         style: {
             'display': 'block',
+            'font-family': 'sans-serif',
             'font-size': '1.17em',
             'margin-top': '1em',
             'margin-bottom': '1em',
@@ -51,6 +54,7 @@ export let textList = [
         text: 'Header 4',
         style: {
             'display': 'block',
+            'font-family': 'sans-serif',
             'font-size': '1em',
             'margin-top': '1.33em',
             'margin-bottom': '1.33em',
@@ -65,6 +69,7 @@ export let textList = [
         text: 'Header 5',
         style: {
             'display': 'block',
+            'font-family': 'sans-serif',
             'font-size': '.83em',
             'margin-top': '1.67em',
             'margin-bottom': '1.67em',
@@ -79,6 +84,7 @@ export let textList = [
         text: 'Header 6',
         style: {
             'display': 'block',
+            'font-family': 'sans-serif',
             'font-size': '.67em',
             'margin-top': '2.33em',
             'margin-bottom': '2.33em',
@@ -106,22 +112,22 @@ export let fontSizeList = [
     {
         uuid: 1,
         label: "8",
-        value: "8"
+        value: "8px"
     },
     {
         uuid: 2,
         label: "16",
-        value: "16"
+        value: "16px"
     },
     {
         uuid: 3,
         label: "32",
-        value: "32"
+        value: "32px"
     },
     {
         uuid: 4,
         label: "64",
-        value: "64"
+        value: "64px"
     }
 ];
 

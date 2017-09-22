@@ -68,7 +68,9 @@ export class DesignEditComponent implements OnInit {
     public showDeletePageBtn = false;
 
     public fontFamilyList = fontFamilyList;
+    public fontFamily: any = '';
     public fontSizeList = fontSizeList;
+    public fontSize: any = '';
 
     public showOptions = false;
     public showTextOptions = false;
@@ -141,11 +143,8 @@ export class DesignEditComponent implements OnInit {
             ];
         }
 
-        if(this.design.pages.length > 1) {
-            this.showDeletePageBtn = true;
-        } else {
-            this.showDeletePageBtn = false;
-        }
+        this.toggleDeletePageButton();
+        this.setDefautllOptions();
     }
 
     //Custom Methods
@@ -269,6 +268,45 @@ export class DesignEditComponent implements OnInit {
         $('.single_element').removeClass('focused_element');
     }
 
+    setDefautllOptions() {
+        this.fontFamily = 'sans-serif';
+        this.fontSize = 'sans-serif';
+        this.letterSpacing = 0
+        this.lineHeight = 1.4;
+        this.opacity = 1;
+    }
+
+    retainElementStyles(element) {
+        var guid = element.dataset.guid;
+
+        //find the element object from the design variable for this guid
+        var elements = this.design['pages'][this._current_page_no - 1].elements;
+        for (var i in elements) {
+            if (guid == elements[i].guid) {
+                var styles = elements[i].style;
+
+                this.setDefautllOptions();
+
+                if(styles['font-family']) {
+                    this.fontFamily = styles['font-family'];
+                }
+                if(styles['font-size']) {
+                    this.fontSize = styles['font-size'];
+                }
+                if(styles['letter-spacing']) {
+                    this.letterSpacing = parseInt(styles['letter-spacing']);
+                }
+                if(styles['line-height']) {
+                    this.lineHeight = styles['line-height'];
+                }
+                if(styles['opacity']) {
+                    this.opacity = styles['opacity'];
+                }
+                return;
+            }
+        }
+    }
+
     /**
      * Sets the selected element.
      * @param element 
@@ -277,6 +315,8 @@ export class DesignEditComponent implements OnInit {
         $('.single_element').removeClass('focused_element');
         $(element).addClass('focused_element');
         this.selected_element = element;
+
+        this.retainElementStyles(element);
     }
 
     manageElement($event) {
@@ -386,12 +426,12 @@ export class DesignEditComponent implements OnInit {
 
         switch (type) {
             case 'font-family':
+            case 'font-size':
             case 'line-height':
             case 'opacity':
                 newStyles[type] = $event.target.value;
                 break;
 
-            case 'font-size':
             case 'letter-spacing':
                 newStyles[type] = $event.target.value + 'px';
                 break;
