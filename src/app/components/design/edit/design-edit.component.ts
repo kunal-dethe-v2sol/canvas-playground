@@ -130,7 +130,7 @@ export class DesignEditComponent implements OnInit {
 
         //Check if some design is already saved in the local storage
         var savedDesign = this._sharedService.getStorageService().getLocal().retrieve('design.' + this.loggedInUserData.uuid + '.' + this._design_id);
-        if (savedDesign.last_page_no) {
+        if (savedDesign && savedDesign.last_page_no) {
             this.design = savedDesign;
         } else {
             this.design.header_text = header_text || '';
@@ -145,6 +145,7 @@ export class DesignEditComponent implements OnInit {
 
         this.toggleDeletePageButton();
         this.setDefautllOptions();
+        this.setUIOptions();
     }
 
     //Custom Methods
@@ -172,7 +173,7 @@ export class DesignEditComponent implements OnInit {
     }
 
     toggleDeletePageButton() {
-        if(this.design.pages.length > 1) {
+        if (this.design.pages.length > 1) {
             this.showDeletePageBtn = true;
         } else {
             this.showDeletePageBtn = false;
@@ -204,7 +205,7 @@ export class DesignEditComponent implements OnInit {
         this.design['pages'][max_page_no - 1].elements = [];
 
         this.design.last_page_no++;
-        
+
         this.toggleDeletePageButton();
     }
 
@@ -241,8 +242,8 @@ export class DesignEditComponent implements OnInit {
         this.design['pages'].splice(pageIndex, 1);
 
         //decrement the page_nos of all the pages below this page_no.
-        if(this.design['pages'].length > 1) {
-            for(var i = 0; i < this.design['pages'].length; i++) {
+        if (this.design['pages'].length > 1) {
+            for (var i = 0; i < this.design['pages'].length; i++) {
                 this.design['pages'][i].page_no--;
             }
         } else {
@@ -266,7 +267,7 @@ export class DesignEditComponent implements OnInit {
     hideToolbar() {
         this.hideAllOptions();
         $('.single_element').removeClass('focused_element');
-        if($('.ui-resizable').length) {
+        if ($('.ui-resizable').length) {
             $('.ui-resizable').resizable("destroy");
         }
     }
@@ -290,19 +291,19 @@ export class DesignEditComponent implements OnInit {
 
                 this.setDefautllOptions();
 
-                if(styles['font-family']) {
+                if (styles['font-family']) {
                     this.fontFamily = styles['font-family'];
                 }
-                if(styles['font-size']) {
+                if (styles['font-size']) {
                     this.fontSize = styles['font-size'];
                 }
-                if(styles['letter-spacing']) {
+                if (styles['letter-spacing']) {
                     this.letterSpacing = parseInt(styles['letter-spacing']);
                 }
-                if(styles['line-height']) {
+                if (styles['line-height']) {
                     this.lineHeight = styles['line-height'];
                 }
-                if(styles['opacity']) {
+                if (styles['opacity']) {
                     this.opacity = styles['opacity'];
                 }
                 return;
@@ -316,28 +317,54 @@ export class DesignEditComponent implements OnInit {
      */
     selectedElement(element) {
         $('.single_element').removeClass('focused_element');
-        if($('.ui-resizable').length) {
+        //if ($('.ui-resizable').length) {
+            //console.log("destroying resizable for elements", $('.ui-resizable').length);
             $('.ui-resizable').resizable("destroy");
-        }
+        //}
 
         $(element).addClass('focused_element');
         this.selected_element = element;
 
         this.retainElementStyles(element);
 
+        var rotatableParams = {
+            // Callback fired on rotation start.
+            start: function (event, ui) {
+            },
+            // Callback fired during rotation.
+            rotate: function (event, ui) {
+            },
+            // Callback fired on rotation end.
+            stop: function (event, ui) {
+            },
+            // Set the rotation center
+            rotationCenterOffset: {
+                top: 20,
+                left: 20
+            },
+            transforms: {
+                translate: '(50%, 50%)',
+                scale: '(2)'
+                //any other transforms
+            }
+        };
+
         var that = this;
-        $(this.selected_element).resizable({
+        console.log("$(that.selected_element)", $(that.selected_element));
+        $(that.selected_element).resizable({
             animate: true,
             //containment: "#single_page_"+(this._current_page_no - 1),
             //containment: "parent",
             helper: "ui-resizable-helper",
-            minWidth: parseInt(this.selected_element.style.width),
-            maxWidth: this.page_size.width - parseInt(this.selected_element.style.width),
+            //minWidth: parseInt(that.selected_element.style.width),
+            //maxWidth: this.page_size.width - parseInt(that.selected_element.style.width),
             //handles: 'n, e, s, w',
             handles: 'e, w',
-            resize: function( event, ui ) {
-                ui.size.height = Math.round( ui.size.height / 30 ) * 30;
-                ui.size.width = Math.round( ui.size.width / 30 ) * 30;
+            resize: function (event, ui) {
+                console.log('resize on element', event.target);
+
+                ui.size.height = Math.round(ui.size.height / 30) * 30;
+                ui.size.width = Math.round(ui.size.width / 30) * 30;
 
                 //console.log('ui', ui);
                 //console.log('ui.originalSize', ui.originalSize);
@@ -353,7 +380,7 @@ export class DesignEditComponent implements OnInit {
                 }
 
                 var changeWidth: any = 0;
-                if(ui.size.width > ui.originalSize.width) {
+                if (ui.size.width > ui.originalSize.width) {
                     //width increased
                     changeWidth = ui.size.width - ui.originalSize.width;
 
@@ -364,19 +391,29 @@ export class DesignEditComponent implements OnInit {
                     // console.log("that.design['pages'][that._current_page_no - 1].elements[elementIndex].style['transformX']", that.design['pages'][that._current_page_no - 1].elements[elementIndex].style['transformX']);
                     // console.log("that.design['pages'][that._current_page_no - 1].elements[elementIndex].style['transformY']", that.design['pages'][that._current_page_no - 1].elements[elementIndex].style['transformY']);
 
-                    var transformX = parseInt(that.design['pages'][that._current_page_no - 1].elements[elementIndex].style['transformX']) - parseInt(changeWidth);
-                    var transformY = parseInt(that.design['pages'][that._current_page_no - 1].elements[elementIndex].style['transformY']);
-                    that.design['pages'][that._current_page_no - 1].elements[i].style['transform'] = 'translate('+transformX+'px# '+transformY+'px)';
+                    // var transformX = parseInt(that.design['pages'][that._current_page_no - 1].elements[elementIndex].style['transformX']) - parseInt(changeWidth);
+                    // var transformY = parseInt(that.design['pages'][that._current_page_no - 1].elements[elementIndex].style['transformY']);
+                    // that.design['pages'][that._current_page_no - 1].elements[elementIndex].style['transform'] = 'translate(' + transformX + 'px# ' + transformY + 'px)';
+                    // that.design['pages'][that._current_page_no - 1].elements[elementIndex].style['transformX'] = transformX;
+                    // that.design['pages'][that._current_page_no - 1].elements[elementIndex].style['transformY'] = transformY;
                 } else {
                     //width decreased
                     changeWidth = ui.originalSize.width - ui.size.width;
 
+                    // var transformX = parseInt(that.design['pages'][that._current_page_no - 1].elements[elementIndex].style['transformX']) - parseInt(changeWidth);
+                    // var transformY = parseInt(that.design['pages'][that._current_page_no - 1].elements[elementIndex].style['transformY']);
+                    // that.design['pages'][that._current_page_no - 1].elements[elementIndex].style['transform'] = 'translate(' + transformX + 'px# ' + transformY + 'px)';
+                    // that.design['pages'][that._current_page_no - 1].elements[elementIndex].style['transformX'] = transformX;
+                    // that.design['pages'][that._current_page_no - 1].elements[elementIndex].style['transformY'] = transformY;
                 }
-                
-                that.design['pages'][that._current_page_no - 1].elements[i].style['height'] = ui.size.height + 'px';
-                that.design['pages'][that._current_page_no - 1].elements[i].style['width'] = ui.size.width + 'px';
+
+                that.design['pages'][that._current_page_no - 1].elements[elementIndex].style['height'] = ui.size.height + 'px';
+                that.design['pages'][that._current_page_no - 1].elements[elementIndex].style['width'] = ui.size.width + 'px';
             }
-        });
+            //}).draggable().rotatable(rotatableParams);
+        });//.rotatable(rotatableParams);
+
+        this.setUIOptions();
     }
 
     manageElement($event) {
@@ -443,6 +480,7 @@ export class DesignEditComponent implements OnInit {
         }
     }
 
+    
     setElementLocation(element) {
         //get the middle of the page
         var x = parseInt(this.page_size.width) / 2;
@@ -451,10 +489,86 @@ export class DesignEditComponent implements OnInit {
         //x = 0;
         //y = 0;
 
-        element.style['transform'] = 'translate('+x+'px# '+y+'px)';
+        element.style['transform'] = 'translate(' + x + 'px# ' + y + 'px)';
         element.style['transformX'] = x;
         element.style['transformY'] = y;
         return element;
+    }
+
+    setUIOptions() {
+        var that = this;
+
+        setTimeout(function() {
+            $(".single_element").on({
+                mouseenter: function () {
+                    //console.log('hovered in');
+                    $(this).draggable({
+                        cursor: "move",
+                        containment: "#single_page_"+(that._current_page_no - 1),
+                        scroll: false,
+                        drag: function(event, ui) {
+                            //console.log('dragged event', event);
+                            //console.log('dragged ui', ui);
+
+                            var elementIndex: any = 0;
+                            var guid = event.target.dataset.guid;
+                            //find the element object from the design variable for this guid
+                            var elements = that.design['pages'][that._current_page_no - 1].elements;
+                            for (var i in elements) {
+                                if (guid == elements[i].guid) {
+                                    elementIndex = i;
+                                }
+                            }
+
+                            that.design['pages'][that._current_page_no - 1].elements[elementIndex].style['top'] = ui.position.top+"px";
+                            that.design['pages'][that._current_page_no - 1].elements[elementIndex].style['left'] = ui.position.left+"px";
+
+                            // var changeTop: any = 0;
+                            // if (ui.position.top > ui.originalPosition.top) {
+                            //     //dragged downwards
+                            //     changeTop = ui.originalPosition.top - ui.position.top;
+                                
+                            //     var transformX = parseInt(that.design['pages'][that._current_page_no - 1].elements[elementIndex].style['transformX']);
+                            //     var transformY = parseInt(that.design['pages'][that._current_page_no - 1].elements[elementIndex].style['transformY']) + parseInt(changeTop);
+                            //     that.design['pages'][that._current_page_no - 1].elements[elementIndex].style['transform'] = 'translate(' + transformX + 'px# ' + transformY + 'px)';
+                            //     that.design['pages'][that._current_page_no - 1].elements[elementIndex].style['transformX'] = transformX;
+                            //     that.design['pages'][that._current_page_no - 1].elements[elementIndex].style['transformY'] = transformY;
+                            // } else {
+                            //     //dragged upwards
+                            //     changeTop = ui.position.top - ui.originalPosition.top;
+
+                            //     var transformX = parseInt(that.design['pages'][that._current_page_no - 1].elements[elementIndex].style['transformX']);
+                            //     var transformY = parseInt(that.design['pages'][that._current_page_no - 1].elements[elementIndex].style['transformY']) - parseInt(changeTop);
+                            //     that.design['pages'][that._current_page_no - 1].elements[elementIndex].style['transform'] = 'translate(' + transformX + 'px# ' + transformY + 'px)';
+                            //     that.design['pages'][that._current_page_no - 1].elements[elementIndex].style['transformX'] = transformX;
+                            //     that.design['pages'][that._current_page_no - 1].elements[elementIndex].style['transformY'] = transformY;
+                            // }
+
+                            // var changeLeft: any = 0;
+                            // if (ui.position.left > ui.originalPosition.left) {
+                            //     //dragged leftwards
+                            //     changeLeft = ui.originalPosition.left - ui.position.left;
+
+                            //     var transformX = parseInt(that.design['pages'][that._current_page_no - 1].elements[elementIndex].style['transformX']) - parseInt(changeLeft);
+                            //     var transformY = parseInt(that.design['pages'][that._current_page_no - 1].elements[elementIndex].style['transformY']);
+                            //     that.design['pages'][that._current_page_no - 1].elements[elementIndex].style['transform'] = 'translate(' + transformX + 'px# ' + transformY + 'px)';
+                            //     that.design['pages'][that._current_page_no - 1].elements[elementIndex].style['transformX'] = transformX;
+                            //     that.design['pages'][that._current_page_no - 1].elements[elementIndex].style['transformY'] = transformY;
+                            // } else {
+                            //     //dragged rightwards
+                            //     changeLeft = ui.position.left - ui.originalPosition.left;
+
+                            //     var transformX = parseInt(that.design['pages'][that._current_page_no - 1].elements[elementIndex].style['transformX']) + parseInt(changeLeft);
+                            //     var transformY = parseInt(that.design['pages'][that._current_page_no - 1].elements[elementIndex].style['transformY']);
+                            //     that.design['pages'][that._current_page_no - 1].elements[elementIndex].style['transform'] = 'translate(' + transformX + 'px# ' + transformY + 'px)';
+                            //     that.design['pages'][that._current_page_no - 1].elements[elementIndex].style['transformX'] = transformX;
+                            //     that.design['pages'][that._current_page_no - 1].elements[elementIndex].style['transformY'] = transformY;
+                            // }
+                        },
+                    });
+                },
+            });
+        }, 100);
     }
 
     pushElementToDesignObject(current_page_no, element) {
@@ -462,8 +576,10 @@ export class DesignEditComponent implements OnInit {
         var elem = $.extend(true, {}, element);
 
         elem.guid = this.generateId();
-        elem = this.setElementLocation(elem);
+        //elem = this.setElementLocation(elem);
         this.design['pages'][current_page_no].elements.push(elem);
+        
+        this.setUIOptions();
     }
 
     updateSelectedElementStyle(newStyles) {
@@ -475,7 +591,30 @@ export class DesignEditComponent implements OnInit {
         for (var i in elements) {
             if (guid == elements[i].guid) {
                 for (var newStyleIndex in newStyles) {
-                    this.design['pages'][this._current_page_no - 1].elements[i].style[newStyleIndex] = newStyles[newStyleIndex];
+                    if(newStyleIndex == 'z-index') {
+                        var oldZIndex = parseInt(this.design['pages'][this._current_page_no - 1].elements[i].style['z-index']);
+                        var newZIndex = 0;
+
+                        if(newStyles[newStyleIndex] == 'increment') {
+                            if(oldZIndex) {
+                                newZIndex = oldZIndex + 1;
+                            } else {
+                                newZIndex = 1;
+                            }
+                        } else if(newStyles[newStyleIndex] == 'decrement') {
+                            if(oldZIndex) {
+                                newZIndex = oldZIndex - 1;
+                            } else {
+                                newZIndex = -1;
+                            }
+                        }
+                        if(newZIndex < 0) {
+                            newZIndex = 0;
+                        }
+                        this.design['pages'][this._current_page_no - 1].elements[i].style[newStyleIndex] = newZIndex;
+                    } else {
+                        this.design['pages'][this._current_page_no - 1].elements[i].style[newStyleIndex] = newStyles[newStyleIndex];
+                    }
                 }
                 return;
             }
@@ -513,7 +652,7 @@ export class DesignEditComponent implements OnInit {
                 break;
 
             case 'filter':
-                switch($event) {
+                switch ($event) {
                     case 'normal':
                         //brightness
                         this.brightness = 50;
@@ -567,6 +706,10 @@ export class DesignEditComponent implements OnInit {
                 this.rotateY = this.rotateY == 180 ? 0 : 180;
                 newStyles['-webkit-transform'] = type + "(" + this.rotateY + "deg)";
                 newStyles['transform'] = type + "(" + this.rotateY + "deg)";
+                break;
+
+            case 'z-index':
+                newStyles['z-index'] = $event;
                 break;
 
             case 'tint':

@@ -10,6 +10,7 @@
     background-color: #ffffff;
     color: #000000 !important;
     margin-bottom: 10px;
+    z-index: 0;
 }
 .element_options,
 .btn-toolbar,

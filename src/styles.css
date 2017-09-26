@@ -19,6 +19,12 @@
 .single_element:hover {
     outline: 1px dashed rgba(0,0,0,.5);
 }
+.single_element:hover {
+    cursor: move;
+}
+.display_element:hover {
+    cursor: pointer;
+}
 .white {
     color: #ffffff !important;
 }

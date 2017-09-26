@@ -102,6 +102,16 @@
             <div class="btn-group" class="col-md-4" *ngIf="showOptions">
                 <button class="btn btn-default" data-original-title="Copy" (click)="cloneElement()"><i class="icon-copy"></i> Copy</button>
 
+                <div class="btn-group">
+                    <a class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                        Arrange <span class="icon-caret-down"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="javascript:void(0);" (click)="fontPropertyChanged('z-index', 'increment')"><i class="icon-fixed-width icon-flip-horizontal"></i> Forward</a></li>
+                        <li><a href="javascript:void(0);" (click)="fontPropertyChanged('z-index', 'decrement')"><i class="icon-fixed-width icon-flip-vertical"></i> Back</a></li>
+                    </ul>
+                </div>
+
                 <a class="btn btn-default dropdown-toggle" data-toggle="dropdown">
                     Transparency <span class="icon-caret-down"></span>
                 </a>
