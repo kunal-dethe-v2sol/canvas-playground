@@ -10,6 +10,7 @@
     background-color: #ffffff;
     color: #000000 !important;
     margin-bottom: 10px;
+    z-index: 0;
 }
 .element_options,
 .btn-toolbar,
@@ -17,6 +18,13 @@
 .btn-toolbar .btn-group, button,
 .btn-toolbar .btn-group, select {
     height: 100% !important;
+}
+
+.ui-resizable-helper {
+    border: 1px dotted gray;
+}
+.ui-resizable-ghost {
+    border: 1px dotted gray;
 }
 
 /*Start:: Slider*/

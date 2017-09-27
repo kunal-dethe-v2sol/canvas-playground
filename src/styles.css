@@ -11,10 +11,19 @@
 .pointer {
     cursor: pointer;
 }
+.single_element {
+    position: absolute;
+}
 .focused_element,
 .display_element:hover,
 .single_element:hover {
-    border: 1px dashed rgba(0,0,0,.5);
+    outline: 1px dashed rgba(0,0,0,.5);
+}
+.single_element:hover {
+    cursor: move;
+}
+.display_element:hover {
+    cursor: pointer;
 }
 .white {
     color: #ffffff !important;
@@ -22,3 +31,5 @@
 .black {
     color: #000000 !important;
 }
+
+    
