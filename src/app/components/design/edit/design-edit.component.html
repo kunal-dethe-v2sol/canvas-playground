@@ -34,6 +34,7 @@
                             <span><input type="range" [(ngModel)]="vignette" class="slider" min="0" max="100" step="1" value="50" (change)="fontPropertyChanged('vignette', $event)" />&nbsp; {{vignette}}</span>
                         </li>-->
                     </ul>
+                    <button class="btn btn-default" (click)="showdiv()">Crop</button>
                 </div>
                 <div class="btn-group">
                     <a class="btn btn-default dropdown-toggle" data-toggle="dropdown">

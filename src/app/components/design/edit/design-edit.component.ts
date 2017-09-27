@@ -98,14 +98,7 @@ export class DesignEditComponent implements OnInit {
 
         this.loggedInUserData = this._sharedService.getLoggedInUserData();
 
-        this.cropperSettings = new CropperSettings();
-        this.cropperSettings.width = 100;
-        this.cropperSettings.height = 100;
-        this.cropperSettings.croppedWidth = 100;
-        this.cropperSettings.croppedHeight = 100;
-        this.cropperSettings.canvasWidth = 400;
-        this.cropperSettings.canvasHeight = 300;
-        this.data = {};
+       
     }
 
     //Angular Hooks
@@ -269,6 +262,11 @@ export class DesignEditComponent implements OnInit {
         $('.single_element').removeClass('focused_element');
     }
 
+    showdiv(){
+        this.show1 = !this.show1;
+    }
+
+
     /**
      * Sets the selected element.
      * @param element 
@@ -277,7 +275,31 @@ export class DesignEditComponent implements OnInit {
         $('.single_element').removeClass('focused_element');
         $(element).addClass('focused_element');
         this.selected_element = element;
-        $(this.selected_element).resizable().rotatable();
+        //$(this.selected_element).draggable().resizable().rotatable();
+        $(this.selected_element).cropper({
+  aspectRatio: 16 / 9,
+  crop: function(e) {
+    // Output the result data for cropping image.
+    console.log(e.x);
+    console.log(e.y);
+    console.log(e.width);
+    console.log(e.height);
+    console.log(e.rotate);
+    console.log(e.scaleX);
+    console.log(e.scaleY);
+  }
+});
+
+
+
+        this.cropperSettings = new CropperSettings();
+        this.cropperSettings.width = 100;
+        this.cropperSettings.height = 100;
+        this.cropperSettings.croppedWidth = 100;
+        this.cropperSettings.croppedHeight = 100;
+        this.cropperSettings.canvasWidth = 400;
+        this.cropperSettings.canvasHeight = 300;
+        this.data = this.selected_element;
     }
 
     manageElement($event) {
