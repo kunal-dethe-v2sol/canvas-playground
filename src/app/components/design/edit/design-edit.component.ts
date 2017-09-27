@@ -351,6 +351,9 @@ export class DesignEditComponent implements OnInit {
         $(that.selected_element).cropper({
             autoCrop: false,
             aspectRatio: 16 / 9,
+            minContainerHeight: 400,
+            minContainerWidth: 800,
+            //minCropBoxHeight: 800,
             crop: function(e) {
                 // Output the result data for cropping image.
                 //e.rotatable = false;
