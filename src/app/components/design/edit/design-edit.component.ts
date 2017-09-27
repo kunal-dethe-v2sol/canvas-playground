@@ -6,7 +6,6 @@ import { SharedService } from './../../shared/service/shared.service';
 import { templateList } from './../../shared/data/templates';
 import { textList, fontFamilyList, fontSizeList, getText } from './../../shared/data/texts';
 import { imageList, getImage } from './../../shared/data/images';
-import { ImageCropperComponent, CropperSettings } from 'ng2-img-cropper';
 
 declare var $: any;
 
@@ -75,13 +74,7 @@ export class DesignEditComponent implements OnInit {
     public showOptions = false;
     public showTextOptions = false;
     public showImageOptions = false;
-
-    public show1 = false;
-    public show2 = false;
-    public show3 = false;
-    public imageStyle;
-    public cropperSettings: CropperSettings;
-    public data: any;
+    public showImageCropOptions= false;
 
     //Constructor parameters
     static get parameters() {
@@ -137,7 +130,7 @@ export class DesignEditComponent implements OnInit {
         }
 
         this.toggleDeletePageButton();
-        this.setDefautllOptions();
+        this.setDefaultOptions();
         this.setUIOptions();
     }
 
@@ -255,6 +248,7 @@ export class DesignEditComponent implements OnInit {
         this.showOptions = false;
         this.showTextOptions = false;
         this.showImageOptions = false;
+        //this.showImageCropOptions = false;
     }
 
     hideToolbar() {
@@ -263,9 +257,12 @@ export class DesignEditComponent implements OnInit {
         if ($('.ui-resizable').length) {
             $('.ui-resizable').resizable("destroy");
         }
+        if($('.ui-rotatable-handle').length) {
+            $('.ui-rotatable-handle').parent().rotatable("destroy");
+        }
     }
 
-    setDefautllOptions() {
+    setDefaultOptions() {
         this.fontFamily = 'sans-serif';
         this.fontSize = 'sans-serif';
         this.letterSpacing = 0
@@ -282,7 +279,7 @@ export class DesignEditComponent implements OnInit {
             if (guid == elements[i].guid) {
                 var styles = elements[i].style;
 
-                this.setDefautllOptions();
+                this.setDefaultOptions();
 
                 if (styles['font-family']) {
                     this.fontFamily = styles['font-family'];
@@ -304,10 +301,55 @@ export class DesignEditComponent implements OnInit {
         }
     }
 
-    showdiv(){
-        this.show1 = !this.show1;
+    cropImage() {
+        this.showImageCropOptions = false;
+        this.showImageOptions = true;
+        this.showOptions = true;
+
+        var croppedImageData = $(this.selected_element).cropper('getCroppedCanvas').toDataURL();
+        //console.log("imageData", croppedImageData);
+
+        if ($('.cropper-hidden').length) {
+            $('.cropper-hidden').cropper("destroy");
+        }
+
+        //replace with the one on the page
+        var guid = this.selected_element.dataset.guid;
+
+        //find the element object from the design variable for this guid
+        var elements = this.design['pages'][this._current_page_no - 1].elements;
+        for (var i in elements) {
+            if (guid == elements[i].guid) {
+                this.design['pages'][this._current_page_no - 1].elements[i].src = croppedImageData;
+                return;
+            }
+        }
     }
 
+    cancelImageCrop() {
+        if ($('.cropper-hidden').length) {
+            $('.cropper-hidden').cropper("destroy");
+        }
+        this.showImageCropOptions = false;
+        this.showImageOptions = true;
+        this.showOptions = true;
+    }
+    
+    loadCropper() {
+        var that = this;
+
+        var height = parseInt(that.selected_element.style.height);
+        var width = parseInt(that.selected_element.style.width);
+        
+        that.showImageOptions = false;
+        that.showOptions = false;
+        that.showImageCropOptions = true;
+
+        $(that.selected_element).cropper({
+            minContainerHeight: 225,
+            minContainerWidth: width,
+        });
+    }
 
     /**
      * Sets the selected element.
@@ -317,58 +359,20 @@ export class DesignEditComponent implements OnInit {
         $('.single_element').removeClass('focused_element');
         //if ($('.ui-resizable').length) {
             //console.log("destroying resizable for elements", $('.ui-resizable').length);
-            $('.ui-resizable').resizable("destroy");
+            //$('.ui-resizable').resizable("destroy");
         //}
 
         $(element).addClass('focused_element');
         this.selected_element = element;
         this.retainElementStyles(element);
 
-        var rotatableParams = {
-            // Callback fired on rotation start.
-            start: function (event, ui) {
-            },
-            // Callback fired during rotation.
-            rotate: function (event, ui) {
-            },
-            // Callback fired on rotation end.
-            stop: function (event, ui) {
-            },
-            // Set the rotation center
-            rotationCenterOffset: {
-                top: 20,
-                left: 20
-            },
-            transforms: {
-                translate: '(50%, 50%)',
-                scale: '(2)'
-                //any other transforms
-            }
-        };
-
         var that = this;
-        console.log("$(that.selected_element)", $(that.selected_element));
-        $(that.selected_element).cropper({
-            autoCrop: false,
-            aspectRatio: 16 / 9,
-            minContainerHeight: 400,
-            minContainerWidth: 800,
-            //minCropBoxHeight: 800,
-            crop: function(e) {
-                // Output the result data for cropping image.
-                //e.rotatable = false;
-                //e.scalable = true;
-                console.log(e.x);
-                console.log(e.y);
-                console.log(e.width);
-                console.log(e.height);
-                console.log(e.rotate);
-                console.log(e.scaleX);
-                console.log(e.scaleY);
-            }             
-        });
+
+        //console.log("$(that.selected_element)", $(that.selected_element));
+
+        var oldRotateStyleValue = that.selected_element.style.transform;
         
-        /*.resizable({
+        $(that.selected_element).resizable({
             animate: true,
             //containment: "#single_page_"+(this._current_page_no - 1),
             //containment: "parent",
@@ -376,9 +380,9 @@ export class DesignEditComponent implements OnInit {
             //minWidth: parseInt(that.selected_element.style.width),
             //maxWidth: this.page_size.width - parseInt(that.selected_element.style.width),
             //handles: 'n, e, s, w',
-            handles: 'e, w',
+            handles: that.selected_element.dataset.type == 'text' ? 'e, w' : 'n, e, s, w',
             resize: function (event, ui) {
-                console.log('resize on element', event.target);
+                //console.log('resize on element', event.target);
 
                 ui.size.height = Math.round(ui.size.height / 30) * 30;
                 ui.size.width = Math.round(ui.size.width / 30) * 30;
@@ -427,8 +431,17 @@ export class DesignEditComponent implements OnInit {
                 that.design['pages'][that._current_page_no - 1].elements[elementIndex].style['height'] = ui.size.height + 'px';
                 that.design['pages'][that._current_page_no - 1].elements[elementIndex].style['width'] = ui.size.width + 'px';
             }
-            //}).draggable().rotatable(rotatableParams);
-        });*///.rotatable(rotatableParams);
+        }).rotatable({
+            start: function(event, ui) {
+                that.selected_element.style.transform = oldRotateStyleValue;
+            },
+            rotate: function(event, ui) {
+                //console.log('ui', ui);
+                that.fontPropertyChanged('rotate', ui.angle.current);
+            },
+        });
+
+        that.selected_element.style.transform = oldRotateStyleValue;
 
         this.setUIOptions();
     }
@@ -712,6 +725,12 @@ export class DesignEditComponent implements OnInit {
                 newStyles['-webkit-filter'] = type + "(" + $event.target.value + "px)";
                 newStyles['filter'] = type + "(" + $event.target.value + "px)";
                 break;
+
+            case 'rotate':
+                newStyles['-webkit-transform'] = "rotate(" + $event + "rad)";
+                newStyles['transform'] = "rotate(" + $event + "rad)";
+                break;
+
 
             case 'rotateX':
                 this.rotateX = this.rotateX == 180 ? 0 : 180;
