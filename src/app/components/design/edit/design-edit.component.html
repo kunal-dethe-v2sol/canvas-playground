@@ -34,7 +34,7 @@
                             <span><input type="range" [(ngModel)]="vignette" class="slider" min="0" max="100" step="1" value="50" (change)="fontPropertyChanged('vignette', $event)" />&nbsp; {{vignette}}</span>
                         </li>-->
                     </ul>
-                    <button class="btn btn-default" (click)="showdiv()">Crop</button>
+                    <button class="btn btn-default" (click)="loadCropper()">Crop</button>
                 </div>
                 <div class="btn-group">
                     <a class="btn btn-default dropdown-toggle" data-toggle="dropdown">
@@ -45,6 +45,11 @@
                         <li><a href="javascript:void(0);" (click)="fontPropertyChanged('rotateX', rotateX)"><i class="icon-fixed-width icon-flip-vertical"></i> Flip Vertically</a></li>
                     </ul>
                 </div>
+            </div>
+
+            <div *ngIf="showImageCropOptions" class="col-md-8" [@slideInOut]>
+                <button class="btn btn-default" (click)="cropImage()">Ok</button>
+                <button class="btn btn-default" (click)="cancelImageCrop()">Cancel</button>
             </div>
             
             <div *ngIf="showTextOptions" class="col-md-8" [@slideInOut]>
@@ -140,10 +145,6 @@
                         (inViewportAction)="pageFocused(page.page_no)" [ngStyle]="{'height': page_wrapper_size.height+'px'}">-->
                     <div *ngFor="let page of design.pages; let pageIndex = index" class="single_page_wrapper" (click)="pageFocused(page.page_no)" [ngStyle]="{'height': page_wrapper_size.height+'px'}">
                         <div class="col-md-11 max_height single_page" id="single_page_{{pageIndex}}" [ngStyle]="{'width': page_size.width+'px', 'height': page_size.height+'px'}">
-                            <div *ngIf="show1==true">
-                                    <img-cropper [image]="data" [settings]="cropperSettings"></img-cropper><br>
-                                    <img [src]="data.image" [width]="cropperSettings.croppedWidth" [height]="cropperSettings.croppedHeight">
-                                </div>
                             <div *ngFor="let element of page.elements">
                                 <div [p3x-compile]="displayElement(element)" [p3x-compile-ctx]="this"></div>
                             </div>

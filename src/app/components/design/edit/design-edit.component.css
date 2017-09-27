@@ -26,7 +26,10 @@
 .ui-resizable-ghost {
     border: 1px dotted gray;
 }
-
+/* Limit image width to avoid overflow the container */
+img {
+    max-width: 100%; /* This rule is very important, please do not ignore this! */
+}
 /*Start:: Slider*/
 .dropdown-menu li {
     padding: 10px;
