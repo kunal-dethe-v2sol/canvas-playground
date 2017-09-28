@@ -1,5 +1,62 @@
-.nav li a:hover,
-.focused {
-    background: #ffffff;
-    color: #000000 !important;
+.body_wrapper {
+    height:950px;
+}
+.header {
+    border-bottom: 1px solid #dddddd;
+    font-size: 12px;
+    height: 55px;
+    line-height: 54px;
+    margin: 0;
+    width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: space-between;
+}
+.header label {
+    font-size: 16px;
+}
+.logo a {
+    font-size: 20px;
+    padding: 15px;
+}
+.toolbar {
+    border-right: 1px solid #dddddd;
+    height: 100%;
+    overflow: hidden;
+    animation: fade-in cubic-bezier(0.25, 0.1, 0.25, 1) 0.5s;
+}
+.editor {
+    background-color: #ebeced;
+}
+.toolbar .nav {
+    margin-left: 50px;
+    margin-top: 50%;
+}
+.toolbar .nav li {
+    font-family: '"Adobe Garamond Italic", Baskerville, "Baskerville Old Face", "Hoefler Text", "Times New Roman", serif';
+    font-size: 20px;
+    font-style: italic;
+    margin-top: 10%;
+}
+.toolbar .nav li i {
+    background-color: #000000;
+    color: #ffffff;
+    font-size: 30px;
+}
+.toolbar .nav li a {
+    color: #000000;
+}
+.nav>li>a:focus, .nav>li>a:hover {
+    background-color: white;
+    cursor: pointer;
+}
+.nav i {
+    border: 2px solid;
+    border-radius: 50px;
+    height: 60px;
+    width: 60px;
+    padding: 15px;
+    padding-top: 12px;
+    margin-right: 10px;
+    border: 2px solid lightgrey;
 }

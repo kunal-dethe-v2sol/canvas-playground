@@ -1,64 +1,69 @@
 <!-- BEGIN CONTAINER -->
-<div class="page-container" (click)="handleClickOnAnyElement($event)">
-    <div class="container-fluid">
-        <div class="row" style="height:950px;">
-            <div class="col-md-12" style="height:60px; background-color: #00c4cc;">
-                <div class="row col-md-3" style="font-size:30px; font-weight:bold; line-height:60px;">
-                    <a routerLink="/home" class="white">Canvas Playground</a>
+<div class="page-container row-no-padding" (click)="handleClickOnAnyElement($event)">
+    <div class="container-fluid row-no-padding">
+        <div class="body_wrapper">
+            <div class="col-md-12 header">
+                <div class="col-md-3 logo">
+                    <a routerLink="/home">Canvas Playground</a>
                 </div>
-                <div class="row col-md-9" style="margin-top: 10px;">
-                    <div class="row col-md-9">
+                <div class="col-md-9">
+                    <div class="col-md-9">
                         <div class="form-group">
-                            <div class="col-md-1 text-right" style="margin-top: 10px;">
-                                <label class="white">Header:</label>
+                            <div class="col-md-1">
+                                <label>Header:</label>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-11" style="margin-top:10px;">
                                 <input class="form-control black" type="text" maxlength="100" [(ngModel)]="design_header_text" (keyup)="updateDesignHeader($event)" placeholder="Enter the design header here" />
                             </div>
                         </div>
                     </div>
-                    <div class="row col-md-3">
+                    <div class="col-md-3 text-center">
                         <button class="btn btn-success" (click)="saveDesign()">Save Design</button>
                     </div>
                 </div>
             </div>
             
-            <div class="row col-md-12 full_height">
-                <div class="col-md-1 max_height white" style="background-color: #000000; margin-top:0px;">
-                    <ul class="nav nav-pills nav-stacked" style="margin-top:15px;">
-                        <li><a class="pointer white" [ngClass]="showSearchBar ? 'focused' : ''" (click)="loadList('search')">Search</a></li>
-                        <li><a class="pointer white" [ngClass]="showLayoutList ? 'focused' : ''" (click)="loadList('layouts')">Layouts</a></li>
-                        <li><a class="pointer white" [ngClass]="showElementList ? 'focused' : ''" (click)="loadList('elements')">Elements</a></li>
-                        <li><a class="pointer white" [ngClass]="showTextList ? 'focused' : ''" (click)="loadList('text')">Text</a></li>
-                        <li><a class="pointer white" [ngClass]="showBackgroundList ? 'focused' : ''" (click)="loadList('background')">Background</a></li>
-                        <li><a class="pointer white" [ngClass]="showUploadList ? 'focused' : ''" (click)="loadList('uploads')">Uploads</a></li>
-                    </ul>
-                </div>
-                <div class="col-md-2 max_height white" style="background-color: #3f4652; margin-top:0px;">
-                    <div class="col-md-12" style="border:0; margin-top:15px;">
-                        <div *ngIf="showSearchBar" class="text-center">
-                            Search Bar
-                        </div>
-                        <div *ngIf="showLayoutList" class="text-center">
-                            Layout List
-                        </div>
-                        <div *ngIf="showTextList" class="text-center" style="margin-top:15px; margin-bottom:15px; border:0;">
-                            <h2>Text List</h2>
-                            <div *ngFor="let text of textList" class="text-center pointer" (click)="insertElement('text', text)" style="border:0;">
-                                <div [p3x-compile]="displayElement('text', text)" [p3x-compile-ctx]="this"></div>
+            <div class="col-md-12">
+                <div class="col-md-2 toolbar">
+                    <div class="col-md-12">
+                        <ul class="nav nav-pills nav-stacked" *ngIf="showMainList">
+                            <li><a (click)="loadList('text')"><i class="fa fa-text-width fa-2x"></i>Text</a></li>
+                            <li><a (click)="loadList('elements')"><i class="fa fa-etsy fa-2x"></i>Elements</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-md-12">
+                        <div *ngIf="showTextList">
+                            <div class="col-md-12" style="border-bottom:1px solid lightgrey;">
+                                <div class="col-md-11">
+                                    <h4 class="text-center">Text List</h4>
+                                </div>
+                                <div class="col-md-1" style="margin-top:5px;margin-left:-10px;">
+                                    <button class="btn btn-xs" (click)="loadList('main')"><i class="fa fa-times-rectangle fa-2x"></i></button>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div *ngFor="let text of textList" class="col-md-6 text-center display_element_wrapper pointer" (click)="insertElement('text', text)" style="border:0;">
+                                    <div [p3x-compile]="displayElement('text', text)" [p3x-compile-ctx]="this"></div>
+                                </div>
                             </div>
                         </div>
                         <div *ngIf="showElementList" class="text-center">
-                            <h2>Element List</h2>
-                            <div class="col-md-12">
-                                <div class="col-md-6">
-                                    <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect white" (click)="loadList('elements','image')">Images</button>
+                            <div class="col-md-12" style="border-bottom:1px solid lightgrey;">
+                                <div class="col-md-11">
+                                    <h4 class="text-center">Element List</h4>
                                 </div>
-                                <div class="col-md-6">
-                                    <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect white" (click)="loadList('elements','shape')">Shapes</button>
+                                <div class="col-md-1" style="margin-top:5px;margin-left:-10px;">
+                                    <button class="btn btn-xs" (click)="loadList('main')"><i class="fa fa-times-rectangle fa-2x"></i></button>
                                 </div>
                             </div>
-
+                            <div class="col-md-12" style="margin-top:10px;">
+                                <div class="col-md-6">
+                                    <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" (click)="loadList('elements','image')">Images</button>
+                                </div>
+                                <div class="col-md-6">
+                                    <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" (click)="loadList('elements','shape')">Shapes</button>
+                                </div>
+                            </div>
                             <div class="col-md-12" style="margin-top:50px;">
                                 <div *ngIf="showImageList" class="text-center" >
                                     <div *ngFor="let image of imageList" (click)="insertElement('image', image)" class="col-md-6" style="margin-bottom:25px;">
@@ -70,21 +75,11 @@
                                 </div>
                             </div>
                         </div>
-                        <div *ngIf="showBackgroundList" class="text-center">
-                            Background List
-                        </div>
-                        <div *ngIf="showUploadList" class="text-center">
-                            Upload your own image
-                            <image-upload
-                                [dropBoxMessage]="'Drop your images here!'"
-                                (onFileUploadFinish)="imageUploaded($event)"
-                                (onRemove)="imageRemoved($event)"
-                                (isPending)="disableSendButton($event)">
-                            </image-upload>
-                        </div>
                     </div>
                 </div>
-                <canvas-design-edit></canvas-design-edit>
+                <div class="col-md-10 editor">
+                    <canvas-design-edit></canvas-design-edit>
+                </div>
             </div>
         </div>
     </div>

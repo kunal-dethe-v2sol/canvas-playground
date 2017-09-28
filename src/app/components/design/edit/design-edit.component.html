@@ -1,4 +1,4 @@
-<div class="col-md-9 max_height" style="background-color: #ebeced; margin-top:0px;">
+<div class="col-md-12" style="background-color: #ebeced;">
     <div class="col-md-12" style="margin-top:5px; height:35px;">
         <!--Options Menu-->
         <div class="col-md-12 element_options">
@@ -132,24 +132,26 @@
         </div>
     </div>
 
-    <div class="col-md-12 max_height">
-        <div class="col-md-1 text-center full_height">
+    <div class="col-md-12">
+        <div class="col-md-1 text-center">
             <!--Empty space-->
-            <div class="text-center black">Total Pages: {{design.last_page_no}}</div>
-            <div class="text-center black">Cur. Page: {{getCurrentPage()}}</div>
+            <!--<div class="text-center black">Total Pages: {{design.last_page_no}}</div>
+            <div class="text-center black">Cur. Page: {{getCurrentPage()}}</div>-->
         </div>
-        <div class="col-md-10 full_height">
-            <div class="col-md-12 max_height">
-                <div class="col-md-12 full_height" #single_page_wrapper>
+        <div class="col-md-10">
+            <div class="col-md-12">
+                <div class="col-md-12" #single_page_wrapper>
                     <!--<div *ngFor="let page of design.pages; let pageIndex = index" class="single_page_wrapper" in-viewport [inViewportOptions]="{rootElement:single_page_wrapper, partial:false}"
                         (inViewportAction)="pageFocused(page.page_no)" [ngStyle]="{'height': page_wrapper_size.height+'px'}">-->
-                    <div *ngFor="let page of design.pages; let pageIndex = index" class="single_page_wrapper" (click)="pageFocused(page.page_no)" [ngStyle]="{'height': page_wrapper_size.height+'px'}">
-                        <div class="col-md-11 max_height single_page" id="single_page_{{pageIndex}}" [ngStyle]="{'width': page_size.width+'px', 'height': page_size.height+'px'}">
-                            <div *ngFor="let element of page.elements">
-                                <div [p3x-compile]="displayElement(element)" [p3x-compile-ctx]="this"></div>
+                    <div *ngFor="let page of design.pages; let pageIndex = index" class="col-md-12 single_page_wrapper" (click)="pageFocused(page.page_no)" [ngStyle]="{'height': page_wrapper_size.height+'px'}">
+                        <div class="col-md-11">
+                            <div class="single_page" id="single_page_{{pageIndex}}" [ngStyle]="{'width': page_size.width+'px', 'height': page_size.height+'px'}">
+                                <div *ngFor="let element of page.elements">
+                                    <div [p3x-compile]="displayElement(element)" [p3x-compile-ctx]="this"></div>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-md-1 max_height single_page_options text-center">
+                        <div class="col-md-1 single_page_options text-center" [ngStyle]="{'height': page_size.height+'px', 'margin-top': '20%'}">
                             <p class="page_no">{{page.page_no}}</p>
                             <br />
                             <br />
@@ -159,7 +161,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-12 text-center">
+            <div class="col-md-12 text-center" style="margin-bottom:50px;">
                 <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" (click)="createEmptyPage()">+ Add a new page</button>
             </div>
         </div>

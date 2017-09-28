@@ -1,4 +1,12 @@
 /* You can add global styles to this file, and also import other style files */
+*, *:before, *:after {
+    box-sizing: border-box;
+}
+.row-no-padding,
+.row-no-padding [class*="col"] {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
 .full_height {
     height: 100%;
     overflow: auto;
@@ -10,6 +18,14 @@
 }
 .pointer {
     cursor: pointer;
+}
+.display_element_wrapper {
+    margin-top: 10px;
+    height: 50px;
+}
+.display_element {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
 }
 .single_element {
     position: absolute;
@@ -25,11 +41,8 @@
 .display_element:hover {
     cursor: pointer;
 }
-.white {
-    color: #ffffff !important;
-}
-.black {
-    color: #000000 !important;
+.single_page {
+    margin: auto;
 }
 
     

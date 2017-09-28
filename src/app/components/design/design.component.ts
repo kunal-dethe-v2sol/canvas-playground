@@ -29,6 +29,7 @@ export class DesignComponent implements OnInit {
 
     public textList = textList;
     public imageList = imageList;
+    public showMainList = true;
     public showSearchBar = false;
     public showLayoutList = false;
     public showTextList = false;
@@ -61,7 +62,7 @@ export class DesignComponent implements OnInit {
 
         if (this._activatedRoute.snapshot.url[0].path == 'design') {
             //on load of the design edit route.
-            this.loadList('layouts');
+            //this.loadList('layouts');
         }
     }
 
@@ -120,6 +121,7 @@ export class DesignComponent implements OnInit {
     }
 
     loadList(type, sub_type = '') {
+        this.showMainList = false;
         this.showSearchBar = false;
         this.showLayoutList = false;
         this.showTextList = false;
@@ -127,7 +129,9 @@ export class DesignComponent implements OnInit {
         this.showBackgroundList = false;
         this.showUploadList = false;
 
-        if (type == 'search') {
+        if (type == 'main') {
+            this.showMainList = true;
+        } else if (type == 'search') {
             this.showSearchBar = true;
         } else if (type == 'layouts') {
             this.showLayoutList = true;
@@ -144,6 +148,7 @@ export class DesignComponent implements OnInit {
                     break;
             }
         } else if (type == 'text') {
+            this.showMainList = false;
             this.showTextList = true;
         } else if (type == 'background') {
             this.showBackgroundList = true;
