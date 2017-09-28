@@ -49,6 +49,7 @@ export class DesignEditComponent implements OnInit {
     public page_wrapper_size: any = {};
     public page_size: any = {};
     public selected_element: any;
+    public selected_element_object_id: any;
 
     public letterSpacing = 0;
     public lineHeight = 1.4;
@@ -305,25 +306,13 @@ export class DesignEditComponent implements OnInit {
         this.showImageCropOptions = false;
         this.showImageOptions = true;
         this.showOptions = true;
-
-        var croppedImageData = $(this.selected_element).cropper('getCroppedCanvas').toDataURL();
-        //console.log("imageData", croppedImageData);
-
+        
         if ($('.cropper-hidden').length) {
             $('.cropper-hidden').cropper("destroy");
         }
 
-        //replace with the one on the page
-        var guid = this.selected_element.dataset.guid;
-
-        //find the element object from the design variable for this guid
-        var elements = this.design['pages'][this._current_page_no - 1].elements;
-        for (var i in elements) {
-            if (guid == elements[i].guid) {
-                this.design['pages'][this._current_page_no - 1].elements[i].src = croppedImageData;
-                return;
-            }
-        }
+        var croppedImageData = $(this.selected_element).cropper('getCroppedCanvas').toDataURL();
+        this.design['pages'][this._current_page_no - 1].elements[this.selected_element_object_id].src = croppedImageData;
     }
 
     cancelImageCrop() {
@@ -351,6 +340,18 @@ export class DesignEditComponent implements OnInit {
         });
     }
 
+    setSelectedElementObjectId() {
+        var guid = this.selected_element.dataset.guid;
+        var elements = this.design['pages'][this._current_page_no - 1].elements;
+        for (var i in elements) {
+            if (guid == elements[i].guid) {
+                this.selected_element_object_id = i;
+                return;
+            }
+        }
+        return;
+    }
+
     /**
      * Sets the selected element.
      * @param element 
@@ -364,6 +365,7 @@ export class DesignEditComponent implements OnInit {
 
         $(element).addClass('focused_element');
         this.selected_element = element;
+        this.setSelectedElementObjectId();
         this.retainElementStyles(element);
 
         var that = this;
@@ -398,7 +400,7 @@ export class DesignEditComponent implements OnInit {
                         elementIndex = i;
                     }
                 }
-
+                
                 var changeWidth: any = 0;
                 if (ui.size.width > ui.originalSize.width) {
                     //width increased
@@ -477,36 +479,14 @@ export class DesignEditComponent implements OnInit {
     }
 
     cloneElement() {
-        //get guid from the selected element
-        var guid = this.selected_element.dataset.guid;
-
-        //find the element object from the design variable for this guid
-        var elements = this.design['pages'][this._current_page_no - 1].elements;
-        for (var i in elements) {
-            if (guid == elements[i].guid) {
-                this.pushElementToDesignObject(this._current_page_no - 1, elements[i]);
-                return;
-            }
-        }
+        this.pushElementToDesignObject(this._current_page_no - 1, this.design['pages'][this._current_page_no - 1].elements[this.selected_element_object_id]);
     }
 
     deleteElement() {
-        //get guid from the selected element
-        var guid = this.selected_element.dataset.guid;
+        this.design['pages'][this._current_page_no - 1].elements.splice(this.selected_element_object_id, 1);
 
-        //find the element object from the design variable for this guid
-        var elements = this.design['pages'][this._current_page_no - 1].elements;
-        console.log('elements', elements);
-        for (var i in elements) {
-            if (guid == elements[i].guid) {
-                this.design['pages'][this._current_page_no - 1].elements.splice(i, 1);
-
-                //hide all the options
-                this.hideAllOptions();
-
-                return;
-            }
-        }
+        //hide all the options
+        this.hideAllOptions();
     }
 
     
@@ -612,40 +592,30 @@ export class DesignEditComponent implements OnInit {
     }
 
     updateSelectedElementStyle(newStyles) {
-        //get guid from the selected element
-        var guid = this.selected_element.dataset.guid;
+        for (var newStyleIndex in newStyles) {
+            if(newStyleIndex == 'z-index') {
+                var oldZIndex = parseInt(this.design['pages'][this._current_page_no - 1].elements[this.selected_element_object_id].style['z-index']);
+                var newZIndex = 0;
 
-        //find the element object from the design variable for this guid
-        var elements = this.design['pages'][this._current_page_no - 1].elements;
-        for (var i in elements) {
-            if (guid == elements[i].guid) {
-                for (var newStyleIndex in newStyles) {
-                    if(newStyleIndex == 'z-index') {
-                        var oldZIndex = parseInt(this.design['pages'][this._current_page_no - 1].elements[i].style['z-index']);
-                        var newZIndex = 0;
-
-                        if(newStyles[newStyleIndex] == 'increment') {
-                            if(oldZIndex) {
-                                newZIndex = oldZIndex + 1;
-                            } else {
-                                newZIndex = 1;
-                            }
-                        } else if(newStyles[newStyleIndex] == 'decrement') {
-                            if(oldZIndex) {
-                                newZIndex = oldZIndex - 1;
-                            } else {
-                                newZIndex = -1;
-                            }
-                        }
-                        if(newZIndex < 0) {
-                            newZIndex = 0;
-                        }
-                        this.design['pages'][this._current_page_no - 1].elements[i].style[newStyleIndex] = newZIndex;
+                if(newStyles[newStyleIndex] == 'increment') {
+                    if(oldZIndex) {
+                        newZIndex = oldZIndex + 1;
                     } else {
-                        this.design['pages'][this._current_page_no - 1].elements[i].style[newStyleIndex] = newStyles[newStyleIndex];
+                        newZIndex = 1;
+                    }
+                } else if(newStyles[newStyleIndex] == 'decrement') {
+                    if(oldZIndex) {
+                        newZIndex = oldZIndex - 1;
+                    } else {
+                        newZIndex = -1;
                     }
                 }
-                return;
+                if(newZIndex < 0) {
+                    newZIndex = 0;
+                }
+                this.design['pages'][this._current_page_no - 1].elements[this.selected_element_object_id].style[newStyleIndex] = newZIndex;
+            } else {
+                this.design['pages'][this._current_page_no - 1].elements[this.selected_element_object_id].style[newStyleIndex] = newStyles[newStyleIndex];
             }
         }
     }
