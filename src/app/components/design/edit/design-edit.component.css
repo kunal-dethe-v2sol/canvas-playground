@@ -26,7 +26,22 @@
 .ui-resizable-ghost {
     border: 1px dotted gray;
 }
-
+.ui-rotatable-handle {
+    position: relative;
+    top: 40px;
+}
+.ui-rotatable-handle:after {
+    content: "";
+    border: 1px dotted grey;
+    left: 7px;
+    position: relative;
+    top: -27px;
+    height: 0px;
+}
+/* Limit image width to avoid overflow the container */
+img {
+    max-width: 100%; /* This rule is very important, please do not ignore this! */
+}
 /*Start:: Slider*/
 .dropdown-menu li {
     padding: 10px;
